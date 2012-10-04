@@ -1,0 +1,411 @@
+\documentclass[a4paper, 12pt]{tufte-book}
+
+%\hypersetup{colorlinks}% uncomment this line if you prefer colored hyperlinks (e.g., for onscreen viewing)
+
+
+
+%\renewcommand{\allcapsspacing}[1]{{\addfontfeature{LetterSpace=20.0}#1}}
+%\renewcommand{\smallcapsspacing}[1]{{\addfontfeature{LetterSpace=5.0}#1}}
+%\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+%
+%% Will Robertson's fontspec.sty can be used to simplify font choices.
+%\usepackage{fontspec,xltxtra,xunicode}
+%\defaultfontfeatures{Mapping=tex-text}
+%\setromanfont[Mapping=tex-text,Scale=0.95]{Palatino}%{Hoefler Text}
+%%\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+%\setmonofont[Scale=MatchLowercase]{Monaco}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{inconsolata}
+%\renewcommand*\ttdefault{lcmtt}
+
+%%
+% Book metadata
+\title{Haskell as a\\ Platform for Game Development}
+
+\author[Vic Smith, Laith Alissa, Jon Cave, Joey Squidballs]{Vic Smith, Laith Alissa, Jon Cave, Joey Squidballs}
+\publisher{The Department of Computer Science\\University Of Warwick}
+
+%%
+% If they're installed, use Bergamo and Chantilly from www.fontsite.com.
+% They're clones of Bembo and Gill Sans, respectively.
+%\IfFileExists{bergamo.sty}{\usepackage[osf]{bergamo}}{}% Bembo
+%\IfFileExists{chantill.sty}{\usepackage{chantill}}{}% Gill Sans
+
+%\usepackage{microtype}
+
+%%
+% Just some sample text
+\usepackage{lipsum}
+
+%%
+% For nicely typeset tabular material
+\usepackage{booktabs}
+
+%%
+% For graphics / images
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+\usepackage{amsmath}
+
+% For ordinal number conversion
+\usepackage{numname}
+
+%%
+% Prints argument within hanging parentheses (i.e., parentheses that take
+% up no horizontal space).  Useful in tabular environments.
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+
+%%
+% Prints an asterisk that takes up no horizontal space.
+% Useful in tabular environments.
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+%%
+% Prints a trailing space in a smart way.
+\usepackage{xspace}
+
+% Prints the month name (e.g., January) and the year (e.g., 2008)
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or
+  December\fi\space\number\year
+}
+
+% Prints an epigraph and speaker in sans serif, all-caps type.
+\newcommand{\openepigraph}[2]{%
+  %\sffamily\fontsize{14}{16}\selectfont
+  \begin{fullwidth}
+  \sffamily\large
+  \begin{doublespace}
+  \noindent\allcaps{#1}\\% epigraph
+  \noindent\allcaps{#2}% author
+  \end{doublespace}
+  \end{fullwidth}
+}
+
+\usepackage{changepage}
+
+% Prints an epigraph for a chapter
+\newcommand{\chapterepigraph}[2]{%
+  %\sffamily\fontsize{14}{16}\selectfont
+  %\begin{fullwidth}
+  \vspace{1em}
+  \begin{adjustwidth}{}{0.18\linewidth}
+  \sffamily\small
+  \noindent\raggedright\allcaps{#1}\\% epigraph
+  \ -----\noindent\sc{ #2}% author
+  \vspace{2em}
+  \end{adjustwidth}
+  %\end{fullwidth}
+}
+
+% Inserts a blank page
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+\usepackage{units}
+
+% Typesets the font size, leading, and measure in the form of 10/12x26 pc.
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
+
+% Generates the index
+\usepackage{makeidx}
+\makeindex
+
+% Sort out part pages
+\let\oldpart \part
+\renewcommand{\part}[1]
+{
+	\begin{fullwidth}
+		\oldpart[#1]{\normalfont#1}
+	\end{fullwidth}
+}
+
+% Fix maketitle
+\let\oldmaketitle \maketitle
+\renewcommand{\maketitle}
+{
+	\newlength{\oldparindent}
+	\newlength{\oldparskip}
+	\setlength{\oldparindent}{\parindent}
+	\setlength{\oldparskip}{\parskip}
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{4pt}
+	\oldmaketitle
+	\setlength{\parindent}{\oldparindent}
+	\setlength{\parskip}{\oldparskip}
+}
+
+%Configure the listings package
+\usepackage{listings}
+
+\lstdefinelanguage{Funk}
+{
+	alsoletter={:<>-=},
+	morekeywords={interface, class, of, let, otherwise, case},
+	morekeywords={extend, rename, as, redefine, data, events, depend, module},
+	morekeywords={BEFORE, AFTER, AROUND, INTERCEPT, CONSTRUCTS, SENT, BY, SENDS, DURING},
+	morekeywords={>>>, <<},
+	morekeywords={new, defer, with},
+	morekeywords={::, :=, ->, for},
+	sensitive=true, 
+	morecomment=[l]{//}, 
+	morecomment=[l]{--}, 
+	morecomment=[s]{/*}{*/}, 
+	morestring=[d]{"},
+	morestring=[b]{'},
+}
+
+% "define" Scala
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+}
+
+% "define" lolcode
+\lstdefinelanguage{lolcode}{
+  morekeywords={HAI,CAN, HAS, I, A, GIMMEH, IZ, BIGGER, THAN, YARLY, VISIBLE, NOWAI, KTHX, KTHXBYE},
+  morecomment=[l]{BTW},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+}
+
+\lstdefinelanguage[Objective]{C}[GNU99]{C}
+  {morekeywords={@catch,@class,@encode,@end,@finally,@implementation,%
+      @interface,@private,@protected,@protocol,@public,@selector,%
+      @synchronized,@throw,@try,BOOL,Class,IMP,NO,Nil,SEL,YES,_cmd,%
+      bycopy,byref,id,in,inout,nil,oneway,out,self,super,%
+      % The next two lines are Objective-C 2 keywords.
+      @dynamic,@package,@property,@synthesize,readwrite,readonly,%
+      assign,retain,copy,nonatomic%
+      },%
+   moredirectives={import}%
+  }%
+
+\lstdefinelanguage[GNU99]{C}[99]{C}
+  {morekeywords={asm,__asm__,__extension__,typeof,__typeof__}%
+  }%
+
+\lstdefinelanguage[99]{C}%
+  {morekeywords={_Bool,_Complex,_Imaginary,auto,break,case,char,%
+      const,continue,default,do,double,else,enum,extern,float,for,%
+      goto,if,inline,int,long,register,restrict,return,short,signed,%
+      sizeof,static,struct,switch,typedef,union,unsigned,void,volatile,%
+      while},%
+   sensitive,%
+   morecomment=[s]{/*}{*/},%
+   morecomment=[l]//,%
+   morestring=[b]",%
+   morestring=[b]',%
+   moredelim=*[directive]\#,%
+   moredirectives={define,elif,else,endif,error,if,ifdef,ifndef,line,%
+      include,pragma,undef,warning}%
+  }[keywords,comments,strings,directives]%
+
+\lstset
+{ 
+	tabsize=4,
+	showspaces=false,
+	showstringspaces=false,
+	upquote=true,
+	breaklines=true,
+	breakindent=4.5pt,
+	basicstyle=\ttfamily,
+	captionpos=t,         % sets the caption-position to top
+	frame=none,
+	aboveskip=1em,
+	nolol=false,
+	belowskip=1em,
+	numberbychapter=true,
+	escapechar=§,
+}
+
+% Customise listing captions
+\usepackage{color}
+\usepackage{xcolor}
+
+\usepackage{caption}
+\DeclareCaptionFont{gray}{\color{gray}}
+\DeclareCaptionFormat{listing}
+{
+	\vspace{-1em}
+	\parbox{\textwidth}
+	{{\it#1#2}#3}
+	\vspace{0.0em}
+}
+\captionsetup[lstlisting]{format=listing}
+%%%%
+
+% Use tocloft for finer control over lists and counters
+\usepackage{tocloft}
+
+\setcounter{tocdepth}{1}
+
+%\renewcommand{\cftdotsep}{10}
+\renewcommand{\cfttoctitlefont}{\huge\itshape}
+\renewcommand{\cftloftitlefont}{\huge\itshape}
+\renewcommand{\cftlottitlefont}{\huge\itshape}
+\renewcommand{\cftchapfont}{\itshape\large}
+
+\newcommand{\listofvlistingsname}{List of Listings}
+\newlistof{vlisting}{vlist}{\listofvlistingsname}
+\renewcommand{\cftvlisttitlefont}{\huge\itshape}
+
+\newcommand{\setuplisting}[3]
+{
+	\refstepcounter{vlisting}
+	\label{#1}
+	\addcontentsline{vlist}{figure}{\thevlisting \hspace{15pt} #2 }
+	\marginnote[2.5em]{Listing \thevlisting: #3}
+}
+
+\lstnewenvironment{listing}[4]
+{%
+	\lstset{#4}
+	\setuplisting{#1}{#2}{#3}
+}
+{
+}
+
+% A punch card listing
+
+\newcommand{\card}[1]{\fbox{#1}}
+
+\newenvironment{punchcards}[3]
+{%
+	\vspace{0.5em}
+	%
+	\setuplisting{#1}{#2}{#3}
+	%
+	\noindent\rule{30em}{0.5pt}\\
+	\vspace{0.3em}
+	%
+	\newlength{\oldparskip}
+	\newlength{\oldparindent}
+	%
+	\setlength{\oldparskip}{\parskip}
+	\setlength{\oldparindent}{\parindent}
+	\setlength{\parskip}{0.4em}
+	\setlength{\parindent}{0.7em}
+}
+{
+	%\vspace{1em}
+	\\ \noindent\rule{30em}{0.5pt}
+	
+	\vspace{1em}
+	\setlength{\parskip}{\oldparskip}
+	\setlength{\parindent}{\oldparindent}
+}
+
+% Macros
+
+\newcommand{\Code}[1]{\lstinline{#1}}
+
+\newcommand{\define}{\paragraph{Definition}}
+\newcommand{\motivate}{\paragraph{Motivation}}
+
+\newcommand{\arrownote}[1]
+{
+	\newlength{\lengthofarrow}
+	\settowidth{\lengthofarrow}{$\leftarrow$}
+	\marginnote{\hspace{-1.3em}$\leftarrow$ #1}
+}
+\usepackage{inlinebib}
+
+\newcommand{\cneed}{\sidenote{CITATION NEEDED.}}
+
+% Chapters in LOF
+\usepackage{etoolbox}
+
+\providebool{newchap}
+
+%\let\oldcaption\caption
+%\renewcommand{\caption}[2][\shortcaption]{%
+%\def\shortcaption{#2}
+%\ifbool{newchap}
+%{%
+%    \addcontentsline{lof}{chapter}{%
+%        Chapter \thechapter: #1 \vspace{10pt}
+%    }
+%
+%}{}
+%    \global\boolfalse{newchap}
+%    \oldcaption[#1]{#2}
+%}
+
+\makeatletter
+\newcommand{\saved@chapter}{}
+\let\saved@chapter\chapter
+\newcommand{\chapterf}{%
+  \@ifstar {\saved@chapter*}{\@dblarg\my@chapter}%
+}
+\newcommand*{\my@chapter}[2][]{%
+  \saved@chapter[#1]{#2}%
+  %\global\setbool{newchap}{true}
+  \addcontentsline{lof}{chapter}{%
+        #1 \vspace{10pt}
+    }
+
+}
+\makeatother
+
+\newcommand{\containsfigures}[1]
+{\addcontentsline{lof}{chapter}{#1 \vspace{10pt}}
+}
+
+\newcommand{\containslistings}[1]
+{\addcontentsline{vlist}{chapter}{#1 \vspace{10pt}}
+}
+
+\usepackage{amsthm}
+
+\theoremstyle{plain} %default 
+\newtheorem*{thm}{Theorem}
+\newtheorem*{lem}{Lemma} 
+\newtheorem*{prop}{Proposition} 
+\newtheorem*{cor}{Corollary} 
+
+\theoremstyle{definition} 
+\newtheorem{defn}{Definition}
+\newtheorem*{conj}{Conjecture}
+\newtheorem*{exmp}{Example}
+\newtheorem*{nota}{Notation}
+
+\theoremstyle{remark} 
+\newtheorem*{rem}{Remark} 
+\newtheorem*{note}{Note} 
+\newtheorem{case}{Case}
+
+% Formal semantics commands
+\newlength{\lengthofharpoon}
+\settowidth{\lengthofharpoon}{$\leftharpoonup$}
+\newcommand{\update}{\scalebox{0.95}{\,\raisebox{1pt}{$\leftharpoonup$}\hspace{-\lengthofharpoon}\raisebox{-1pt}{$\leftharpoondown$}}\,}
+\newcommand{\tupdate}{\scalebox{0.95}{\,\raisebox{2pt}{$\leftharpoonup$}\hspace{-\lengthofharpoon}\raisebox{-2pt}{$\leftharpoondown$}}\hspace{-\lengthofharpoon}-}
+
+\newcommand{\sig}{\varsigma}
+\newcommand{\llp}{\llparenthesis}
+\newcommand{\rrp}{\rrparenthesis}
+
+\usepackage{stmaryrd}
+
+\input{document}

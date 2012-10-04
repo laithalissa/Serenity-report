@@ -1,0 +1,157 @@
+\begin{document}
+
+% Front matter
+\frontmatter
+
+%% r.1 blank page
+%\blankpage
+%
+%% v.2 epigraphs
+%\newpage\thispagestyle{empty}
+%\openepigraph{%
+%The public is more familiar with bad design than good design.
+%It is, in effect, conditioned to prefer bad design, 
+%because that is what it lives with. 
+%The new becomes threatening, the old reassuring.
+%}{Paul Rand%, {\itshape Design, Form, and Chaos}
+%}
+%\vfill
+%\openepigraph{%
+%A designer knows that he has achieved perfection 
+%not when there is nothing left to add, 
+%but when there is nothing left to take away.
+%}{Antoine de Saint-Exup\'{e}ry}
+%\vfill
+%\openepigraph{%
+%\ldots the designer of a new system must not only be the implementor and the first 
+%large-scale user; the designer should also write the first user manual\ldots 
+%If I had not participated fully in all these activities, 
+%literally hundreds of improvements would never have been made, 
+%because I would never have thought of them or perceived 
+%why they were important.
+%}{Donald E. Knuth}
+
+
+% r.3 full title page
+\maketitle
+
+
+% v.4 copyright page
+\newpage
+\begin{fullwidth}
+	{\large {\it Author\ \ } Vic Smith, Laith Alissa, Jon Cave, Joey Squidballs
+	
+	\vspace{1em}\noindent{\it Supervisor\ \ } Sara Kilvala
+	
+	\vspace{1em}\noindent{\it Abstract\ \ } Bla, bla, bla, abstract...
+	
+	\vspace{1em}\noindent{\it Keywords\ \ } Functional Programming, Haskell, Games, etc
+	
+	}
+	
+	~\vfill
+	\thispagestyle{empty}
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{\baselineskip}
+	Copyright \copyright\ \the\year\ \thanklessauthor
+	
+	\par\smallcaps{Published by \newlinetospace{\thanklesspublisher}}
+	
+	%\par\smallcaps{Typesetting: tufte-latex.googlecode.com}
+	
+	\par Licensed under the Apache License, Version 2.0 (the ``License''); you may not
+	use this file except in compliance with the License. You may obtain a copy
+	of the License at \url{http://www.apache.org/licenses/LICENSE-2.0}. Unless
+	required by applicable law or agreed to in writing, software distributed
+	under the License is distributed on an \smallcaps{``AS IS'' BASIS, WITHOUT
+	WARRANTIES OR CONDITIONS OF ANY KIND}, either express or implied. See the
+	License for the specific language governing permissions and limitations
+	under the License.\index{license}
+	
+	\par\textit{First printing, \monthyear}
+
+
+% r.5 contents
+\tableofcontents
+
+\end{fullwidth}
+%\listoffigures
+
+%\listoftables
+
+%\lstlistoflistings
+
+ %r.7 dedication
+\cleardoublepage
+~\vfill
+\begin{doublespace}
+\noindent\fontsize{18}{22}\selectfont\itshape
+\nohyphenation
+Dedicated to hackers everywhere, who know that it is always worth trying to modify, to tinker with, to experiment on, and to ultimately improve all things that they possibly can.
+\end{doublespace}
+\vfill
+\vfill
+
+
+%%
+% Start the main matter (normal chapters)
+\mainmatter
+
+% r.9 introduction
+\input{chapter/frontmatter/forward}
+\input{chapter/frontmatter/brief}
+
+\part{Project Initiation and Planning\label{part:pid}}
+	\input{chapter/pid/intro}
+	\input{chapter/pid/terms_of_reference}
+	\input{chapter/pid/communication}
+	\input{chapter/pid/quality}
+	\input{chapter/pid/jobs}
+	\input{chapter/pid/risk}
+	\input{chapter/pid/professional_issues}
+\part{Research\label{part:research}}
+	\input{chapter/research/industry}
+	\input{chapter/research/existing_games}
+	\input{chapter/research/awkward_squad}
+\part{Building the Game\label{part:main}}
+	\input{chapter/main/networking}	
+	\input{chapter/main/graphics}
+	\input{chapter/main/ai}
+	\input{chapter/main/testing}
+	\input{chapter/main/manual}
+\part{Project Evaluation\label{part:evaluation}}
+	\input{chapter/evaluation/game}	
+	\input{chapter/evaluation/haskell}
+	\input{chapter/evaluation/project_management}
+\part{Into the Future\label{part:future}}
+	\input{chapter/future/library}
+	\input{chapter/future/game}
+
+\part{Appendices and Indices\label{part:appendices}}
+
+\backmatter
+
+\include{ch/backmatter/acknowledgements}
+
+\begin{fullwidth}
+
+\def\bibname{Full Reference List and Selected Bibliography}
+\nocite{*}
+\bibliographystyle{plainnat}
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliography{references}
+
+\cleardoublepage
+\phantomsection \label{listoflis}
+\addcontentsline{toc}{chapter}{List of Listings}
+\listofvlisting
+
+\cleardoublepage
+\phantomsection \label{listoffig}
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+\end{fullwidth}
+\printindex
+
+\end{document}
