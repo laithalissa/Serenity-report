@@ -3,12 +3,16 @@
 
 \chapterepigraph{If you aren't sure which way to do something, then do it both ways and see which works better.}{John Carmack}
 
-\newthought{Functional programming} has a long history, with its roots in the $\lambda$-calculus of Alonzo Church.\citefix[-1.5em]{church1932} One of the first functional programming languages was Lisp, invented by John McCarthy in the 1958; and Lisp is still used today, over 50 years later.\citepage{reilly2003}{pages 156--157} Various languages have refined and extended the paradigm over the years; probably the most notable as of now being Haskell, Scala, OCaml, F\#, and Erlang.
+\newthought{Functional programming} has a long history, with its roots in the $\lambda$-calculus of Alonzo Church.\citefix[-1.5em]{church1932} One of the first functional programming languages was Lisp, invented by John McCarthy in the 1958; and Lisp is still used today, over 50 years later.\citepage{reilly2003}{pages 156--157} Various languages have refined and extended the paradigm over the years --- probably the most notable as of now being Haskell, Scala, OCaml, F\#, and Erlang.
 
 Despite the amount of time such languages have been available, use in industry has typically been far less than that of languages such as C, C++, and Java.\citepage[-2em]{odersky2010programming}{page 11} That being said, in recent years there has been increasing use of functional techniques and languages in certain areas. Erlang was designed for the development of highly fault tolerant telecommunication systems.\cite[-1em]{armstrong2007history} OCaml is used in the financial sector to create trading algorithms.\citefix[1em]{minsky2011ocaml}
 
+One of the often cited reasons against the use of functional programming in some domains is that of performance. This is due in part to mutable data structures generally being easier to represent on machine hardware; and it therefore being harder for functional compilers to convert the code into an efficient representation.\citefix{paulson1996ml} However, it is not a given that any program would run slower if written in a functional language: in some cases lazy-evaluation or compiler optimisations made possible by immutability can mean a program runs faster, plus advanced compiler techniques such as array fusion can lead to programs nearing the efficiency of hand-crafted C. 
 
 
-\section{A Section}
+
+\section{Why a Game?}
 
 Lorum ipsum dolor sit amet.
+
+\section{Why Haskell?}
