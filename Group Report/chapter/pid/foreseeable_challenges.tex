@@ -1,5 +1,5 @@
-\chapter[Forseeable Challenges]{Forseeable Challenges}
-\label{ch:forseeable_challenges}
+\chapter[Foreseeable Challenges]{Foreseeable Challenges}
+\label{ch:foreseeable_challenges}
 
 \chapterepigraph{The lurking suspicion that something could be simplified is the world's richest source of rewarding challenges}{Edsger Dijkstra}
 
@@ -50,11 +50,11 @@ detract from the realism of the game. An inefficient AI system could also stop t
 from running smoothly --- which is of great importance for a real-time strategy game.
 This would lead to a poor user experience causing people to stop playing the game.
 
+\section{Efficiency problems}
+
 \section{Minimal graphics libraries available}
 
 Some investigation into the Haskell graphics libraries available has already been undertaken.
-The Gloss package has been identified as a suitable candidate. Internally it
-uses OpenGL, but exposes a clean functional API. Unfortunately it is a relatively simple
+The Gloss package has been identified as a suitable candidate because it exposes a clean
+functional API and hides away the details of OpenGL. Unfortunately it is a relatively simple
 library and does not provide some required features such as windowing and clipping.
-
-\section{Efficiency problems}
