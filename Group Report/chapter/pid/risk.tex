@@ -1,41 +1,55 @@
-\section{Risk Analysis}
+\section{Risk Management}
 \label{section:risk}
 
-\begin{enumerate}
-\item
-conflicting with intellectual property
+A proactive approach to risk management has been taken. This is to maximise the probability
+of avoiding risks instead of having to move into `fire-fighting mode' if something goes
+wrong.\citepage{pressman2010}{page 745}
 
-\item
-Under Scheduling:
-Software projects are typically unique by nature.
-schedules can be created using existing projects as a baseline, the greater the similiarity between two projects, the similar the schedules can be.
-This project is highly unique, meaning the estimates for each activity will not be based on any previous evidence.
-By working in short increments, we will be able to constantly evaluate our progress against the schedule, reachusting where necessary.
+As part of this proactive risk management strategy, a number of potential risks
+have been identified. These risks are shown in table \ref{tab:risks} along with their
+estimated probabilities of occurring and impact if they do occur.
 
-\item
-Requirement Inflation:
-As development progress, new features that weren't identified in the initial specification will be required.
-This will add additional activities to the schedule which could cause iterations to be late.
+\begin{table*}
+	\small
+	\begin{tabular}{l p{\textwidth / 2} l l}
+		\toprule
+		\emph{Risk} & \emph{Description} & \emph{Probability} & \emph{Impact} \\
+		\midrule
+		Length underestimate & The time required to develop the software is underestimated & Medium & High \\
+		Team member illness & One or more team members unable to work due to illness & Medium & High \\
+		Hardware failure & Damage to critical hardware causing loss of data & Medium & Medium \\
+		Size underestimate & The size of the deliverable has been underestimated & Medium & Medium \\
+		Requirements change & Large number of changes to requirements during development & Low & Medium \\
+		Ambiguous requirements & Requirements are not fully understood or misinterpreted leading to
+			loss of development time as the specification is recreated & Low & Medium \\
+		\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption{Risk identification}
+	\label{tab:risks}
+\end{table*}
 
-\item
-Project Members specialising in certain areas:
-As implementation progresses, project members will work on areas of the project they have experience in, interest in, or had previously written.
-However if any member becomes ill/unable to continue work, the remaining team will be delayed by having to learn how those areas of the project worked.
-
-\item
-Interpretation of Specification:
-everything that is not specificed in the specification is ambigues and available for interpretation by all members of the team.
-This ambiguities are likely not to be found until integration begins, which could result in certain sections of the project very different from the intended functionality.
-
-\item
-Specification Conflictions:
-when coding begins, it becomes apparent that the specification is either too abstract or contains conflictions.
-
-\item
-Working efficency proportional to the length of the deadline:
-the longer the deadline, the less efficent the team memebers will be, due to lack of pressure.
-
-\end{enumerate}
+\begin{table*}
+	\small
+	\begin{tabular}{l p{37em}}
+		\toprule
+		\emph{Risk} & \emph{Mitigation / Management} \\
+		\midrule
+		Length underestimate & Detailed work breakdown with weekly releases to ensure that
+			schedule slippage can be caught early \\
+		Team member illness & Well documented code (enforced by the software librarian) so
+			that other members can quickly start work on less familiar sections of
+			the codebase \\
+		Hardware failure & Backups and distributed source control, see \emph{Tools and Techniques} \\
+		Size underestimate & LOL! \\
+		Requirements change & Thorough change management system, see \emph{Change Management} \\
+		Ambiguous requirements & ROFL! \\
+		\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption{Risk mitigation and management}
+	\label{tab:rmm}
+\end{table*}
 
 The remainder of this section describes with some the foreseeable challenges that have been
 identified. These are less quantifiable than the risks detailed in the table above.
@@ -93,7 +107,3 @@ Some investigation into the Haskell graphics libraries available has already bee
 The Gloss package has been identified as a suitable candidate because it exposes a clean
 functional API and hides away the details of OpenGL. Unfortunately it is a relatively simple
 library and does not provide some required features such as windowing and clipping.
-
-\section{Risk Management}
-
-Unexpected delays need to be anticipated and dealt with promptly, although risks present themselves in different forms, the ultimate cost of delays is the loss of time which can prove disasterous to precariously scheduled projects. Our project schedule anticipates delays by including feed buffers between components of the project for dealing with small delays without suffering the overhead of returning to complete the task at a later stage. In addition to feed buffers our schedule has allocated a project buffer, a reserve of time allocated to optional components (such as extended gameplay modes) which can be reallocated to deal with major delays.
