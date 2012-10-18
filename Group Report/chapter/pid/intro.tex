@@ -1,4 +1,4 @@
-\chapter[Motivation]{Motivation}
+\chapter[Defining the Project: Motivation, Existing Systems, and Methodology]{Defining the Project: \\Motivation, Existing Systems, and Methodology}
 \label{ch:motivation}
 
 \chapterepigraph{If you aren't sure which way to do something, then do it both ways and see which works better.}{John Carmack}
@@ -9,12 +9,34 @@ Despite the amount of time such languages have been available, use in industry h
 
 One of the often cited reasons against the use of functional programming in some domains is that of performance. This is due in part to mutable data structures generally being easier to represent on machine hardware; and it therefore being harder for functional compilers to convert the code into an efficient representation.\citefix{paulson1996ml} However, it is not a given that any program would run slower if written in a functional language: in some cases lazy-evaluation or compiler optimisations made possible by immutability can mean a program runs faster, plus advanced compiler techniques such as array fusion can lead to programs nearing the efficiency of hand-crafted C. And with modern machines getting ever faster, the domain of problems that require high levels of efficiency is getting smaller.
 
-Performance problems alone cannot account for the fringe position of functional programming. The efficacy and advantages of the functional approach to programming and problem solving have been stated many times over a considerable number of years,\citefix{hughes1989functional} yet it is still rare for mainstream projects to make any use of functional languages or tools.
+Performance problems alone cannot account for the fringe position of functional programming. The efficacy of the functional approach has been touted over number of years,\sidenote{For example see \bibentry{hughes1989functional}.} yet it is still rare for mainstream projects to make any use of functional languages.
 
 Instead of researching and discussing the theoretical advantages of the functional paradigm, this project instead will attempt to demonstrate the value of functional programming by utilising it in a problem domain that should pose a significant  challenge, that is not normally considered a `good' domain for FP. 
 
 \section{Why a Game?}
 
-Game programming brings together a diverse range of computing areas. A game involves human interaction in real time, detailed graphics and animation, artificial intelligence / planning, networking, and various other dynamic elements. A game is also 
+Game programming brings together a diverse range of computing areas. For example human interaction in real time, detailed graphics and animation, artificial intelligence / planning, networking, and various other dynamic elements. A game is also a sizeable piece of software, yet achievable for a four person group over two terms.
 
-\section{Why Haskell?}
+As well as demonstrating FP over a wide range of areas, a game also represents a serious business venture. Computer games have been a huge industry practically as long as personnel computers have existed. Demand is high, and a vast amount of games are being continually developed, from tripe-A ventures and big companies, down to indie companies and fan groups. 
+
+\section{Picking the Language}
+
+Haskell was chosen for a number of reasons. The chief advantages it offers are:
+
+\begin{description}
+	\item[Concision] Haskell code is concise, yet readable. This is a very real advantage as it allows both for fast writing of code, and fast refactoring and maintenance. 
+	\item[Purity] Haskell is a pure functional language, with all the advantages that gives. But side-effects are needed for real programs (especially games!) and Haskell has excellent support via the IO Monad, State monads, etc. The `do' syntactic sugar makes Haskell one of the best languages for this.
+	\item[Speed] 
+	\item[Maintainability] 
+	\item[Robustness] Detecting bugs
+	\item[Testing] 
+	\item[Library Support] 
+	\item[Familiarity] 
+	\item[Love] It's awesome, and we love it.
+\end{description}
+
+\section{Existing Systems}
+
+This project will certainly not be the first game ever to be developed in a functional language, nor will it be 
+
+\section{Methodology}
