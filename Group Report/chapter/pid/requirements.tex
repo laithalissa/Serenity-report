@@ -12,10 +12,11 @@
 % what it will be used for
 % how we will measure success
 
+The game will be a real-time strategy game set in space. Opposing fleets of spacecraft
+will battle each other. A player's goal is to ensure the survival of their fleet and the destruction
+of the enemy.
+
 \begin{description}
-
-	\item[Realtime Strategy]
-
 
 	\item[Multiplayer]
 
@@ -23,14 +24,20 @@
 	players will be on different computers on the same network. The game must be capable of running
 	smoothly on a local area network, which experiences less disruption than the Internet.
 
+	\item[Fleets]
+
+	Each player will control a fleet of ships. The winner of a battle is the one who destroys
+	the entire opposition fleet.
+
 	\item[Ship Customisation]
 
 	The ships that make up a player's fleet will each have a number of pluggable slots.
+	Prior to a game each player will be able to customise the ships in their fleet by filling
+	these slots with different pieces of equipment.
 	There will be two types of slot: system slots and weapons slots. System slots allow for extra
 	internal systems to be added to the ship, for example extra shields or long range scanners.
 	Weapons slots allow the player to choose which types of weapons their ships will use. However,
-	a fleet budget constraint will prevent a user from exclusively using the best weapons on
-	every ship.
+	a fleet budget will prevent a user from using the best weapons on every ship.
 
 	\item[Resource System]
 
@@ -52,8 +59,7 @@
 	of the planet for a certain period of time. If the planet belongs to the enemy then it will
 	take twice as long for it to be captured than an unoccupied planet.
 
-	\item[Tactical Zoom]
-
+	% \item[Tactical Zoom]
 
 	\item[Fog of War]
 
@@ -104,25 +110,33 @@
 
 	\item[Fun]
 
+	One of the most important requirements is that the game should be fun to play.
+	Players should enjoy the game and want to play it multiple times.
+
 	\item[Short lived game sessions]
+
+	An individual battle should not last too long. Games which drag on for too long
+	can become boring. Each battle should last for approximately 30 minutes.
 
 	\item[Reliable]
 
-		Both the client and server should be stable programs that are not prone to
-		crashing. If either were to crash regularly then it would ruin the experience
-		and cause people to stop playing the game.
+	Both the client and server should be stable programs that are not prone to
+	crashing. If either were to crash regularly then it would ruin the experience
+	and cause people to stop playing the game.
 
-		The networking component should also be reliable. Minor network disruption should
-		not cause a huge loss in communication between the clients and server.
+	The networking component should also be reliable. Minor network disruption should
+	not cause a huge loss in communication between the clients and server.
 
 	\item[Secure]
 
-		Although the game server will initially be intended for LAN usage it is
-		important that it should not cause a computer running it on the Internet to be
-		exploitable. It should not be vulnerable to attacks such as denial of service,
-		which would stop the machine from performing any other tasks whilst under attack,
-		or remote code execution, which could allow an attacker to take control of the
-		target machine.
+	Although the game server will initially be intended for LAN usage it is
+	important that it should not cause a computer running it on the Internet to be
+	exploitable. It should not be vulnerable to attacks such as denial of service,
+	which would stop the machine from performing any other tasks whilst under attack,
+	or remote code execution, which could allow an attacker to take control of the
+	target machine.
+
+	% Macromanagement?
 
 \end{description}
 
