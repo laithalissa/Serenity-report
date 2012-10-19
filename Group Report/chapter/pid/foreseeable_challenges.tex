@@ -54,15 +54,15 @@ This would lead to a poor user experience causing people to stop playing the gam
 
 Not only does the AI need to run efficiently, so does the game as a whole. Unfortunately
 the choice of a functional programming language could lead to performance issues.
-Reasoning about space and time usage in Haskell programs is notoriously difficult due
+Reasoning about space and time usage in Haskell programs can be difficult due
 to the nature of lazy evaluation and its interaction with garbage collectors.\cite{cheplyaka2012}
 This difficulty makes it harder to develop efficient programs.
 
 A common efficiency problem encountered by Haskell developers is that of thunk leaks.
-A thunk leak is caused by a chain of dependent thunks stored in the heak waiting to
+A thunk leak is caused by a chain of dependent thunks stored in the heap waiting to
 be evaluated. Fortunately, once the cause of the problem has been located it can often
 be relatively simple to fix.\cite{ezyang2011} However, in other cases it may not be
-as easy to fix without more work going into redesigning and rearchitecting large
+as easy to fix without more work going into redesigning and re-architecting large
 portions of code.
 
 \subsection{Minimal graphics libraries available}
@@ -71,5 +71,4 @@ Some investigation into the Haskell graphics libraries available has already bee
 The Gloss package has been identified as a suitable candidate because it exposes a clean
 functional API and hides away the details of OpenGL. Unfortunately it is a relatively simple
 library and does not provide some required features such as windowing and clipping.
-This means that Gloss will have to be extended to create a graphics engine suitable for
-use in a complex game.
+This means that the behaviour required to be developed on top of that provided by the framework may be significant.
