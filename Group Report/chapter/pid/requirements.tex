@@ -14,7 +14,7 @@
 
 \begin{description}
 
-	\item[AI] 
+\item[AI] 
 The AI, artificial Intelligence will include any algorithms under the field of Artificial Intelligence, such as planning.
 The Player's fleet will be controlled by an AI algorim. It will use a planning algorithm that takes a high level objective given by the player, and generates a series of steps to achieve that objective.
 The measurement of success for AI is being able to give an order to a ship that requires at least 3 sub steps to achieve that goal, and the AI successfully completing that goal(assuming it is possible to achieve this goal).
@@ -32,8 +32,23 @@ The network requirements are that it is a Local Area Network, allowing much grea
 \item[Campaign]
 The gameplay will consist of a fixed number of battles between the two players, will a penultimate final battle to determine the winner.
 The winner of each battle, will be granted a bonus in the final battle, giving them an advantage against their opponent.
+At the start of a campaign, both players will choose their fleet with ship customization options.
+The fleet the player chooses is final and cannot be changed until the capaign is over.
+Between each battle of th campaign, the player is allowed to customize their fleet.
 
-\item[Fleet Customization]
+
+\item[Ship Customization]
+Ships will have two types of slots: System Slot, and Weapon Slot.
+The number of each slot is specific to that class of ship.
+System slots hold internal systems to the ship that are optional, ie the system is not required by the ship to function, but provides additional functionality or benefts.
+All system slots are the same size, hence any system can fit in any system slot.
+A weapon slot allows a weapon to be fitted to that slot.
+Each weapon slot can can at maximum one weapon equipped, that must belong to the correct weapon class to fit the weapon slot.
+Weapon slots can be empty.
+Each ship will belong to a specific class of ship which specifies the hull size, the number of system/weapon slots, and their positions on the ship.
+When a player is choosing their fleet, they will have a fleet budget constraint, such that the cost of their fleet must less than or equal to this fleet budget.
+Each ship class will have a different fleet cost, with bigger ship hulls costing more than smaller ones.
+different weapons/systems will have different costs, hence it better weapons/systems will have a greater cost than less weapons/systems.
 
 
 
