@@ -88,6 +88,14 @@ A planet can only be captured if their are no other player's ships at that plane
 
 
 \item[Fog Of War]
+Fog of war(FOW) is what prevents the player from seeing the entire map, the competing fleet's planets, and their ships.
+Their are three levels of FOW: unknown, visited, and visible.
+unknown FOG is applied to all locations of the map that the player's ships havn't visited.
+if part of the map is covered by unknown FOG, the player can see the position of planets, but not the owner of the planet, the quantity of resources at the planet, any ships at that planet, nor any jump lanes.
+visited FOG is applied to all locations of the map that have been visited at least once by a player's ship.
+the player can see the planet, the quantity of resources at the planet, all jump lanes connected to the planet, but not the owner of the planet, or the ships at the planet.
+visible FOG is applied to worlds that the player owns, and all areas of the map that have the player's ships.
+in visible FOG, all aspects of the map are visible to the player, including the competing fleet's ships, and the owner of planets.
 
 
 
