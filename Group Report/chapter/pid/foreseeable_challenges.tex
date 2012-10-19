@@ -1,0 +1,56 @@
+\section{Foreseeable Challenges}
+\label{sec:foreseeable_challenges}
+
+\subsection{Time constraints}
+
+Game development projects are famous for scheduling issues that threaten to delay the
+release of a product. Developers often find themselves facing ``crunch time", a period
+of extreme work overload, in an effort to deliver a game on time.\cite[-1em]{groen2011}
+A survey of problems encountered in game development performed by Petrillo et al. found
+that two of the most common issues are missing deadlines and crunch time that results 
+from this.\cite[1em]{petrillo2009} Although delays are a challenge common to all projects,
+the survey found that the need for multiple disciplines working together (programming,
+graphic design and music composition for example) to create a quality game causes
+deadline problems to occur even more frequently. These common problems have their roots
+in the time constraints imposed on a particular project.
+
+This project has approximately twenty five weeks in which to develop a fully functioning
+game that meets the requirements specified previously. This is a relatively short amount
+of time in which to deliver a complex game. By adhering to the project management
+and software development techniques laid out previously it is hoped that the project
+can be kept on schedule and the final deliverable be released on time and to specification.
+
+In his essays on software development, Frederick Brooks argues that the complex
+communication structures in a team is a major cause of delays to software projects.\cite{brooks1995}
+Fortunately, this project is run by a small team of four and so should find that
+communication overhead is less of a problem. The problem of bringing any new team
+members up to speed can also be ignored since this is a static team.
+However, the short time frame available for completing the project is still a
+major challenge to be overcome.
+
+\subsection{Writing a successful AI}
+
+Artificial intelligence can often be a make or break factor in determining the success of
+a game.\citepage{rabin2002}{page 3} Without a convincing intelligence system, a game can
+quickly become infuriating to play. This is because a human player expects any computer
+controlled components to behave sensibly. In some cases well known algorithms exist that
+enable `intelligent' behaviour to be implemented relatively easily, for example the use
+of the A* search algorithm for pathfinding. However, higher level intelligence systems
+are much more challenging. A system capable of creating and executing quality plans
+from abstract orders is going to be one of the hardest components to implement.
+
+As well as providing an entertaining experience an AI system must also be efficient.
+There cannot be large delays between the user giving an order and it being carried
+out. Any planning algorithms have to run quickly otherwise the lag in feedback will
+detract from the realism of the game. An inefficient AI system could also stop the game
+from running smoothly --- which is of great importance for a real-time strategy game.
+This would lead to a poor user experience causing people to stop playing the game.
+
+\subsection{Efficiency problems}
+
+\subsection{Minimal graphics libraries available}
+
+Some investigation into the Haskell graphics libraries available has already been undertaken.
+The Gloss package has been identified as a suitable candidate because it exposes a clean
+functional API and hides away the details of OpenGL. Unfortunately it is a relatively simple
+library and does not provide some required features such as windowing and clipping.
