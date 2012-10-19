@@ -52,11 +52,34 @@ Mac OS or Linux(kernel 2.6 or later)
 
 \end{description}
 
+functional - 2d, realtime strategy, multiplayer, ship design, resource system, ai, planetary capture resource system, possiblity of campaign style multiplayer, tactical zoom/gameplay, fow, hw requirements, haskell.
+
 
 \subsection{Non-Functional Requirements}
 
+\begin{description}
 
+	\item[Fun]
 
+	\item[Short lived game sessions]
 
-functional - 2d, realtime strategy, multiplayer, ship design, resource system, ai, planetary capture resource system, possiblity of campaign style multiplayer, tactical zoom/gameplay, fow, hw requirements, haskell.
-non-functional - fun, reliable, secure, short lived game sessions, 
+	\item[Reliable]
+
+		Both the client and server should be stable programs that are not prone to
+		crashing. If either were to crash regularly then it would ruin the experience
+		and cause people to stop playing the game.
+
+		The networking component should also be reliable. Minor network disruption should
+		not cause a huge loss in communication between the clients and server.
+
+	\item[Secure]
+
+		Although the game server will initially be intended for LAN usage it is
+		important that it should not cause a computer running it on the Internet to be
+		exploitable. It should not be vulnerable to attacks such as denial of service,
+		which would stop the machine from performing any other tasks whilst under attack,
+		or remote code execution, which could allow an attacker to take control of the
+		target machine.
+
+\end{description}
+
