@@ -14,100 +14,89 @@
 
 \begin{description}
 
-\item[AI] 
-The AI, artificial Intelligence will include any algorithms under the field of Artificial Intelligence, such as planning.
-The Player's fleet will be controlled by an AI algorim. It will use a planning algorithm that takes a high level objective given by the player, and generates a series of steps to achieve that objective.
-The measurement of success for AI is being able to give an order to a ship that requires at least 3 sub steps to achieve that goal, and the AI successfully completing that goal(assuming it is possible to achieve this goal).
-When an AI is given a goal that is either impossible to achieve given the world state, or is later invalidated due to world changing before the goal is achieved, the goal will be canceled, and the AI will wait for the next goal assigned by the player.
-The AI will be required to control single ships within the fleet, never the fleet itself, since a human player is always in control of a fleet.
-
-\item[Realtime Strategy]
+	\item[Realtime Strategy]
 
 
-\item[Multiplayer]
-Multiplayer is a game which two human players can participate in, interacting with each other within the game world.
-For this specific game, both players will be operating different computers on the same Network.
-The network requirements are that it is a Local Area Network, allowing much greating bandwidths than the World Wide Web.
+	\item[Multiplayer]
 
-\item[Campaign]
-The gameplay will consist of a fixed number of battles between the two players, will a penultimate final battle to determine the winner.
-The winner of each battle, will be granted a bonus in the final battle, giving them an advantage against their opponent.
-At the start of a campaign, both players will choose their fleet with ship customization options.
-The fleet the player chooses is final and cannot be changed until the capaign is over.
-Between each battle of th campaign, the player is allowed to customize their fleet.
+	As a multiplayer game, two players must be able to participate in the same battle. These
+	players will be on different computers on the same network. The game must be capable of running
+	smoothly on a local area network, which experiences less disruption than the Internet.
 
+	\item[Ship Customisation]
 
-\item[Ship Customization]
-Ships will have two types of slots: System Slot, and Weapon Slot.
-The number of each slot is specific to that class of ship.
-System slots hold internal systems to the ship that are optional, ie the system is not required by the ship to function, but provides additional functionality or benefts.
-All system slots are the same size, hence any system can fit in any system slot.
-A weapon slot allows a weapon to be fitted to that slot.
-Each weapon slot can can at maximum one weapon equipped, that must belong to the correct weapon class to fit the weapon slot.
-Weapon slots can be empty.
-Each ship will belong to a specific class of ship which specifies the hull size, the number of system/weapon slots, and their positions on the ship.
-When a player is choosing their fleet, they will have a fleet budget constraint, such that the cost of their fleet must less than or equal to this fleet budget.
-Each ship class will have a different fleet cost, with bigger ship hulls costing more than smaller ones.
-different weapons/systems will have different costs, hence it better weapons/systems will have a greater cost than less weapons/systems.
+	The ships that make up a player's fleet will each have a number of pluggable slots.
+	There will be two types of slot: system slots and weapons slots. System slots allow for extra
+	internal systems to be added to the ship, for example extra shields or long range scanners.
+	Weapons slots allow the player to choose which types of weapons their ships will use. However,
+	a fleet budget constraint will prevent a user from exclusively using the best weapons on
+	every ship.
 
+	\item[Resource System]
 
-\item[Resource System]
-Three resources exist within game: Fuel, Anti-Matter, and Metal.
-These resources are only used by the ships, for different purposes.
-The resources only exist within a battle of a campaign, they are not persistant throughout a campaign.
-Fuel maintains the ship's shields, without fuel, the ship will have no shields, and any damage will be directed to the ship's hull.
-Anti-Matter is used to power certain weapons on the ship. These weapons are very powerfull, however they use large amounts of Anti-Matter to fire.
-Metal is used to repair ship's hulls after being damaged.
-Each ship will have their own supply of each resource, however they cannot generate these resources, so when that ship's supply of resource runs out, the ship is unable to gain that resource's beneft.
-Resources are located on planets of the map.
-Resources are gained by capturing planets with that resource.
-When a planet is captured, it generate a constant supply of resources to the player that captured it.
-The quantity of each resource the planet generate is specific to that planet, and can vary dramatically between planets.
-The resources that are generated by the player's planets are added to that player's stockpile.
-The player's ships will resupply from the player's stockpile when it is at any planet owned by the player.
+	Three resources exist within the game: fuel, metal, and anti-matter. These resources are only
+	used by the ships. Fuel maintains a ship's shields, without a shield any damage will directed
+	to the ship's hull. Metal is used to slowly repair a ship's hull after it has been damaged.
+	Anti-matter is a rare resource that is used by the most powerful weapons available.
+
+	Planets generate a constant supply of resources, so players can gain extra resources via
+	planetary capture. The resources generated by the planets owned by a player feed into that
+	player's global stockpile. Individual ships then draw resources from this stockpile.
+
+	% Do ships get resources from the stockpile automatically, or do they have to visit planets?
+
+	\item[Planetary Capture]
+
+	Planet ownership is the only method of generating resources. Planets can only belong to
+	one player at a time at most. To capture a planet, a player must have their ships in control
+	of the planet for a certain period of time. If the planet belongs to the enemy then it will
+	take twice as long for it to be captured than an unoccupied planet.
+
+	\item[Tactical Zoom]
 
 
-\item[Ship Destruction]
+	\item[Fog of War]
 
+	Players must not be able to see the state of the entire map unless they control it all. There
+	will be three levels to the fog of war: unknown, visited, and visible. Any locations on the map
+	that a player's ships have not visited will be `unknown' and the player will not be able to see
+	anything that is at that location. Any locations that have been explored at least once will be
+	`visited'; the player will be able to see the general layout of the area, but not any details
+	such as enemy ships. Finally, any locations covered by planets and ships owned by the player will
+	be `visible' and all aspects of the map in the area will be revealed to the player.
 
+	\item[AI]
 
+	A sophisticated artificial intelligence system will be an important component in the game.
+	Each player's fleet will be controlled through an AI system. It will use a planning algorithm
+	that takes a high level objective, given by the player, to generate a series of steps to
+	achieve that objective. The AI must control the individual ships that make up the fleet; it
+	is up to the human player to decide on the overall strategy of the fleet.
+
+	A successful AI system must receive orders and quickly convert them into a sensible series of
+	actions which it performs autonomously. If an impossible goal is set, or an existing goal is
+	invalidated by changes to the world, then the AI must detect this and stop acting on it.
+
+	% Basic AI elements, e.g. pathfinding
+
+	\item[Campaign]
+
+	A campaign mode will be available which consists of a fixed number of battles between the two players.
+	The final battle will be the `showdown' that determines the overall winner. The victor of each of
+	the earlier battles will be granted bonuses toward the final battle, giving them an advantage against
+	their opponent.
+
+	Between every battle each player will have an opportunity to perform minor customisations on
+	the ships in their fleet.
+
+	\item[Operating System Requirements]
+
+	The game must be playable on recent versions of Mac OS X and Linux.
 
 % \item[Gameplay]
 % mention ship destruction and resources that drained during battle, not loss of ships
 
-
-\item[Planetary Capture]
-Capturing planets is the only way of gaining resources.
-A planet can belong to at most one player.
-To capture a planet, the player must have ships at the planet for a specific amount of time.
-if the planet belongs to another player, it will take twice as long to capture the planet, than if the planet was not owned by any player.
-A planet can only be captured if their are no other player's ships at that planet.
-
-
-\item[Tactical Zoom]
-
-
-\item[Fog Of War]
-Fog of war(FOW) is what prevents the player from seeing the entire map, the competing fleet's planets, and their ships.
-Their are three levels of FOW: unknown, visited, and visible.
-unknown FOG is applied to all locations of the map that the player's ships havn't visited.
-if part of the map is covered by unknown FOG, the player can see the position of planets, but not the owner of the planet, the quantity of resources at the planet, any ships at that planet, nor any jump lanes.
-visited FOG is applied to all locations of the map that have been visited at least once by a player's ship.
-the player can see the planet, the quantity of resources at the planet, all jump lanes connected to the planet, but not the owner of the planet, or the ships at the planet.
-visible FOG is applied to worlds that the player owns, and all areas of the map that have the player's ships.
-in visible FOG, all aspects of the map are visible to the player, including the competing fleet's ships, and the owner of planets.
-
-
-
-\item[Operating System Requirements]
-Mac OS or Linux(kernel 2.6 or later) 
-
-\item[Haskell]
-
 \end{description}
-
-functional - 2d, realtime strategy, multiplayer, ship design, resource system, ai, planetary capture resource system, possiblity of campaign style multiplayer, tactical zoom/gameplay, fow, hw requirements, haskell.
-
 
 \subsection{Non-Functional Requirements}
 
