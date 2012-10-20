@@ -3,23 +3,21 @@
 
 \chapterepigraph{If you aren't sure which way to do something, then do it both ways and see which works better.}{John Carmack}
 
-\newthought{Functional programming} has a long history, with its roots in the $\lambda$-calculus of Alonzo Church.\citefix[-1.5em]{church1932} One of the first functional programming languages was Lisp, invented by John McCarthy in 1958; and Lisp is still used today, over 50 years later.\citepage{reilly2003}{pages 156--157} Various languages have refined and extended the paradigm over the years --- probably the most notable as of now being Haskell, Scala, OCaml, F\#, and Erlang.
+\newthought{Functional programming} has a long history, with its roots in the $\lambda$-calculus of Alonzo Church.\citefix[-1.5em]{church1932} One of the first functional programming languages was Lisp, invented by John McCarthy in 1958, which is still used today, over 50 years later.\citepage{reilly2003}{pages 156--157} Various languages have refined and extended the functional paradigm over the years --- probably the most notable as of now being Haskell, Scala, OCaml, F\#, and Erlang.
 
-Despite the amount of time such languages have been available, use in industry has typically been far less than that of languages such as C, C++, and Java.\citepage[-2em]{odersky2010programming}{page 11} That being said, in recent years there has been increasing use of functional techniques and languages in certain areas. Erlang was designed for the development of highly fault tolerant telecommunication systems.\cite[-1em]{armstrong2007history} OCaml is used in the financial sector to create trading algorithms.\citefix[1em]{minsky2011ocaml}
-
-% Scala is increasingly popular, helped ... XXX presumably something to do with JVM?
+Despite the amount of time such languages have been available, use in industry has typically been far less than that of languages such as C, C++, and Java.\citepage[-2em]{odersky2010programming}{page 11} That being said, in recent years there has been increasing use of functional techniques and languages in certain areas. Erlang was designed for the development of highly fault tolerant telecommunication systems.\cite[-1em]{armstrong2007history} OCaml is used extensively by some organisations in the financial sector to create trading algorithms and other similar applications.\citefix[1em]{minsky2011ocaml} Scala is also increasingly popular, helped in part by its compatibility with the Java Virtual Machine (JVM) and object oriented design.
 
 One of the often cited reasons against the use of functional programming in some domains is that of performance. This is due in part to mutable data structures generally being easier to represent on machine hardware; and it therefore being harder for functional compilers to convert the code into an efficient representation.\citefix{paulson1996ml} However, it is not a given that any program would run slower if written in a functional language: in some cases lazy-evaluation or compiler optimisations made possible by immutability can mean a program runs faster, plus advanced compiler techniques such as array fusion can lead to programs nearing the efficiency of hand-crafted C. And with modern machines getting ever faster, the domain of problems that require high levels of efficiency is getting smaller.
 
 Performance problems alone cannot account for the fringe position of functional programming. The efficacy of the functional approach has been touted for many years,\sidenote{For example see \bibentry{hughes1989functional}.} yet it is still rare for mainstream projects to make any use of functional languages.
 
-Instead of researching and discussing the theoretical advantages of the functional paradigm, this project will attempt to demonstrate the value of functional programming by utilising it in a problem domain that should pose a significant challenge that is not normally considered a `good' domain for FP. 
+Instead of researching and discussing the theoretical advantages of the functional paradigm, this project will attempt to demonstrate the value of functional programming by utilising it in a problem domain that should pose a significant challenge that is not normally considered a `good' domain for FP. The chosen application for the project is a game.
 
 \section{Why a Game?}
 
-Game programming brings together a diverse range of computing areas. For example human interaction in real time, detailed graphics and animation, artificial intelligence / planning, networking, and various other dynamic elements. A game is also a tangible, sizeable piece of software, yet achievable for a four person group over two terms.
+Game programming brings together a diverse range of computing areas. For example human interaction in real time, detailed graphics and animation, artificial intelligence / planning, networking, and various other dynamic elements.\sidenote{See \bibentry{crawford1984art}.} A game is also a tangible, sizeable piece of software, yet achievable for a four person group over two terms.
 
-As well as demonstrating FP over a wide range of areas, a game also represents a serious business venture. Computer games have been a huge industry for almost as long as personal computers have existed. Demand is high, and a vast amount of games are being continually developed, from triple-A ventures and big companies, down to indie companies and fan groups.
+As well as demonstrating FP over a wide range of areas, a game also represents a serious business venture.\cite{essentialFacts2012} Computer games have been a huge industry for almost as long as personal computers have existed. Demand is high, and a vast amount of games are being continually developed, from triple-A ventures and big companies, down to indie companies and fan groups.
 
 This project will certainly not be the first game ever to be developed in a functional language, nor is it likely to be the last. The project shall therefore not only deliver the finished game, but fully document the process --- explaining what went well and how the functional approach benefited the construction, as well as what proved challenging.
 
@@ -39,7 +37,7 @@ Haskell was chosen for a number of reasons. The advantages it offers include:
 
 \section{Existing Systems}
 
-As mentioned, there already exist games written in functional languages. Probably the most well known is \emph{Raincat}\sidenote{\url{raincat.bysusanlin.com/}} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{ipwnstudios.com/}
+As mentioned, there already exist games written in functional languages. Probably the most well known is \emph{Raincat}\sidenote{Source available online from \url{raincat.bysusanlin.com}.} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{See there website: \url{ipwnstudios.com}.}
 
 \section{Methodology}
 
