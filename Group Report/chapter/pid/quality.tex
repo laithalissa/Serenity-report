@@ -1,22 +1,31 @@
 \section{Quality Controls}
 \label{section:quality}
 
-\subsection{Unit Testing}
+Quality Controls are a set of methods that allow the produdct to be tested against the specificatino, identifying cases in which the product will not meet the specification.
+Quality Control can be automated for requirements that test the behaviour of the product, such as functional requirements. Non-functional requirements which specifies the the quality that is required for the project to achieve a desired behaviour is general not quantafiable, and therefore cannot be automated.
 
+% what quality control is
+% what it will do for us
+
+
+% meets the specification
+% bug free
+% 
+
+\subsection{Unit Testing}
 Unit tests are used to test small, individual units of source code and ensure that the
 code meets its intended design. Unit testing is a very useful practice because it helps
 catch errors in code and allows a developer to refactor code by ensuring that it continues
 to work as before.
 
-\subsection{Component Testing}
 
+\subsection{Component Testing}
 Component testing is similar to unit testing, but focuses on larger pieces of the source
 code; it is used to test the integration of a number of units. Component is useful to
 ensure that the small units of code, which, through unit testing, are known to work
 individually, work together correctly.
 
 \subsection{Continuous Integration}
-
 Unit tests are only really useful if they are run regularly. Doing so allows developers
 to catch bugs as soon as they are introduced. This is useful because, as van Emden
 and Moonen note, the cost of fixing a bug is much lower if it is discovered earlier in
