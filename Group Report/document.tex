@@ -61,6 +61,7 @@
 	
 	\par\textit{First printing, \monthyear}
 
+	\newpage
 
 % r.5 contents
 \tableofcontents
@@ -73,15 +74,15 @@
 %\lstlistoflistings
 
  %r.7 dedication
-\cleardoublepage
-~\vfill
-\begin{doublespace}
-\noindent\fontsize{18}{22}\selectfont\itshape
-\nohyphenation
-Dedicated to...
-\end{doublespace}
-\vfill
-\vfill
+%\cleardoublepage
+%~\vfill
+%\begin{doublespace}
+%\noindent\fontsize{18}{22}\selectfont\itshape
+%\nohyphenation
+%Dedicated to...
+%\end{doublespace}
+%\vfill
+%\vfill
 
 
 %%
@@ -89,36 +90,36 @@ Dedicated to...
 \mainmatter
 
 % r.9 introduction
-\input{chapter/frontmatter/forward}
-\input{chapter/frontmatter/brief}
+%\input{chapter/frontmatter/forward}
+%\input{chapter/frontmatter/brief}
 
-\part{Project Specification\label{part:spec}}
+%\part{Project Specification\label{part:spec}}
 	\input{chapter/pid/intro}
 	\input{chapter/pid/terms_of_reference}
 	\input{chapter/pid/project_management}
-\part{Research\label{part:research}}
-	\input{chapter/research/industry}
-	\input{chapter/research/existing_games}
-	\input{chapter/research/awkward_squad}
-\part{Building the Game\label{part:main}}
-	\input{chapter/main/networking}	
-	\input{chapter/main/graphics}
-	\input{chapter/main/ai}
-	\input{chapter/main/testing}
-	\input{chapter/main/manual}
-\part{Project Evaluation\label{part:evaluation}}
-	\input{chapter/evaluation/game}	
-	\input{chapter/evaluation/haskell}
-	\input{chapter/evaluation/project_management}
-\part{Into the Future\label{part:future}}
-	\input{chapter/future/library}
-	\input{chapter/future/game}
-
-\part{Appendices and Indices\label{part:appendices}}
-
-\backmatter
-
-\include{chapter/backmatter/acknowledgements}
+%\part{Research\label{part:research}}
+%	\input{chapter/research/industry}
+%	\input{chapter/research/existing_games}
+%	\input{chapter/research/awkward_squad}
+%\part{Building the Game\label{part:main}}
+%	\input{chapter/main/networking}	
+%	\input{chapter/main/graphics}
+%	\input{chapter/main/ai}
+%	\input{chapter/main/testing}
+%	\input{chapter/main/manual}
+%\part{Project Evaluation\label{part:evaluation}}
+%	\input{chapter/evaluation/game}	
+%	\input{chapter/evaluation/haskell}
+%	\input{chapter/evaluation/project_management}
+%\part{Into the Future\label{part:future}}
+%	\input{chapter/future/library}
+%	\input{chapter/future/game}
+%
+%\part{Appendices and Indices\label{part:appendices}}
+%
+%\backmatter
+%
+%\include{chapter/backmatter/acknowledgements}
 
 \begin{fullwidth}
 
@@ -128,17 +129,17 @@ Dedicated to...
 \addcontentsline{toc}{chapter}{\bibname}
 \bibliography{references}
 
-\cleardoublepage
-\phantomsection \label{listoflis}
-\addcontentsline{toc}{chapter}{List of Listings}
-\listofvlisting
-
-\cleardoublepage
-\phantomsection \label{listoffig}
-\addcontentsline{toc}{chapter}{List of Figures}
-\listoffigures
-
-\end{fullwidth}
-\printindex
+%\cleardoublepage
+%\phantomsection \label{listoflis}
+%\addcontentsline{toc}{chapter}{List of Listings}
+%\listofvlisting
+%
+%\cleardoublepage
+%\phantomsection \label{listoffig}
+%\addcontentsline{toc}{chapter}{List of Figures}
+%\listoffigures
+%
+%\end{fullwidth}
+%\printindex
 
 \end{document}
