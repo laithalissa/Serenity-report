@@ -31,13 +31,16 @@ to catch bugs as soon as they are introduced. This is useful because, as van Emd
 and Moonen note, the cost of fixing a bug is much lower if it is discovered earlier in
 the development cycle.\cite{emden2002} Therefore, a continuous integration server
 will be used to perform a full build and test of the software every time a new change
-is pushed to the source control repository.
+is pushed to the source control repository. If the test suite fails then project members
+will be notified via email. This means that it is easy to see which change caused a
+failure and the team can quickly fix the problem.
 
 \subsection{Playtesting}
 
 
 
 \section{Success Measurement}
+\label{section:success}
 
 The various aims and goals of the project need to be measured for success individually to ensure that the project is successful overall. The following measures will be used.
 
@@ -45,7 +48,7 @@ The various aims and goals of the project need to be measured for success indivi
 
 The project is organised into separate phases with defined control points, referred to as \emph{stages} and \emph{gates}.\sidenote{This is the stage gate model, see \bibentry{karlstrom2005combining}.} The gates ensure that each phase must be completed to an acceptable level of quality before the project can continue.
 
-The precise measures used at each gate are described in the previous chapter, but are mostly combinations of acceptance tests and feedback from playtesters.
+The precise measures used at each gate are described in section \ref{section:quality}, but are mostly combinations of acceptance tests and feedback from playtesters.
 
 \subsection{Acceptance Testing}
 
