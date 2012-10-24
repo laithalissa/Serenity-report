@@ -27,8 +27,8 @@ Haskell was chosen for a number of reasons. The advantages it offers include:
 
 \begin{description}
 	\item[Concision] Haskell code is concise, yet readable. This is a very real advantage as it allows both for fast writing of code, as well as fast refactoring and maintenance. 
-	\item[Purity] Haskell is a pure functional language, with all the advantages that gives. But side-effects and mutability are needed for real programs (especially games!) and Haskell has excellent tools for solving these problems, via the IO Monad, State monads, etc. The `do' syntactic sugar makes Haskell one of the best languages for this.
-	\item[Speed] Haskell has very good compiler support, and GHC (the Glasgow Haskell Compiler) is capable of producing highly efficient code. 
+	\item[Purity] Haskell is a pure functional language, with all the advantages that gives. However side-effects and mutability are needed for real programs (especially games) and Haskell has excellent tools for solving these problems, via the IO Monad, State monads, etc. The `do' syntactic sugar makes Haskell one of the best languages for this.
+	\item[Speed] Haskell has very good compiler support, and the Glasgow Haskell Compiler (GHC) is capable of producing highly efficient code. 
 	\item[Robustness] Haskell has a very advanced type system, which makes bugs and errors in refactoring easy to detect quickly.
 	\item[Testing] The purity of Haskell enables automated testing techniques not possible even in other functional languages. There are also well supported testing libraries available for both pure and impure code.
 	\item[Community and Library Support] The Haskell community is very active and there are extensive libraries available for it. Due to Haskell compiling to C, most C system libraries have Haskell bindings. There are OpenGL and OpenAL, for example.
@@ -37,7 +37,19 @@ Haskell was chosen for a number of reasons. The advantages it offers include:
 
 \section{Existing Systems}
 
-As mentioned, there already exist games written in functional languages. Probably the most well known is \emph{Raincat}\sidenote{Source available online from \url{raincat.bysusanlin.com}.} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{See there website: \url{ipwnstudios.com}.}
+To avoid confusion we shall consider separately research into functional programming for games, and what game we will actually make given current and historic trends in gaming.
+
+\subsection{Existing research into Functional Programming of Games}
+
+One of the most well known games written in a functional language (Haskell, as it happens) is \emph{Raincat}\sidenote{Source available online from \url{raincat.bysusanlin.com}.} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{See there website: \url{ipwnstudios.com}.} Despite this, there is little work on the academic research side that supports or opposes functional languages for games. 
+
+There was a similar project in 2005 by Mun Hon Cheong, an undergraduate at the University of New South Wales;\cite{cheong2005functional} and though Cheong did manage to create a complete 3D game and gave detailed descriptions of some of the code techniques, the project did not provide a detailed insight into what exactly was effective, or challenging, about the use of a functional language.
+
+The fact that an exhaustive search of the literature in this area revealed only a single undergraduate dissertation highlights the paucity of available research in this area, and coupled with the growing interest in functional languages for game development shows the case for this project.
+
+\subsection{Existing Games}
+
+Needless to say, the complete history of gaming, even if only restricted to computer games, would be too lengthy to embark upon here. Suffice to say, the gaming industry has gone grown hugely since the early commercial computer game systems, in line with the huge developments overall in the capabilities of computers. And while some games today are magnificent technical achievements with breathtakingly detailed graphics, sounds, and physics engines, there are many popular titles from indie game companies using only 2D graphics and simple engines. Certainly, it is not just the cutting edge of technology that can make a game fun.
 
 % Games
 % Gratuitous Space Battles
