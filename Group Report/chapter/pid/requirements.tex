@@ -16,6 +16,12 @@ The game will be a real-time strategy game set in space. Opposing fleets of spac
 will battle each other. A player's goal is to ensure the survival of their fleet and the destruction
 of the enemy.
 
+\begin{marginfigure}
+	\includegraphics[width=6cm]{res/ship_design}
+	\caption{Diagrams showing basic conception of ship customisation and weapon configurations. }
+	\label{fig:ship_design}
+\end{marginfigure}
+
 \begin{description}
 
 	\item[Multiplayer]
@@ -31,13 +37,6 @@ of the enemy.
 	\item[Ship Customisation]
 
 	The ships that make up a player's fleet will each have a number of pluggable slots. Prior to a game each player will be able to customise the ships in their fleet by filling these slots with different pieces of equipment. There will be two types of slot: system slots and weapons slots, the latter also split into the areas on the ship it can be installed on. System slots allow for extra internal systems to be added to the ship, for example extra shields or long range scanners. Weapons slots allow the player to choose which types of weapons their ships will use; however, a fleet budget will prevent a user from using the best weapons on every ship. See figure \ref{fig:ship_design}.
-
-\begin{marginfigure}
-	\includegraphics[width=6cm]{res/ship_design}
-	\caption{Diagrams showing basic conception of ship customisation and weapon configurations. }
-	\label{fig:ship_design}
-\end{marginfigure}
-
 
 	\item[Resource System]
 
@@ -56,6 +55,12 @@ of the enemy.
 
 	% \item[Tactical Zoom]
 
+\begin{figure*}[t!]
+	\includegraphics[width=16cm]{res/mockup1}
+	\caption[][1em]{Initial mockup of a screen during gameplay, showing a planet, navigation lines, selected ships, minimap, and reports from other ships.}
+	\label{fig:mockup1}
+\end{figure*}
+
 	\item[Fog of War]
 
 	Players must not be able to see the state of the entire map unless they control it all. There
@@ -64,7 +69,7 @@ of the enemy.
 	anything that is at that location. Any locations that have been explored at least once will be
 	`visited'; the player will be able to see the general layout of the area, but not any details
 	such as enemy ships. Finally, any locations covered by planets or ships owned by the player will
-	be `visible' and all aspects of the map in the area will be revealed to the player.
+	be `visible' and all aspects of the map in the area will be revealed.
 	
 	\item[AI]
 
@@ -74,9 +79,8 @@ of the enemy.
 	achieve that objective. The AI must control the individual ships that make up the fleet; it
 	is up to the human player to decide on the overall strategy of the fleet.
 
-	A successful AI system must receive orders and quickly convert them into a sensible series of
-	actions which it performs autonomously. If an impossible goal is set, or an existing goal is
-	invalidated by changes to the world, then the AI must detect this and stop acting on it.
+	A successful AI system must receive orders and quickly convert them into a sensible plan which it performs and reviews autonomously. If an impossible goal is set, or an existing goal is
+	invalidated by changes to the world, then the AI must detect this and act accordingly.
 
 	% Basic AI elements, e.g. pathfinding
 
@@ -96,12 +100,6 @@ of the enemy.
 
 % \item[Gameplay]
 % mention ship destruction and resources that drained during battle, not loss of ships
-
-\begin{figure*}[t!]
-	\includegraphics[width=16cm]{res/mockup1}
-	\caption[][1em]{Initial mockup of a screen during gameplay, showing a planet, navigation lines, selected ships, minimap, and reports from other ships.}
-	\label{fig:mockup1}
-\end{figure*}
 
 \end{description}
 
