@@ -31,7 +31,9 @@ to catch bugs as soon as they are introduced. This is useful because, as van Emd
 and Moonen note, the cost of fixing a bug is much lower if it is discovered earlier in
 the development cycle.\cite{emden2002} Therefore, a continuous integration server
 will be used to perform a full build and test of the software every time a new change
-is pushed to the source control repository.
+is pushed to the source control repository. If the test suite fails then project members
+will be notified via email. This means that it is easy to see which change caused a
+failure and the team can quickly fix the problem.
 
 \subsection{Playtesting}
 
