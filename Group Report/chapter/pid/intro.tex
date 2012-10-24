@@ -48,8 +48,12 @@ There was a similar project in 2005 by Mun Hon Cheong, an undergraduate at the U
 The fact that an exhaustive search of the literature in this area revealed only a single undergraduate dissertation highlights the paucity of available research in this area, and coupled with the growing interest in functional languages for game development shows the case for this project.
 
 \subsection{Existing Games}
-% mention that graphics, sounds, and physics don't imply good gameplay, intro existing games
-Needless to say, the complete history of gaming, even if only restricted to computer games, would be too lengthy to embark upon here. The gaming industry has grown hugely since the early commercial computer game systems, in line with the huge developments overall in the capabilities of computers. And while some games today are magnificent technical achievements with breathtakingly detailed graphics, sounds, and physics engines, there are many popular titles from indie game companies using only 2D graphics and simple engines. Certainly, it is not just the cutting edge of technology that can make a game fun. 
+
+Needless to say, the complete history of gaming, even if only restricted to computer games, would be too lengthy to embark upon here. The gaming industry has grown hugely since the early commercial computer game systems, in line with the huge developments overall in the capabilities of computers. And while some games today are magnificent technical achievements with breathtakingly detailed graphics, sounds, and physics engines, there are many popular titles from indie game companies using only 2D graphics and simple engines. Certainly, it is not just the cutting edge of technology that can make a game fun.\sidenote{This is a complex issue. For a more complete treatment see \bibentry{malone1981makes}.}
+
+In order to serve the purposes of the project, it will be necessary to create a game designed to compete in the current market. This doesn't mean it has to be as complete, complex, or technically sophisticated as a triple-A title, but it does have to be a game that, if fleshed out fully, would be considered fun and suitable for a small company or similar organisation to sell. Without this any conclusions drawn about the efficacy of the approach will not be sufficiently valid to developers.
+
+For this reason it is worth briefly reviewing a few games --- some modern, some less so --- in order to identify what would be an appropriate brief for a game to help achieve the project's aims.
 
 % Games
 % Gratuitous Space Battles
@@ -74,13 +78,22 @@ Needless to say, the complete history of gaming, even if only restricted to comp
 % not likes: 
 %    - game play can be stale dependening on ship layout, ie slow guns
 %    - resource allocation rather static during battle, changes between battles and start of battle, but not during
-Faster Than Light, a turn based strategy game with Real Time battles, lets the player become the captain of a starship.
+
+Faster Than Light, a turn based strategy game with real time strategy battles, is set in space, with the player taking command of a ship with the objective of getting to the other side of the galaxy.
+The ship has an upgrade system that allows the player to upgrade various systems/parts of the ship giving advantages in the next battle.
+This upgrade system gives the player an incentive to battle, since winning a battle grants currency.
+The ship has energy that needs to be allocated to the various systems such as shields, weapons, and life support.
+This gives the player a greater control over their ship, whilst allowing them to tweak the capabilitities of the ship during battle, ie temporarilly dropping life support to boost their weapons.
+During battle, the player's responsibilitities can vary completely from having to do nothing to having to pause the game every few seconds to calculate the next optimal move. Having a varied level of responsibility adds to the dynamic gameplay, however this game varied too much, ranging from complete bordom to a single battle taking much longer than it should.
+A multiplayer mode was missing from the game, causing the the gameplay to become predictable, and not replayable.
+
+
+
+{\emph Faster Than Light} a turn based strategy game with Real Time battles, lets the player become the captain of a starship.
 The objective of the game, get to the other side of the galaxy, to give the allied fleet eveidence that will aid in the war.
 The galaxy is made up of a graph of solar systems, where each solar system is a graph of planets the player must navigate through before jumping to the next solar system.
 Each solar system/planet has its benefts, ie some will have more pirates allowing the player to scavenge resources, or some will have more shops give the player increased chance of finding the weapon most needed.
 The player chooses the path through the solar system, which is randomly generated at the start of each game.
-At each jump random encournters occur such as
-
 
 
 
