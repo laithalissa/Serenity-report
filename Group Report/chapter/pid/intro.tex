@@ -23,7 +23,7 @@ This project will certainly not be the first game ever to be developed in a func
 
 \section{Picking the Language}
 
-There are several functional languages that would be suitable for this project, most of which have already been mentioned. Of these, the language chosen is Haskell. The reasons for this are outlined below.
+When considering the choice of functional programming language, Haskell emerged the obvious choice when considering the following factors: ---
 
 \begin{description}
 	\item[Concision] Haskell code is concise, yet readable. This is a very real advantage as it allows both for fast writing of code, as well as fast refactoring and maintenance. 
@@ -41,7 +41,8 @@ To avoid confusion we shall consider separately research into functional program
 
 \subsection{Existing research into Functional Programming of Games}
 
-One of the most well known games written in a functional language (Haskell, as it happens) is \emph{Raincat}\sidenote{Source available online from \url{raincat.bysusanlin.com}.} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{See their website: \url{ipwnstudios.com}.} Despite this, there is little work on the academic research side that supports or opposes functional languages for games. 
+%One of the most well known games written in a functional language 
+Probably the most well known game written in a functional language (Haskell, as it happens) is \emph{Raincat},\sidenote{Source available online from \url{raincat.bysusanlin.com}.} written in Haskell and developed by Carnegie Mellon students in 2008. There is also a game company, \emph{ipwn studios}, who exclusively use Haskell for their products.\sidenote{See their website: \url{ipwnstudios.com}.} Despite this, there is little work on the academic research side that supports or opposes functional languages for games. 
 
 There was a similar project in 2005 by Mun Hon Cheong, an undergraduate at the University of New South Wales;\cite{cheong2005functional} and though Cheong did manage to create a complete 3D game and gave detailed descriptions of some of the code techniques, the project did not provide a detailed insight into what exactly was effective, or challenging, about the use of a functional language.
 
@@ -57,7 +58,7 @@ For this reason it is worth briefly reviewing a few games --- some modern, some 
 
 \begin{marginfigure}
 	\includegraphics[width=6cm]{res/doom/doom.png}
-	\caption{A screen from \emph{Ultimate Doom} (1995)}
+	\caption{A screen from \emph{Ultimate Doom} (1995).}
 	\label{fig:doom}
 \end{marginfigure}
 
@@ -93,7 +94,7 @@ A game hugely influential in the realm of real-time strategy is \emph{Total Anni
 Faster Than Light, a turn based strategy game with real time strategy battles, is set in space, with the player taking command of a ship with the objective of getting to the other side of the galaxy.
 \begin{marginfigure}
 	\includegraphics[width=6cm]{res/ftl/ftl}
-	\caption{Faster Than Light}
+	\caption{Faster Than Light.}
 	\label{fig:ftl}
 \end{marginfigure}
 The ship has an upgrade system that allows the player to upgrade various systems/parts of the ship giving advantages in the next battle, giving the player an incentive to battle, since winning a battle grants currency.
@@ -112,7 +113,7 @@ A multiplayer mode was missing from the game, causing the gameplay to become pre
 
 \begin{marginfigure}
 	\includegraphics[width=6cm]{res/sins/sins}
-	\caption{Sins of a Solar Empire}
+	\caption{Sins of a Solar Empire.}
 	\label{fig:sse}
 \end{marginfigure}
 
@@ -126,26 +127,36 @@ The layout of each game was procedurally generated, making each game unique and 
 A resource system existed that had 3 resources: Credits, Metal, and Crystal. 
 These resources were only used for the building of fortifications and ships, and would not effect the outcome of the battle directly.
 
+\begin{marginfigure}
+	\includegraphics[width=6cm]{res/mc2/laohu_lab_half}
+	\caption{Mech Commander 2 customise mech screen. Components can be dragged onto the mech from the weapons cache (not shown), heat capacity and armour is shown below the mech.}
+\end{marginfigure}
+
 
 Mech Commander 2 (MC2) is a real-time tactics video game developed by FASA Interactive. The game features simple 3 dimensional graphics and special effects for it's time, but proved to be very popular due to it's unique game style. MC2 allowed the player to deploy a number of mech units (constrained by a maximum weight capacity) to the battlefield. Once on the battlefield the player was vastly outnumbered by enemy mechs and had to rely on stealth and superior tactics to complete a number of objectives. Higher priority objectives were more heavily defended, so the play had to invest more time devising strategies, but received a higher payoff for the mission when they completed the higher priority objectives. What made MC2 particularly interesting was the deployment phase, in which the player had the opportunity to customise mechs with weapons, armour, and system upgrades (e.g. sensors and jump-jets). Mech customisation allowed the player to have full control over their strategies by outfitting mechs to meet their requirements on the battlefield (e.g. Designing a lightweight mech with jump-jets to bait heavier guarding mechs into an ambush).
 
+
 \begin{marginfigure}
-	\includegraphics{res/mc2/laohu_lab_half}
-	\caption{Mech Commander 2 customise mech screen}
+	\includegraphics[width=6cm]{res/gsb/modules}
+	\caption{GSB module selection screen.}
 \end{marginfigure}
 
 Gratuitous Space Battles (GSB) could be described as a tower defence game, where the player fully customises a fleet of ships prior to a skirmish but then has no influence over the battle once it begins. Unlike a tower defence game, the objective is simply to eliminate the enemy fleet. GSB provided a very elaborate ship customisation screen, where each component added would affect a large number of the ship's properties (mass, heat capacity, crew required etc.). Although low level unit customisation has proved very popular, GSB took a great risk in scaling the customisation up so much and removing the ability to influence the battle. Overcomplicating the ship building interface led to information overload for new players, making it difficult to understand how many small changes compound and affect the overall design. The lack of control over ships meant boring, drawn out battle scenes. Perhaps one lesson to take from GSB is to keep and customisation interfaces simple, and give players free reign of control as much as possible.
 
 
+
+
+
 \section{Methodology}
 
-\begin{itemize}\itemsep-3pt
-	\item Expand on documenting develop process of game in Haskell
-	\item Project should simulate making a game that would be competitive in the current indie game market
-	\item The need to do literature reviews / case studies into FP, games, and games written in FP.
-	\item Outline rough parts of schedule in relation to this.
-\end{itemize}
+After a considerable number of different ideas were examined and roughly prototyped, a game concept was settled upon. The chosen genre is real time strategy between spaceships, with the emphasis on fast battles that last no longer than half an hour. Differing levels of control are envisaged, where the single flagship might require a high level of detailed control, other ships are given more general orders that an AI then interprets and acts upon.
 
+It is felt that this is a game concept that could compete in the current market and has the potential to be very enjoyable. 
+The main part of the project will be development of this game, culminating in user testing, and a full and detailed write up. However it is essential to the aims of the project that the nature of using a functional language is properly captured in this final report. To this end it is planned that during development each programmer will keep a `diary' of code wins/challenges. Any observations about the method need to be captured immediately as they happen, otherwise they won't be remembered with enough clarity at the end to form truly useful insights.
+
+It is hoped that there will be enough material gathered during the development that it can be combined in the final report into a kind of guide to game programming in Haskell. This could form the basis for a much larger piece of work to guide functional development of games or similar applications. Also there will be identified a wish list for future libraries and features available to Haskell programmers.
+
+A significant amount of research has gone into these decisions, which is partly presented later in this document. The final report will give a much more detailed examination of these issues.
 
 \input{chapter/pid/professional_issues}
 
