@@ -36,7 +36,19 @@ will be notified via email. This means that it is easy to see which change cause
 failure and the team can quickly fix the problem.
 
 \subsection{Playtesting}
+%Running the game, with a playtester playing the game, looking for incorrections in the semantics of the game.
+%At this level, it is generally considered impossible to automate the playtesting stage, hence an actual person is rquired.
 
+% major: fine tuning the game, minor: testing the gameplay meets the spec, 
+% feedback
+
+% its about fixing bugs, tests that can't be automated, improvements
+
+Playtesting is the highest level of testing, where unit testing was testing the smallest common element of the game, Component testing was testing the interactions between a subset of the components, Playtesting is testing the built game, with all the compoents.
+The tests are still aimed at finding bugs, however at this level the only way to test the game is through the VDU(Visual Display Unit) and speakers, which cannot be automated.
+It is much easier to identify bugs at this level, since all low level bugs are propagated up to this level, however it is very hard to identify the location of these bugs, which is why the other testing methods are used.
+Performance is an aspect included under playtesting, since it can effect the outcome of a siutation within the a real time game.
+Playtesters will try different hardware that is considered within the game's minimum system requirements,  to elimiate hardware specific bugs.
 
 
 \section{Success Measurement}
@@ -55,3 +67,18 @@ The precise measures used at each gate are described in section \ref{section:qua
 Acceptance testing is a tried and proved method for making sure project deliverables are of the required quality.\sidenote{See, for example, \bibentry{hsia1994behavior}.} A suite of tests might cover...
 
 \subsection{Playtesting}
+
+% play it, testing gameplay.
+
+The objective of this is to improve the gameplay by poeple playing the game, reviewing it an
+
+The objective of this is to improve the gameplay so it both meets the specification and is fun to play.
+Due to the intangability of ``fun gameplay'', a feedback loop is used which is repeated until the changes on each iteration become few or very granulated:
+\begin{enumerate}
+\item playtester plays the game
+\item playtester reviews the game, commenting on aspects they like, don't like and any minor changes to the gamplay believed to improve it
+\item all the changes are reviewed, compiling a change list of changes that are agreed to be added
+\item the changes are added to the game
+\item repeat
+\end{enumerate}
+
