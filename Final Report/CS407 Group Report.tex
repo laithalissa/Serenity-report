@@ -354,5 +354,30 @@
   {1em}% horizontal separation between label and title body
   {\huge\rmfamily\itshape}% before the title body
   [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
+  
+\input{lambdaTex}
+\setlength{\hsleftskip}{0em}
+%\renewcommand{\afterhs}{\vspace{1em}}
+
+\newenvironment{haskell}[0]
+{\vspace{-3pt}
+> 
+}
+{\vspace{-1em}
+
+\noindent\hspace{-3pt}}
+
+\newcommand{\anote}{\hspace{-1em}$\leftarrow$}
+
+\newcommand{\scalenote}[1]{\scalebox{0.8}{#1}} 
+
+\newcommand{\hasklisting}[3]{
+\vspace{-1em}
+\begin{listing}{#1}{#2}{#3}{language=haskell}
+\end{listing}
+\vspace{-1em}
+} 
+
+
 
 \input{document}
