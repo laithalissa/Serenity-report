@@ -1,0 +1,127 @@
+\begin{document}
+
+% Front matter
+\frontmatter
+
+%% r.1 blank page
+%\blankpage
+%
+%% v.2 epigraphs
+%\newpage\thispagestyle{empty}
+%\openepigraph{%
+%The public is more familiar with bad design than good design.
+%It is, in effect, conditioned to prefer bad design, 
+%because that is what it lives with. 
+%The new becomes threatening, the old reassuring.
+%}{Paul Rand%, {\itshape Design, Form, and Chaos}
+%}
+%\vfill
+%\openepigraph{%
+%A designer knows that he has achieved perfection 
+%not when there is nothing left to add, 
+%but when there is nothing left to take away.
+%}{Antoine de Saint-Exup\'{e}ry}
+%\vfill
+%\openepigraph{%
+%\ldots the designer of a new system must not only be the implementor and the first 
+%large-scale user; the designer should also write the first user manual\ldots 
+%If I had not participated fully in all these activities, 
+%literally hundreds of improvements would never have been made, 
+%because I would never have thought of them or perceived 
+%why they were important.
+%}{Donald E. Knuth}
+
+
+% r.3 full title page
+\maketitle
+
+\addcontentsline{toc}{chapter}{Front Matter }
+
+% v.4 copyright page
+\newpage
+\begin{fullwidth}
+    \addcontentsline{toc}{section}{Abstract and Bibliographic Information}%
+	{\large {\it Authors\ \ } Vic Smith, Laith Alissa, Jon Cave, Joseph Siddall
+	
+	\vspace{1em}\noindent{\it Supervisor\ \ } Sara Kalvala
+	
+	\vspace{1em}\noindent{\it Abstract\ \ } Bla, bla, bla, abstract...
+	
+	\vspace{1em}\noindent{\it Keywords\ \ } Functional Programming, Haskell, Game Development, etc
+	
+	}
+	
+	~\vfill
+	\thispagestyle{empty}
+	\setlength{\parindent}{0pt}
+	\setlength{\parskip}{\baselineskip}
+	Copyright \copyright\ \the\year\ \plainauthor
+	
+	\par\smallcaps{Published by \newlinetospace{\thanklesspublisher}}
+	
+	%\par\smallcaps{Typesetting: tufte-latex.googlecode.com}
+	
+	\par\textit{First printing, \monthyear}
+
+	\newpage
+
+% r.5 contents
+\tableofcontents
+
+\cleardoublepage
+\phantomsection \label{listoffig}
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\cleardoublepage
+\phantomsection \label{listoflis}
+\addcontentsline{toc}{section}{List of Listings}
+\listofvlisting
+
+\cleardoublepage
+\phantomsection \label{listoflis}
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+\end{fullwidth}
+
+% r.7 dedication
+%\cleardoublepage
+%~\vfill
+%\begin{doublespace}
+%\noindent\fontsize{18}{22}\selectfont\itshape
+%\nohyphenation
+%Dedicated to...
+%\end{doublespace}
+%\vfill
+%\vfill
+
+
+%%
+% Start the main matter (normal chapters)
+\mainmatter
+% r.9 introduction
+%\input{chapter/frontmatter/forward}
+%\input{chapter/frontmatter/brief}
+
+\input{chapter/Beginnings/intro}
+\input{chapter/Beginnings/SpecV1}
+%
+%\part{Appendices and Indices\label{part:appendices}}
+%
+%\backmatter
+%
+%\include{chapter/backmatter/acknowledgements}
+
+\begin{fullwidth}
+
+\def\bibname{Full Reference List and Selected Bibliography}
+\nocite{*}
+\bibliographystyle{plainnat}
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliography{references}
+
+\end{fullwidth}
+\printindex
+
+\end{document}
