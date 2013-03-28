@@ -63,3 +63,13 @@
   \label{#3}
   }%
 }
+
+\renewenvironment{fullwidth}
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}%
+     {\begin{adjustwidth}{}{-\@tufte@overhang}}%
+  }%
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+    {\ifthenelse{\boolean{@tufte@changepage}}{\end{adjustwidth*}}{\end{adjustwidth}}}%
+    {\end{adjustwidth}}%
+  }

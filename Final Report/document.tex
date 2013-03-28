@@ -23,7 +23,7 @@
 %}{Antoine de Saint-Exup\'{e}ry}
 %\vfill
 %\openepigraph{%
-%\ldots the designer of a new system must not only be the implementor and the first 
+%The designer of a new system must not only be the implementor and the first 
 %large-scale user; the designer should also write the first user manual\ldots 
 %If I had not participated fully in all these activities, 
 %literally hundreds of improvements would never have been made, 
@@ -35,12 +35,12 @@
 % r.3 full title page
 \maketitle
 
-\addcontentsline{toc}{chapter}{Front Matter }
+%\addcontentsline{toc}{chapter}{Front Matter }
 
 % v.4 copyright page
 \newpage
 \begin{fullwidth}
-    \addcontentsline{toc}{section}{Abstract and Bibliographic Information}%
+%    \addcontentsline{toc}{chapter}{Abstract and Bibliographic Information}%
 	{\large {\it Authors\ \ } Vic Smith, Laith Alissa, Jon Cave, Joseph Siddall
 	
 	\vspace{1em}\noindent{\it Supervisor\ \ } Sara Kalvala
@@ -65,6 +65,8 @@
 
 	\newpage
 
+\end{fullwidth}
+
 % Dedication
 ~\vfill
 \begin{doublespace}
@@ -75,25 +77,29 @@ Dedicated to those in the Haskell Community, upon whose shoulders rest this and 
 \vfill
 \vfill
 
+
+\begin{fullwidth}
+
 \cleardoublepage
 
 % Contents
+%\addcontentsline{toc}{chapter}{Detailed Contents, Lists of Figures, Tables, and Listings}
 \tableofcontents
 
 \cleardoublepage
 \phantomsection \label{listoffig}
-\addcontentsline{toc}{section}{List of Figures}
+%\addcontentsline{toc}{section}{List of Figures}
 \listoffigures
 
 \cleardoublepage
 \phantomsection \label{listoflis}
-\addcontentsline{toc}{section}{List of Listings}
-\listofvlisting
+%\addcontentsline{toc}{section}{List of Tables}
+\listoftables
 
 \cleardoublepage
 \phantomsection \label{listoflis}
-\addcontentsline{toc}{section}{List of Tables}
-\listoftables
+%\addcontentsline{toc}{section}{List of Listings}
+\listofvlisting
 
 \end{fullwidth}
 
@@ -108,9 +114,11 @@ Dedicated to those in the Haskell Community, upon whose shoulders rest this and 
 \input{chapter/Beginnings.tex}
 \input{chapter/RD.tex}
 \input{chapter/Guide.tex}
+\input{chapter/PM.tex}
+\input{chapter/Conclusions.tex}
 
-%\backmatter
-%\include{chapter/backmatter/acknowledgements}
+\backmatter
+\include{chapter/backmatter/acknowledgements}
 
 \begin{fullwidth}
 
