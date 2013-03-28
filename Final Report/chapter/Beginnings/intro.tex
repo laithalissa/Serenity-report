@@ -1,20 +1,13 @@
-\chapter[Introduction]{Introduction}
-\label{ch:intro}
-\containsfigures{Introduction}
-\containslistings{Introduction}
-\containstables{Introduction}
+\addcontentsline{toc}{section}{Introduction}
 
-\chapterepigraph{Advances in technology won't be as significant as they have been in the past, most games won't be materially improved by simulating every drop of water in the pond you are wading through. More resources can be profitably spent to make the creation process easier.}{John Carmack}
-
-\newthought{Functional programming} (FP) has a long history, with its roots in the $\lambda$-calculus of Alonzo Church.\citefix[-1.5em]{church1932} One of the first functional programming languages was Lisp, invented by John McCarthy in 1958, which is still used today, over 50 years later.\citepage{reilly2003}{pages 156--157} Various languages have refined and extended the functional paradigm over the years --- probably the most notable as of now being Haskell, Scala, OCaml, F\#, and Erlang.
+\newthought{Lorum ipsum} sit dolor amet.\citefix{church1932}
+\lipsum[2-3]
 
 \begin{marginfigure}
 	\includegraphics[width=6cm]{res/doom/doom.png}
 	\caption[A screen from \emph{Ultimate Doom}.]{A screen from \emph{Ultimate Doom} (1995). Extended caption etc.}
 	\label{fig:doom}
 \end{marginfigure}
-
-\lipsum[1]
 
 \lipsum[4]
 
@@ -74,18 +67,16 @@
 
 \section{Typesetting Haskell}
 
-Lambda\TeX\ is written for \TeX\ rather than \LaTeX, and so works a little differently from how you might expect. It is designed to typeset Literate Haskell documents and so uses an angle brace to denote a haskell line
+Lambda\TeX\ is written for \TeX\ rather than \LaTeX, and so works a little differently from how you might expect. It is designed to typeset Literate Haskell documents and so uses an angle brace to denote a haskell line:
 
 > this is a Haskell line
 > data List a = Cons a |Empty
 
 To control the spacing and other parameters around these lines I have made a \emph{haskell} environment to be used like this.
 
-\hasklisting{list:reduce}{The \emph{reduce} function}{The \scalenote{"reduce"} function. Extended caption.}
-
-\vspace{-1em}
+\vspace{-0.5em}
 \begin{listing}{list:reduce}{The \emph{reduce} function}{The \scalenote{"reduce"} function. Extended caption.}{}
-\end{listing}\vspace{-1em}
+\end{listing}\vspace{-1.5em}
 
 \functions(reduce)
 \begin{haskell}
@@ -103,4 +94,4 @@ Inline haskell code is put between double tick marks ie "reduce delta q0". (Use 
 
 Lastly, Lambda\TeX\ will not react to normal text scaling commands as these are part of \LaTeX, so a scaling command must be added when setting Haskell within sidenotes or anywhere with a different text size.
 
-
+Lastly, please get into the habit of indexing.\index{indexing}

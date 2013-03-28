@@ -65,7 +65,19 @@
 
 	\newpage
 
-% r.5 contents
+% Dedication
+~\vfill
+\begin{doublespace}
+\noindent\fontsize{18}{22}\selectfont\itshape
+\nohyphenation
+Dedicated to those in the Haskell Community, upon whose shoulders rest this and many other projects.
+\end{doublespace}
+\vfill
+\vfill
+
+\cleardoublepage
+
+% Contents
 \tableofcontents
 
 \cleardoublepage
@@ -85,27 +97,16 @@
 
 \end{fullwidth}
 
-% r.7 dedication
-%\cleardoublepage
-%~\vfill
-%\begin{doublespace}
-%\noindent\fontsize{18}{22}\selectfont\itshape
-%\nohyphenation
-%Dedicated to...
-%\end{doublespace}
-%\vfill
-%\vfill
-
 
 %%
 % Start the main matter (normal chapters)
-\mainmatter
 % r.9 introduction
-%\input{chapter/frontmatter/forward}
-%\input{chapter/frontmatter/brief}
+\input{chapter/frontmatter/foreword}
 
-\input{chapter/Beginnings/intro}
-\input{chapter/Beginnings/SpecV1}
+\mainmatter
+
+\input{chapter/Beginnings.tex}
+\input{chapter/RD.tex}
 %
 %\part{Appendices and Indices\label{part:appendices}}
 %
