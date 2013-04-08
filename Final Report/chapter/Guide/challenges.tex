@@ -6,6 +6,31 @@
   % FP Familiarity
   % Memory leak in Gloss - was ok but may not have been etc
 
+\subsection{Efficiency Problems}
+
+A game, a real time strategy game in particular, must run efficiently.
+However, reasoning about space and time usage in Haskell programs can be difficult due to the nature
+of lazy evaluation and its interaction with garbage collectors.\cite{cheplyaka2012} This difficulty
+can make it harder to develop an efficient game.
+
+A common efficiency problem encountered by Haskell developers is that of thunk leaks.
+A thunk leak is caused by a chain of dependent thunks stored in the heap waiting to
+be evaluated. Fortunately, once the cause of the problem has been located it can often
+be relatively simple to fix.\cite{ezyang2011} However, in other cases it may not be
+as easy to fix without more work going into redesigning and re-architecting large
+portions of code.
+
+During the early phases of the development of Serenity a memory leak was discovered in
+the Gloss graphics library. Even a very simple Gloss program to display the amount of time
+run so far would gradually consume more and more memory as it ran. Tests discovered that
+the program would acquire about twenty-five kilobytes of memory per second until it ran
+out of memory and crashed. With a much more complex program with a larger `world' to keep
+track of this behaviour would have been much worse. Thankfully, upon reporting this issue
+to the developer of Gloss he was able to quickly identify the problem as ``a typical
+laziness-induced space leak''. This example not only illustrates how
+common memory leaks can be, but also the benefit of working with open source libraries
+provided by a very helpful community.
+
 \subsection{Dependency Hell}
 
 The Haskell Common Architecture for Building Applications and Libraries (Cabal)\sidenote{\url{http://www.haskell.org/cabal/}} was used to ease
