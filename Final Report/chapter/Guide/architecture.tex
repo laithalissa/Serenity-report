@@ -63,7 +63,7 @@ Finally, while discussing the separation of code, it is well to consider \emph{e
 Most of the issues with encapsulation in Haskell are due to user defined types using the "data" keyword. Exporting constructors directly is bad encapsulation, because changes to the structure of the type can lead to dependant implementations failing. For example consider the simple datatype in a module shown in Listing \ref{list:encapsulation_bad}.
 
 \vspace{-0.5em}
-\begin{listing}{list:encapsulation_bad}{Type constructors and data encapsulation.}{Type constructors and data encapsulation.}{}
+\begin{listing}{list:encapsulation_bad}{An example of a badly encapsulated module interface.}{An example of a badly encapsulated module interface.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -78,7 +78,7 @@ This is not good encapsulation, because if an additional field were to be added 
 The way to manage this is to use the Haskell record syntax, and to only export the field functions, and an abstract constructor (or constructors). This approach is shown in Listing \ref{list:encapsulation_good} below.
 
 \vspace{-0.5em}
-\begin{listing}{list:encapsulation_good}{Type constructors and data encapsulation.}{Type constructors and data encapsulation.}{}
+\begin{listing}{list:encapsulation_good}{A well encapsulated module interface.}{A well encapsulated module interface.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
