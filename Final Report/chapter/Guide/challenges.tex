@@ -6,4 +6,39 @@
   % FP Familiarity
   % Memory leak in Gloss - was ok but may not have been etc
 
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
+\subsection{Dependency Hell}
+
+The Haskell Common Architecture for Building Applications and Libraries (Cabal)\sidenote{\url{http://www.haskell.org/cabal/}} was used to ease
+building and packaging of the game. Using Cabal it was possible to create a package that could be
+distributed to users for them to install on their systems. Cabal allows a developer to provide a
+list of dependencies that must be installed before the package can be used. A user can then use
+the cabal-install program to install all of these dependencies automatically along with the package
+itself.
+
+Unfortunately dealing with dependencies did not work very smoothly and was a major source of
+frustration and time wasting. The first large indicator of this problem came when trying to
+update some dependencies on Mac OS X. The quickest and easiest way to start developing with Haskell on
+Mac OS X, the operating system used by three members of the team, is to install the Haskell platform\sidenote{\url{http://www.haskell.org/platform/}}.
+The Haskell platform provides a compiler and runtime, a number of useful developer tools (including
+Cabal and cabal-install), and a number of commonly used packages. However, the version of the
+Haskell platform available during the development of this project, version 2012.4, included a
+version of the Glasgow Haskell Compiler (GHC) which was incompatible with some of the newer
+versions of the packages that the project depended upon. These newer dependencies were required
+for the bug fixes and features that they contained, but it was impossible to compile and install
+these dependencies using the components of the Haskell platform at the time. In order to solve
+this issue the Haskell platform had to be removed in its entirety and replaced with the latest
+version of GHC compiled from source. Doing this also meant downloading and installing cabal-install
+from source as well. Working out the set of steps required to reliably fix the problem took
+a couple of hours. Replicating these steps on the other Macbooks took several more hours.
+
+This was not the end of all troubles with dependency management. On several occasions team
+members were forced to reinstall all dependencies. Compiling the Haskell code for almost thirty
+libraries and their dependencies is rather slow and time consuming, especially due to the size
+of some the requirements such as the Haskell bindings for the OpenGL graphics system.
+Complete reinstalls were required when cabal-install would seem to inexplicably become unable
+to install a new package due to conflicts. There appeared to be no easy solution to these
+problems other than to remove all previously installed packages and start again. It was also
+discovered that in order to install a library with profiling enabled all of its dependencies
+had to have been installed with profiling enabled as well. So, the Linux user also had to
+undergo the long and tedious reinstall cycle at the beginning of the project as the distribution
+had disabled library profiling by default.
