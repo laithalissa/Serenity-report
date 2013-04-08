@@ -1,4 +1,4 @@
-\section[Architectural Design --- Separation of Concerns, Encapsulation and File Convetions]{Architectural Design --- Separation of Concerns, \\Encapsulation, and Code Organisation}
+\section[Architectural Design --- Separation of Concerns, Encapsulation, and Code Organisation]{Architectural Design --- Separation of Concerns, \\Encapsulation, and Code Organisation}
 
 % Server vs lock step game design
 % Shared parts of implementation between client and server 
@@ -12,19 +12,19 @@ There are two related issues here. First is simply what files should have what c
 Common practice in OO languages is to have one class per file\sidenote{See \url{www.oracle.com/technetwork/java/codeconv-138413.html} (rev. 1999) and \url{www.possibility.com/Cpp/CppCodingStandard.html\#cflayout} for example. (Accessed April 2013).} but it is not immediately clear what principle in FP should determine the contents of a file. The approach taken in the Serenity project is instead to allow \emph{form} to follow \emph{function} (no pun intended); that is, to allow the desired separation of concerns to drive the module layout --- adjusting as becomes necessary --- rather than a specific type of code concept.
 
 The main separation of concern that every Haskell project is going to contain to some degree or another is between pure and impure code, and so the first thing to be considered in designing an architecture for a project should be how the connection and communication between these areas is going to be managed.
-At first sight it would appear that almost all of what happens in a game is IO of some sort or another, but this is not the case. Code can be pure precisely when its behaviour can be defined precisely in terms of its output can be defined precisely in terms of its arguments.\sidenote{CITATION NEEDED} Motion of a particle in space experiencing a force due to gravity, for example, can be defined in terms of pure code. The process of writing log entries into a file will not be, (although the code that output those entries could be).
+At first sight it would appear that almost all of what happens in a game is IO of some sort or another, but this is not the case. Code can be pure precisely when its output can be defined in terms of its arguments \emph{only}.\sidenote{CITATION NEEDED} Motion of a particle in space experiencing a force due to gravity, for example, can be defined in terms of pure code. The process of writing log entries into a file will not be, (although the code that designated the actual content of the entries could be).
 
 This is all very well, but does not make it immediately clear how to break down a project's code. The approach taken during the design of Serenity's module structure, and the approach recommended by this guide, is to let the structure of the main loop of each runnable component guide the nature and interface of each module.
 
 To demonstrate how this works, consider the architecture of the Serenity project. As discussed elsewhere,\sidenote[][-3em]{Section \ref{sec:specv2} page \pageref{sec:specv2}.} the game uses a server-client model, but with none or very limited simulation clientside. There are therefore two runnable components, which will share some logic. Each main loop will therefore have two main impure parts: the receiving of IO over the network from the server or client, and local IO (be it output to the screen, logging, or input from the user).
+
+It is clear that some data structure must exist that models the state of the game. Because no simulation takes place on the client, all the updates to this structure will be due to messages from the server. User interactions also need to generate messages \emph{to} the server. So the client loop will consist of reading input from the network and updating the game state, rendering the screen, then reading input from the user and sending output to the network.
 
 \begin{marginfigure}
 	\includegraphics{res/architecture.pdf}
 	\caption[Depiction of server and client main loops.]{Depiction of server and client main loops. The main loops are in red, the network exchanges in blue, and pure function calls in green.}
 	\label{fig:loops}
 \end{marginfigure}
-
-It is clear that some data structure must exist that models the state of the game. Because no simulation takes place on the client, all the updates to this structure will be due to messages from the server. User interactions also need to generate messages \emph{to} the server. So the client loop will consist of reading input from the network and updating the game state, rendering the screen, then reading input from the user and sending output to the network.
 
 Conversely the server loop must read input from the clients and store it, simulate the game world and send the result of this simulation to all clients. Figure \ref{fig:loops} is a diagram of the interaction between these two loops.
 
@@ -38,7 +38,7 @@ From this simple analysis of the required basic functionality, several concepts 
     \item The rules for rendering the screen
 \end{itemize}
 
-\begin{marginfigure}
+\begin{marginfigure}[6em]
 	\begin{itemize}\parskip-3pt
     \item Game \begin{itemize}\itemsep-3pt
             \item Server
@@ -56,8 +56,47 @@ From this simple analysis of the required basic functionality, several concepts 
 
 \noindent It should be clear that this has immediately imparted a basic way of breaking up the project, and if we examine the top level module namespaces in the early versions of the Serenity source it can be seen that they correspond largely with the above list, (the main difference being that the graphics code was contained within the Client modules). But it has also provided a guide to the IO/pure separation. The various parts of the game state, and the different ways in which it can be update (collectively referred to in the source as the \emph{model}) can be entirely pure. The network layer will clearly be impure, and can communicate representations of various aspects of the (pure) model.\sidenote{Bear in mind each of these headings does not need to --- and probably shouldn't --- represent one Haskell file. Instead they each represent  a top level module (rather like a package in Java) that is imported as one module but can be made up of several smaller internal modules.}
 
-Surprisingly, the graphics logic is also entirely pure. This is because the code only has to define `what' to draw, in terms of an abstract "Picture" type. In the case of Serenity the actual impure drawing took place within the external library Gloss, but in projects where OpenGL (or similar) is used directly, it would still be wise to maintain this separation between a pure logic layer, and an impure `work' layer. This is an important and widely used concept, and will come up again shortly.
+Surprisingly, the graphics logic is also entirely pure. This is because the code only has to define `what' to draw, in terms of an abstract "Picture" type. In the case of Serenity the actual impure drawing took place within the external library Gloss, but in projects where OpenGL (or similar) is used directly, it would still be wise to maintain this separation between a pure logic layer, and an impure `work' layer. This is an important and widely used concept, and is the subject of Section \ref{sec:pure}.
 
-\paragraph{Summary of this section} Two important patterns have emerged during this discussion. Firstly there is the approach to setting out the top level breakdown of a large project: by considering units of functionality from the point of view of the main loop of the program and how these parts interface. This leads to both a decent module breakdown and a insight into the appropriate separation of pure and impure code. 
+Finally, while discussing the separation of code, it is well to consider \emph{encapsulation}. Compared with Java and other similar OO languages, more effort has to be made in Haskell to have good encapsulation between modules. No formal effort was made to address encapsulation issues at the beginning of the Serenity project, and this has led to some (small) problems in a few places. In response to these, the conventions discussed below were adopted.
 
-Secondly there is the more fundamental pattern in FP of separating the impure parts of an implementation from the pure, using a light an interface as possible.  
+Most of the issues with encapsulation in Haskell are due to user defined types using the "data" keyword. Exporting constructors directly is bad encapsulation, because changes to the structure of the type can lead to dependant implementations failing. For example consider the simple datatype in a module shown in Listing \ref{list:encapsulation_bad}.
+
+\vspace{-0.5em}
+\begin{listing}{list:encapsulation_bad}{Type constructors and data encapsulation.}{Type constructors and data encapsulation.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>module MyApp.Test where
+
+>data Example = Example Int Int
+
+\end{haskell}
+\noindent
+This is not good encapsulation, because if an additional field were to be added to the "Example" type, every other module using the "Example" constructor would no longer compile. 
+
+The way to manage this is to use the Haskell record syntax, and to only export the field functions, and an abstract constructor (or constructors). This approach is shown in Listing \ref{list:encapsulation_good} below.
+
+\vspace{-0.5em}
+\begin{listing}{list:encapsulation_good}{Type constructors and data encapsulation.}{Type constructors and data encapsulation.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>module MyApp.Test (example, exampleOne, exampleTwo) where
+
+>data Example = Example { exampleOne :: Int, exampleTwo :: Int }
+
+>example :: Int -> Int -> Example
+>example = Example
+
+\end{haskell}
+\noindent
+There are various further improvements to this. Exporting lenses rather than the basic functions provided by the record syntax is desirable.\sidenote{Lenses are the functional equivalent of setters and getters and key value coding. See Section \ref{sec:gui} below.} Also there are language extensions such as GADTs (Generalised Algebraic Datatypes) that take this kind of method further.
+
+Another desirable feature is to have a single point of entry for other modules to import a set of functionality. For this reason it is a desirable pattern to have a single module "App.X" for example, that re-exports the public interface of every module underneath it ("App.X.One", "App.X.Two" etc). Another module "App.Y" should only import "App.X" and not the inner parts of its implementation.
+
+As well as providing encapsulation this pattern leads to cleanly separated interfaces and avoids problems with circular imports. 
+
+\paragraph{Summary of this section} Two important patterns have emerged during this discussion. Firstly there is the approach to setting out the top level breakdown of a large project: by considering units of functionality from the point of view of the main loop of the program and how these parts interface. This leads to both a decent module breakdown and a insight into the appropriate separation of pure and impure code.
+
+Some more care must be taken with encapsulation in Haskell than in OO languages like Java. However, it can be achieved by sticking to a couple of simple rules: don't export constructors directly, and keep inner module implementations cleanly separated.
