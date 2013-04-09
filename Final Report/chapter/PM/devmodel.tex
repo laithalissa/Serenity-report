@@ -1,5 +1,86 @@
 \section{Development Model}
+\label{section:devmodel}
 
-% Evolutionary development model
+An agile approach to software development was chosen for this project. This methodology was
+chosen because of its focus on rapid development and handling change. When working in a small
+team, a heavyweight plan-driven development approach can dominate the actual process of development
+due to the overhead. Sommerville states that using such an approach means that ``more time is
+spent on how the system should be developed than on program development and testing.''\citepage{sommerville2011}{page 58}
+Whereas an agile approach is designed to deliver working software quickly so that changes
+can be suggested and implemented in future iterations.
 
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
+The agile method that was used was that of extreme programming developed by Kent Beck.\cite{beck1999}\cite{beck2000}
+Extreme programming is an `extreme' approach to iterative development. Small releases are made
+as quickly as possible. These releases are then evaluated and iterated on until a final release
+that meets all requirements is delivered. Instead of planning and designing for the far future,
+extreme programming advocates doing both of these activities --- bits and pieces at a time ---
+throughout the entire project development lifecycle.
+
+% Bad at frequent, formal release cycle
+
+One core practice at the centre of extreme programming is testing and test driven development.
+Test driven development, as described previously in section~\ref{section:testing}, involves
+developing test cases before coding the actual implementation. The benefits of test driven
+development are a system that is thoroughly tested, reduced ambiguities in specification before
+implementation begins, and avoidance of `test-lag'. However, Sommerville notes a few problems
+that can be encountered when using test driven development:
+
+\begin{enumerate}
+\item Programmers prefer programming to testing. It is very tempting for a programmer to write
+      incomplete tests, or skip test writing altogether, before moving onto the more rewarding
+      task of implementation.
+
+\item In some cases tests can be difficult to write. For example, testing user interfaces and
+      display logic.
+
+\item It is hard to judge the completeness of a test suite. There may be a large number of tests,
+      but do they actually cover all of the code and all possible program execution.
+\end{enumerate}
+
+Although the Serenity project does include a test suite the team failed to stick to the test
+driven development tenet of extreme programming. This was mainly caused by the first issue
+pointed out by Sommerville. The team preferred to go straight into implementing a feature or
+enhancement and then, maybe, write tests after the fact. Strictly enforcing test driven development
+would be one of the main changes that would be made this project if possible.
+
+Another important practice in extreme programming is that of pair programming. Two developers
+work in tandem at the same computer. One programmer, the driver, actively writes the implementation
+of the program. The other, the observer, continously reviews each line of code as it is typed 
+and thinks about the direction of the work.\cite{williams2001} There are a couple of major advantages
+to pair programming:
+
+\begin{enumerate}
+\item It is an informal code review process that can be very effective at discovering errors
+      as the code is written.
+
+\item It promotes collective ownership and responsibility for the component being worked on.
+      Code is not `owned' by an individual who may dislike others working in the same area or
+      be demotivated by critism during code reviews, similarly one individual is not held responsible
+      for any problems.
+\end{enumerate}
+
+Studies have shown that pair programming may have little effect on overall productivity, but
+creates a substantial reduction in errors in the code.\cite{cockburn2000} This is prescribed
+to the continuous code review that occurs, and a decrease in false starts and redoing work.
+
+Pair programming was an effective technique that was used throughout the development of
+Serenity. The experience lead to the conclusion that pair programming is a good method for
+development for the advantages mentioned above as well as the following reasons:
+
+\begin{description}
+\item[Problem solving] When a problem is encountered two people are able to discuss it together
+which often helps either or both of them coming up with a solution quicker than they would
+individually.
+
+\item[Learning] Knowledge is constantly exchanged within the pair. So after a component
+has finished and the pair move on to other work they have both become more effective programmers
+in some way.
+
+\item[Team building] Working together lead to better communication and enhanced teamwork.
+This made the project team a more effective work group.
+\end{description}
+
+However, due to such a small team it was felt that it would be impossible to work on all
+tasks in pairs and still finish the work within the time constraints. Therefore, some work
+was done individually, but still always trying to work in close proximity to enable teamwork
+where necessary.
