@@ -3,3 +3,71 @@
 
 There has already been some discussion about separating pure code and code that must interact with the outside world in Section \ref{sec:architecture}, and on reducing dependancy between components in Section \ref{sec:encapsulation}. Here we discuss more specific design patterns that can address these and similar issues, in the more general setting of separation between interface and implementation.
 
+Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{Functor}.
+
+\vspace{-0.5em}
+\begin{listing}{list:functor}{The \emph{Functor} typeclass.}{The \scalenote{"Functor"} typeclass.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>class Functor f where
+>  fmap :: (a -> b) -> f a -> f b
+
+\end{haskell}
+\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (ie the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing \ref{list:listfmap}.
+
+\vspace{-0.5em}
+\begin{listing}{list:listfmap}{A \emph{Functor} instance for lists.}{A \scalenote{"Functor"} instance for lists.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>instance Functor [] where
+>  fmap = map
+
+\end{haskell}
+\noindent The advantage that this gives is that it is now possible to write functions that know nothing about the type of their inputs other than that they are an instance of some class. For example, we could define a version of "fmap" that works on a pair of different functors, like so:
+
+\vspace{-0.5em}
+\begin{listing}{list:pairfmap}{Example of writing a function using only the knowledge that the argument is a Functor.}{Example of writing a function using only the knowledge that the argument is a \scalenote{"Functor"}.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>fmap2 :: (Functor f1, Functor f2) => 
+>  (a -> b) -> (c -> d) -> (f1 a, f2 c) -> (f1 b, f2 d)
+>fmap2 g1 g2 (x,y) = (fmap g1 x, fmap g2 y)
+
+\end{haskell}
+\noindent This function can now be used whenever Functor instances are available on both types in a pair.
+
+Designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
+
+This pattern is used is several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
+
+\vspace{-0.5em}
+\begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time.}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>class Updateable a where
+>  update  ::  Update  -> a -> a
+>  updates :: [Update] -> a -> a
+>  updates = flip (foldr update)
+
+>class (Updateable a) => Commandable a where
+>  command  ::  Command  -> a -> [Update] 
+>  commands :: [Command] -> a -> [Update]
+>  command _ _ = []
+>  commands cs a = concatMap (flip command a) cs
+
+>class (Updateable a) => Evolvable a where
+>  evolve :: UpdateWire (a, Game)
+
+\marginnote[-1em]{\anote The type \scalenote{"UpdateWire"} is an object that gives logic for providing updates given the passing of time, and is discussed further in the section on functional reactive programming (Section \ref{sec:frp}).}\vspace{-1.7em}
+>  evolve = pure []
+
+\end{haskell}
+
+After this, all the server and client logic uses only these interfaces. This means that any types providing instances for these classes could take advantage of the server-client code --- this could be a completely different game! The proper usage of classes allows for a great deal of reusability.
+
+
