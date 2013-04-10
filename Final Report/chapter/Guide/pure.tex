@@ -3,6 +3,8 @@
 
 There has already been some discussion about separating pure code and code that must interact with the outside world in Section \ref{sec:architecture}, and on reducing dependancy between components in Section \ref{sec:encapsulation}. Here we discuss more specific design patterns that can address these and similar issues, in the more general setting of separation between interface and implementation.
 
+\subsection{Classes}
+
 Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{Functor}.
 
 \vspace{-0.5em}
@@ -47,6 +49,7 @@ This pattern is used is several places in the Serenity code, most notably to pro
 \begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time.}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
 \end{listing}\vspace{-1.5em}
 
+\functions(update, updates, command, commands, evolve, pure)
 \begin{haskell}
 
 >class Updateable a where
@@ -67,7 +70,87 @@ This pattern is used is several places in the Serenity code, most notably to pro
 >  evolve = pure []
 
 \end{haskell}
+\noindent After this, all the server and client logic uses only these interfaces. This means that any types providing instances for these classes could take advantage of the server-client code --- this could be a completely different game! The proper usage of classes allows for a great deal of reusability. 
 
-After this, all the server and client logic uses only these interfaces. This means that any types providing instances for these classes could take advantage of the server-client code --- this could be a completely different game! The proper usage of classes allows for a great deal of reusability.
+\subsection{Separating Syntax and Semantics Part I: Interim Types}
+
+A very fundamental design pattern is to distinguish as much as possible between the form of a representation and its semantics. A classic example of this is the organisation of compilers into a front and back end. The front end is responsible for building a representation of the input string, usually in the form of an abstract syntax tree (AST), and the back end is responsible for converting the AST into code for the target system. This modularity confers a number of advantages, the foremost being that $n$ input languages and $m$ target architectures require only $n+m$ implementations rather than $nm$.\citepage{grune2012modern}{page PAGE NEEDED}
+
+This technique can be found throughout the Haskell runtime and in many of the popular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
+
+A motivating example will help to demonstrate the efficacy and need for this design pattern. Consider an entity within the state of a game. At various points this entity will need to be updated in various ways to react to different things. For the purposes of the running example we shall model: time passing, new orders being given from the player, and damage being inflicted. (This is clearly in the context of a strategy game similar to that made in the Serenity project).
+
+First some basic types are defined, without specific implementation details for brevity, for an entity, a command, and an amount of damage.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitytype}{Some basic types for the entity update example.}{Some basic types for the entity update example.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions()
+\begin{haskell}
+
+>data Entity = Entity {...}
+>data Order = Order {...}
+>data Damage = Damage {...}
+
+\end{haskell}
+\noindent Now the three types of update are to be implemented. Although these updates must eventually be applied ``in the real world'' by an IO routine, their behaviour can still be defined by pure functions. So an initial implementation might look like this:
+
+\vspace{-0.5em}
+\begin{listing}{list:basicentity}{A naive approach to entity semantics.}{A naive approach to entity semantics.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(updateTime, updateOrder, updateDamage)
+\begin{haskell}
+
+>updateTime :: Double -> Entity -> Entity
+>updateTime time entity = ...
+
+>updateOrder :: Order -> Entity -> Entity
+>updateOrder order entity = ... 
+
+>updateDamage :: Damage -> Entity -> Entity
+>updateDamage damage entity = ...
+
+\end{haskell}
+\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, ie "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
+
+The solution is to use an interim type to separate the two concerns. This type will stand for the concept of \emph{some kind of update that could be applied to an Entity}.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitymessage}{Entity update interim type.}{Entity update interim type.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>data EntityUpdate = 
+>  | UpdateTime Double
+>  | UpdateOrder Order
+>  | UpdateDamage Damage
+
+\end{haskell}
+\noindent This type provides a separation between the \emph{form} of, and the actual \emph{semantics} of, updating an entity. An instance of the type can be introspected (either via pattern matching or a proper provided interface --- the latter isn't detailed here to keep it simple), and other code is free to interpret the type in any way without making changes to it.
+
+A semantics can of course be provided alongside this type as a simple function without removing the benefits gained by the separation. Listing \ref{list:entitydefaultsemantics} illustrates such a function. An implementation can now introspect and store updates, call this function, and add any additional behaviour required.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitydefaultsemantics}{Providing a default semantics.}{Providing a default semantics.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>update :: EntityUpdate -> Entity -> Entity
+>update (UpdateTime t) = ...
+>update (UpdateOrder o) = ...
+>update (UpdateDamage d) = ...
+
+\end{haskell}
+\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantages, especially when it is not obvious how to limit the use of impure code. The "Picture" type from the Glass graphics library is an excellent example of this. Instead of insisting that the caller uses IO drawing routines directly, the "Picture" type forms a pure interface to describe what \emph{should} be drawn.
+
+\subsection{Modelling Effects with Monads}
+
+\subsection{Separating Syntax and Semantics Part II: Free Monads}
+
+\subsection{Summary of this section} Classes are an excellent tool for providing separation between interface and implementation, and for code reuse.
 
 
