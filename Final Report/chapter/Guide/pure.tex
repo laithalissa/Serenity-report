@@ -145,9 +145,86 @@ A semantics can of course be provided alongside this type as a simple function w
 >update (UpdateDamage d) = ...
 
 \end{haskell}
-\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantages, especially when it is not obvious how to limit the use of impure code. The "Picture" type from the Glass graphics library is an excellent example of this. Instead of insisting that the caller uses IO drawing routines directly, the "Picture" type forms a pure interface to describe what \emph{should} be drawn.
+\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantages, especially when it is not obvious how to limit the use of impure code. For example, this implementation could be extended by adding an IO routine to be called on each update, without needing to change the existing pure functions. 
+The "Picture" type from the Gloss graphics library is an excellent example of this pattern in a real application. Instead of insisting that the caller uses IO drawing routines directly, the "Picture" type forms a pure interface to describe what \emph{should} be drawn.
 
-\subsection{Modelling Effects with Monads}
+\subsection{Modelling Effects with Monads and Monad Transformers}
+
+In the discussion thus far the state of the game or program has not been considered in detail. At first sight one might assume that impure code must be responsible, at least at some level, for the update of this state, but this is not actually the case. It is possible to pass state entirely functionally, as the following small example of a stack machine demonstrates:
+
+\vspace{-0.5em}
+\begin{listing}{list:basicstack}{Modelling a simple stack machine using pure code only.}{Modelling a simple stack machine using pure code only.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(eval, run)
+\begin{haskell}
+
+>data Operation a = Push a |Pop |Sum |Diff |Mult |Dup
+
+>data State a = State {stack :: [a]}
+
+>eval :: Num a => Operation a -> State a -> State a
+>eval (Push a) (State s) = State (a:s)
+>eval Pop  (State s) = State (tail s)
+>eval Sum  (State (a:b:s)) = State (a+b:s)
+>eval Diff (State (a:b:s)) = State (a-b:s)
+>eval Mult (State (a:b:s)) = State (a*b:s)
+>eval Dup  (State (a:s)) = State (a:a:s)
+
+>run :: Num a => [Operation a] -> State a -> State a
+>run = flip $ foldl $ flip eval
+
+\end{haskell}
+\noindent But this approach has a number of weaknesses. Firstly there is having to deal manually with passing state, both in the type signatures and in the implementations, and there is the difficulty of extending the implementation to deal with errors or other concerns.
+
+An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad}, and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix[-5em]{hoareetal2001tackling}
+
+Monads are covered in some detail in Appendix \ref{app:monads}, and so some familiarity will be assumed here. Listing \ref{list:effectmonad} shows the "Monad" typeclass:
+
+\vspace{-0.5em}
+\begin{listing}{list:effectmonad}{The \emph{Monad} typeclass.}{The \scalenote{"Monad"} typcless.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>class Monad m where
+>  return :: a -> m a
+>  (>>=) :: m a -> (a -> m b) -> m b
+
+\end{haskell}
+\noindent A monad "m" can be thought of as a computational environment, where objects or routines can be combined using ">>=" (pronounced `bind') and "return" provides a way `into' the context. Notably here, the implementation of ">>=" can thread a state through a sequence of computations, and cause this state to be updated in any number of ways at each stage, reacting to errors etc. For this reason a monadic value "m a" is sometimes referred to as a monadic \emph{action}.
+
+\functions(get, set, modify, runState, execState, evalState)
+The standard Haskell distribution comes with a number of monads built in, including the "State" monad, which provides an environment that keeps track of a generic state. In built functions "get", "set", and "modify" are provided to put values into the state, get them out, and call a function over the contents of the state respectively. Listing \ref{list:statestack} shows the state machine example re-written to use the "State" monad:
+
+\vspace{-0.5em}
+\begin{listing}{list:statestack}{Modelling a simple stack machine using pure code only, this time using the \emph{State} monad.}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>type StackMachine a = State [a]
+
+>eval' :: Num a => Operation a -> StackMachine a ()
+>eval' (Push a) = modify $ \s -> a:s
+>eval' Pop  = modify $ \s -> tail s
+>eval' Sum  = modify $ \(a:b:s) -> a+b:s
+>eval' Diff = modify $ \(a:b:s) -> a-b:s
+>eval' Mult = modify $ \(a:b:s) -> a*b:s
+>eval' Dup  = modify $ \(a:s) -> a:a:s
+
+>run' :: Num a => [Operation a] -> StackMachine a ()
+>run' = foldM (\_ -> eval') ()
+
+\end{haskell}
+\noindent The function "execState" can be used to find the value of the state after a computation, so the expression
+
+\begin{haskell}
+
+>execState (run' [Push 10, Push 5, Mult]) []
+
+\end{haskell}
+\noindent will yield "[50]".
 
 \subsection{Separating Syntax and Semantics Part II: Free Monads}
 
