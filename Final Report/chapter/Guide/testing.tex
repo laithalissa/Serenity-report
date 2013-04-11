@@ -110,13 +110,11 @@ proposed by Kent Beck has five steps:\cite{beck2003}
 	the new feature and think about some design aspects before rushing into coding,
 	such as the API of a new function.
 
+\functions(newFunction)
 \item Run all tests to watch the new test fail. Since the implementation has not been written
 	yet the new test must fail, but running the test suite now has two benefits. Firstly
 	it checks that the new test is not worthless by always passing. Secondly it ensures
-	that the test suite is run frequently causing the code to be exercised often.
-
-\functions(newFunction)
-\marginnote{\anote Note that the code might not even compile now since the new function under test is not defined. To remedy this the developer can do the least that is required to get the system compiling again, e.g.\ "newFunction = undefined"}
+	that the test suite is run frequently causing the code to be exercised often.\sidenote{Note that the code might not even compile now since the new function under test is not defined. To remedy this the developer can do the least that is required to get the system compiling again, e.g.\scalenote{"newFunction = undefined"}}
 
 \item Write the minimal amount of code required to make the new test pass. This code is not
 	supposed to be perfect, but the simplest implementation to pass the test.
