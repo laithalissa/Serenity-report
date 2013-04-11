@@ -5,7 +5,7 @@ There has already been some discussion about separating pure code and code that 
 
 \subsection{Classes}
 
-Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{Functor}.
+Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{functor}.
 
 \vspace{-0.5em}
 \begin{listing}{list:functor}{The \emph{Functor} typeclass.}{The \scalenote{"Functor"} typeclass.}{}
@@ -39,7 +39,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 >fmap2 g1 g2 (x,y) = (fmap g1 x, fmap g2 y)
 
 \end{haskell}
-\noindent This function can now be used whenever Functor instances are available on both types in a pair.
+\noindent This function can now be used whenever "Functor" instances are available on both types in a pair.
 
 Designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
 
@@ -194,24 +194,38 @@ Monads are covered in some detail in Appendix \ref{app:monads}, and so some fami
 \end{haskell}
 \noindent A monad "m" can be thought of as a computational environment, where objects or routines can be combined using ">>=" (pronounced `bind') and "return" provides a way `into' the context. Notably here, the implementation of ">>=" can thread a state through a sequence of computations, and cause this state to be updated in any number of ways at each stage, reacting to errors etc. For this reason a monadic value "m a" is sometimes referred to as a monadic \emph{action}.
 
-\functions(get, set, modify, runState, execState, evalState)
-The standard Haskell distribution comes with a number of monads built in, including the "State" monad, which provides an environment that keeps track of a generic state. In built functions "get", "set", and "modify" are provided to put values into the state, get them out, and call a function over the contents of the state respectively. Listing \ref{list:statestack} shows the state machine example re-written to use the "State" monad:
+\functions(get, put, modify, runState, execState, evalState)
+The standard Haskell distribution comes with a number of monads built in, including the "State" monad, which provides an environment that keeps track of a generic state. Inbuilt functions "get", "put", and "modify" are provided to put values into the state, get them out, and call a function over the contents of the state respectively. Listing \ref{list:statestack} shows the state machine example re-written to use the "State" monad.
 
 \vspace{-0.5em}
 \begin{listing}{list:statestack}{Modelling a simple stack machine using pure code only, this time using the \emph{State} monad.}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
 \end{listing}\vspace{-1.5em}
 
+\functions(pop, push)
 \begin{haskell}
+
+>import Control.Monad.State
 
 >type StackMachine a = State [a]
 
+>pop :: StackMachine a a
+>pop = do
+>  (x:xs) <- get
+>  put xs
+>  return x
+
+>push :: a -> StackMachine a ()
+>push x = do
+>  stack <- get
+>  put (x:stack)
+
 >eval' :: Num a => Operation a -> StackMachine a ()
->eval' (Push a) = modify $ \s -> a:s
->eval' Pop  = modify $ \s -> tail s
->eval' Sum  = modify $ \(a:b:s) -> a+b:s
->eval' Diff = modify $ \(a:b:s) -> a-b:s
->eval' Mult = modify $ \(a:b:s) -> a*b:s
->eval' Dup  = modify $ \(a:s) -> a:a:s
+>eval' (Push a) = push a
+>eval' Pop  = do pop; return ()
+>eval' Sum  = do a <- pop; b <- pop; push (a+b)
+>eval' Diff = do a <- pop; b <- pop; push (a-b)
+>eval' Mult = do a <- pop; b <- pop; push (a*b)
+>eval' Dup  = do a <- pop; push a; push a
 
 >run' :: Num a => [Operation a] -> StackMachine a ()
 >run' = foldM (\_ -> eval') ()
@@ -226,7 +240,52 @@ The standard Haskell distribution comes with a number of monads built in, includ
 \end{haskell}
 \noindent will yield "[50]".
 
+Note that no state is passed manually, and the implementation of "eval'" is dependant only on the interface to the monad "StackMachine a". From now on, extra functionality can be added by changing the implementation of the monad, without effecting the implementation of "eval'". 
+
+To further illustrate this point, consider the following. Currently this implementation will crash if operations are made when the stack does not have the required number of elements:
+
+\begin{verbatim}
+> execState (run' [Push 10, Mult]) []
+*** Exception: Pattern match failure in do expression
+\end{verbatim}
+
+\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. (For more details on monad transformers, see Appendix~\ref{app:monads}.) All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "pop", as shown in Listing~\ref{list:statestackerror} below.
+
+\vspace{-0.5em}
+\begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer.}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(lift)
+\begin{haskell}
+
+>type StackMachine a = StateT [a] Maybe
+
+>import Control.Monad.State
+
+>pop :: StackMachine a a
+>pop = do
+>  stack <- get
+>  case stack of
+>    (x:xs) -> do put xs; return x
+>    _ -> lift Nothing
+
+\end{haskell}
+\noindent Without any further changes, the following results are obtained:
+
+\begin{verbatim}
+> execStateT (run'' [Push 10, Push 5, Mult]) []
+Just [50]
+> execStateT (run'' [Push 10, Mult]) []
+Nothing
+\end{verbatim}
+
+\noindent Extending this to include error reporting or different modes of failure is left as an exercise.
+
+It should be apparent that modelling effects using monads provides a good number of advantages, from separation of concerns to elegance of code. Writing new monads can be tricky, but the desired effects can usually be easily achieved by combining existing monad transformers. It is these advantages that make the monad such a widely used design pattern in Haskell code.
+
 \subsection{Separating Syntax and Semantics Part II: Free Monads}
+
+It can be seen in the running example that --- at runtime --- the interface is still tied to to a particular implementation in one place in the code, in the signature of the "eval'" function. 
 
 \subsection{Summary of this section} Classes are an excellent tool for providing separation between interface and implementation, and for code reuse.
 
