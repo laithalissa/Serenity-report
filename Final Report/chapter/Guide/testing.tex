@@ -17,15 +17,14 @@ and to compare the actual result with the expected result.
 \functions(testEmpty, testTwo, tests, assertEqual, len)
 \functions(runTestTT)
 \begin{haskell}
-> import Test.HUnit
+>import Test.HUnit
 >
-> testEmpty = TestCase $ assertEqual "Empty list is zero" (len []) 0
-> testTwo = TestCase $ assertEqual "List length two" (len [0, 1]) 2
-> tests = TestList [testEmpty, testTwo]
+>testEmpty = TestCase $ assertEqual "Empty list is zero" (len []) 0
+>testTwo = TestCase $ assertEqual "List length two" (len [0, 1]) 2
+>tests = TestList [testEmpty, testTwo]
 
 \end{haskell}
-
-An example of a small set of tests is shown in listing~\ref{list:hunit}. This example shows
+\noindent An example of a small set of tests is shown in Listing~\ref{list:hunit}. This example shows
 two simple tests for a function, "len", that returns the length of a given list.
 A test, or list of tests, can be run with the use of the "runTestTT" function:
 
@@ -50,17 +49,16 @@ are used to verify the code with thousands of test cases which would be infeasib
 \functions(prop_NonNegativity, prop_Multiplicativeness, prop_Subadditivity, prop_Idempotence, prop_Symmetry, absolute)
 \functions(quickCheck, quickCheckWith, maxSuccess, verboseCheck)
 \begin{haskell}
-> import Test.QuickCheck
+>import Test.QuickCheck
 >
-> prop_NonNegativity x = absolute x >= 0
-> prop_Multiplicativeness x y = absolute (x * y) == (absolute x) * (absolute y)
-> prop_Subadditivity x y = absolute (x + y) <= (absolute x) + (absolute y)
-> prop_Idempotence x = absolute (absolute x) == absolute x
-> prop_Symmetry x = absolute (-x) == absolute x
+>prop_NonNegativity x = absolute x >= 0
+>prop_Multiplicativeness x y = absolute (x * y) == (absolute x) * (absolute y)
+>prop_Subadditivity x y = absolute (x + y) <= (absolute x) + (absolute y)
+>prop_Idempotence x = absolute (absolute x) == absolute x
+>prop_Symmetry x = absolute (-x) == absolute x
 
 \end{haskell}
-
-Listing~\ref{list:quickcheck} shows an example use case of QuickCheck to define five properties
+\noindent Listing~\ref{list:quickcheck} shows an example use case of QuickCheck to define five properties
 of a function, "absolute", that returns the absolute value of a given number. The tests can then
 be run by invoking the "quickCheck" function on one of the properties, for example:
 
@@ -139,7 +137,7 @@ possible code paths and to ensure that previous bugs are not reintroduced by fut
 changes.
 
 This is an approach to development advocated by the Serenity project team, and a core
-development technique that was attempted during the project,\sidenote{See section~\ref{section:devmodel}}
+development technique that was attempted during the project,\sidenote{See Section~\ref{section:devmodel}}
 for a number of reasons. Firstly, following TDD ensures that a project has a large
 test suite with a good coverage of the code base because functions should not be
 implemented without a test being written first. This is highly beneficial because
