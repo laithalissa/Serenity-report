@@ -1,6 +1,158 @@
 \section{Effective Unit Testing with Quickcheck and HUnit}
 \label{section:testing}
 
-% How we used the different test frameworks
+% Find problems early
+% Facilitates change
 
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
+% \subsection{HUnit}
+
+The HUnit library is the Haskell implementation of the standard xUnit unit testing framework. The
+basic idea of the HUnit library is to provide the functions under test with some example data
+and to compare the actual result with the expected result.
+
+\vspace{-0.5em}
+\begin{listing}{list:hunit}{Example usage of HUnit}{Example usage of HUnit. Testing a function that returns the length of a list.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(testEmpty, testTwo, tests, assertEqual, len)
+\functions(runTestTT)
+\begin{haskell}
+> import Test.HUnit
+>
+> testEmpty = TestCase $ assertEqual "Empty list is zero" (len []) 0
+> testTwo = TestCase $ assertEqual "List length two" (len [0, 1]) 2
+> tests = TestList [testEmpty, testTwo]
+
+\end{haskell}
+
+An example of a small set of tests is shown in listing~\ref{list:hunit}. This example shows
+two simple tests for a function, "len", that returns the length of a given list.
+A test, or list of tests, can be run with the use of the "runTestTT" function:
+
+\begin{verbatim}
+ghci> runTestTT tests
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+\end{verbatim}
+
+% \subsection{QuickCheck}
+
+Property based testing is a higher level approach to testing in which the programmer devlops a specification
+for the code to be testing. QuickCheck is a type-based property testing library that generates test
+cases automatically from the developer defined expected properties.\cite{claessen2000} These properties
+need to be true for all inputs to the function (i.e.\ invariants). This is an extremely
+powerful approach to testing that allows the developer to write short testable specifications that
+are used to verify the code with thousands of test cases which would be infeasible to write by hand.
+
+\vspace{-0.5em}
+\begin{listing}{list:quickcheck}{Example usage of QuickCheck}{Example usage of QuickCheck. Properties of a function that returns the absolute value of a number.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(prop_NonNegativity, prop_Multiplicativeness, prop_Subadditivity, prop_Idempotence, prop_Symmetry, absolute)
+\functions(quickCheck, quickCheckWith, maxSuccess, verboseCheck)
+\begin{haskell}
+> import Test.QuickCheck
+>
+> prop_NonNegativity x = absolute x >= 0
+> prop_Multiplicativeness x y = absolute (x * y) == (absolute x) * (absolute y)
+> prop_Subadditivity x y = absolute (x + y) <= (absolute x) + (absolute y)
+> prop_Idempotence x = absolute (absolute x) == absolute x
+> prop_Symmetry x = absolute (-x) == absolute x
+
+\end{haskell}
+
+Listing~\ref{list:quickcheck} shows an example use case of QuickCheck to define five properties
+of a function, "absolute", that returns the absolute value of a given number. The tests can then
+be run by invoking the "quickCheck" function on one of the properties, for example:
+
+\begin{verbatim}
+ghci> quickCheck (prop_NonNegativity :: Integer -> Bool)
++++ OK, passed 100 tests.
+\end{verbatim}
+
+\noindent
+This means that for one hundred randomly generated test cases the property held. It is
+possible to get QuickCheck to run a different number of tests by using the "quickCheckWith"
+function and specifying a different number for the "maxSuccess" argument. The actual
+test cases that were generated can be viewed by using "verboseCheck" instead of "quickCheck"
+--- be warned that, as the name implies, this is very noisy!
+
+Testing is another area where the separation of pure and impure code becomes very useful.
+By using the techniques laid out in the previous sections it is possible to have the majority
+of game logic in pure functional code. This is of great benefit when it comes to testing
+because, as Claessen and Hughes state, ``functional programs are well suited to automatic
+testing''.\cite{claessen2000} Referentially transparent functions are much easier to test
+than those that produce side-effects because program state before and after execution
+is a nonissue.
+
+During the development of the Serenity project an effective testing method combining the
+use of QuickCheck and HUnit was found. QuickCheck was used to generate large numbers of
+test cases for individual pure functions, and HUnit for impure functions, such as network
+code, and units of code comprised of several functions used together. This approach allows
+using the powerful property based testing where applicable in conjunction with more specific
+HUnit test cases to maximise test coverage and confidence that the expected results are
+being produced.
+
+% Example from Serenity
+
+\subsection{Organising an automated test suite}
+
+% test-framework
+% Using cabal test
+% Jenkins
+
+\subsection{Test driven development}
+
+Test driven development (TDD) is a practice in software development that promotes testing
+by writing tests before implementing the functionality that it tests. The TDD cycle
+proposed by Kent Beck has five steps:\cite{beck2003}
+
+\begin{enumerate}
+\item Add a test that defines the new functionality. By writing the test before starting on
+	the implementation the developer is forced to clearly understand the requirements of
+	the new feature and think about some design aspects before rushing into coding,
+	such as the API of a new function.
+
+\item Run all tests to watch the new test fail. Since the implementation has not been written
+	yet the new test must fail, but running the test suite now has two benefits. Firstly
+	it checks that the new test is not worthless by always passing. Secondly it ensures
+	that the test suite is run frequently causing the code to be exercised often.
+
+\functions(newFunction)
+\marginnote{\anote Note that the code might not even compile now since the new function under test is not defined. To remedy this the developer can do the least that is required to get the system compiling again, e.g.\ "newFunction = undefined"}
+
+\item Write the minimal amount of code required to make the new test pass. This code is not
+	supposed to be perfect, but the simplest implementation to pass the test.
+
+\item Run the tests to watch the new test succeed; the naive implementation passes the tests.
+	This is a good baseline to start improving the code from.
+
+\item Refactor the new code. The implementation can now be improved to make sure that it is
+	of production quality. The test suite can be used to prove that the refactor is not
+	changing the functionality of the code.
+\end{enumerate}
+
+This cycle can then be repeated with a new test for a new piece of functionality.
+TDD also has good support for regression testing. If a bug is discovered then the developer
+tasked with fixing it would write a test to reproduce the bug before fixing the current
+implementation. In this way the set of test cases is broadened to cover even more
+possible code paths and to ensure that previous bugs are not reintroduced by future
+changes.
+
+This is an approach to development advocated by the Serenity project team, and a core
+development technique that was attempted during the project,\sidenote{See section~\ref{section:devmodel}}
+for a number of reasons. Firstly, following TDD ensures that a project has a large
+test suite with a good coverage of the code base because functions should not be
+implemented without a test being written first. This is highly beneficial because
+it shows that the software is reliable and it gives developers confidence that their
+changes are not damaging the functionality of existing code. The 2005 study by
+Erdogmus et al.\ supports this as they found that when adhering to the test-first
+nature of TDD ``programmers write more tests per unit of programming effort'' and
+that, in turn, more tests lead to an increase in productivity.\cite{erdogmus2005}
+A second benefit for TDD is suggested by Sommerville who states that TDD ``helps
+programmers clarify their ideas of what a code segment is actually supposed to
+do''.\citepage{sommerville2011}{page 222} This is because constructing the test for
+a new piece of functionality involves thinking about its requirements and design.
+
+% Especially effective with CI
+
+% \subsection{Behaviour driven development with hspec} Maybe?
