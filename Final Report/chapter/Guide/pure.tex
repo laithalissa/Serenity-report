@@ -177,7 +177,7 @@ In the discussion thus far the state of the game or program has not been conside
 \end{haskell}
 \noindent But this approach has a number of weaknesses. Firstly there is having to deal manually with passing state, both in the type signatures and in the implementations, and there is the difficulty of extending the implementation to deal with errors or other concerns.
 
-An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad}, and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix[-5em]{hoareetal2001tackling}
+An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad},\citefix[-5em]{wadler1992essence} and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix{peyton2001tackling}
 
 Monads are covered in some detail in Appendix \ref{app:monads}, and so some familiarity will be assumed here. Listing \ref{list:effectmonad} shows the "Monad" typeclass:
 
@@ -273,9 +273,9 @@ To further illustrate this point, consider the following. Currently this impleme
 \noindent Without any further changes, the following results are obtained:
 
 \begin{verbatim}
-> execStateT (run'' [Push 10, Push 5, Mult]) []
+> execStateT (run' [Push 10, Push 5, Mult]) []
 Just [50]
-> execStateT (run'' [Push 10, Mult]) []
+> execStateT (run' [Push 10, Mult]) []
 Nothing
 \end{verbatim}
 
