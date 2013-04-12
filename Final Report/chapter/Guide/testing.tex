@@ -97,6 +97,112 @@ being produced.
 % test-framework
 % Using cabal test
 % Jenkins
+% Testing internal functions
+
+When creating a test suite for your software project it is useful to organise it in such
+a way as to allow quick automated testing, i.e.\ being able to run the entire test suite
+with a single command. The easiest way to do this in a Haskell project is to use the
+\texttt{test-framework} library. This library enables the user to group lists of tests
+into cohesive units and then run a list of tests and test groups with a single function
+call.
+
+\vspace{-0.5em}
+\begin{listing}{list:testframework}{Running tests with test-framework}{Running tests with test-framework}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(main, defaultMain, allTests)
+\begin{haskell}
+>import Test.Framework
+>
+>main = defaultMain allTests
+>
+>allTests =
+> [ Packet.tests
+> , Transport.tests
+> , Message.tests
+> -- ...
+> , MathUtil.tests
+> ]
+
+\end{haskell}
+\noindent Listing~\ref{list:testframework} is an extract from the main entry point to
+the Serenity test suite. It creates a list of tests from the test groups exported by
+individual test modules. These tests are run by the "defaultMain" function provided by
+"Test.Framework".
+
+Grouping HUnit and QuickCheck tests with \texttt{test-framework} requires the use of
+two further libraries, \texttt{test-framework-hunit} and \texttt{test-framework-quickcheck2}.
+These two libraries provide functions to convert HUnit assertions and QuickCheck properties
+into the "Test" type used by \texttt{test-framework}. A brief example of their use
+in Serenity to build a group of tests to export is shown in Listing~\ref{list:testgroup}.
+
+\vspace{-0.5em}
+\begin{listing}{list:testgroup}{Grouping tests with test-framework}{Grouping tests with test-framework}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(testGroup, testCase, testProperty, testReadNTChan, testReadTChanUntilEmpty, prop_EmptyTChan)
+\begin{haskell}
+>import Test.Framework (testGroup)
+>import Test.Framework.HUnit (testCase)
+>import Test.Framework.QuickCheck2 (testProperty)
+>
+>tests = testGroup "Network utility tests"
+> [ testCase "Test readNTChan" testReadNTChan
+> , testCase "Test readTChanUntilEmpty" testReadTChanUntilEmpty
+> , testProperty "Empty TChan" prop_EmptyTChan
+> ]
+
+\end{haskell}
+\noindent
+A test suite organised with the \texttt{test-framework} module can be easily integrated into the
+Cabal build system.\sidenote{See \url{http://www.haskell.org/cabal/users-guide/developing-packages.html\#test-suites}}
+For example, here is the additional configuration added to the \texttt{Serenity.cabal}
+file to enable a Cabal backed test suite:
+
+\begin{verbatim}
+Test-Suite test-serenity
+  type: exitcode-stdio-1.0
+  hs-source-dirs: tests, src
+  main-is: Main.hs
+  build-depends:
+    -- ... list of dependencies
+\end{verbatim}
+
+\noindent
+The cabal-install program will look in \texttt{Main.hs} to find the "main" function
+which runs the entire suite of tests.
+With this test suite definition in place only a few commands a required to
+configure the project with the tests enabled, build it, and run the entire suite:
+
+\begin{verbatim}
+$ cabal configure --enable-tests
+$ cabal build
+$ cabal test
+\end{verbatim}
+
+This set up allows easy use of a build server to run the test suite whenever a change
+is pushed to a master version control repository. For the Serenity project an instance
+of the Jenkins continuous integration server was set up for this purpose.\sidenote{See Section~\ref{sec:tools}}
+Jenkins allows the user to specify a shell script to execute when building the project.
+During the development of Serenity the following script was used to automatically run
+the test suite:
+
+\begin{verbatim}
+set -e
+cd '$WORKSPACE/Serenity/'
+cabal update
+cabal install --only-dependencies --avoid-reinstalls --enable-tests
+cabal clean
+cabal configure --enable-tests
+cabal build
+cabal test
+\end{verbatim}
+
+\noindent
+Using this script the build server installs any new dependencies and then runs the
+entire test suite. Using a build server to run the test suite on every change is a
+good method of running the tests regularly to help find any errors early in the
+development cycle.
 
 \subsection{Test driven development}
 
