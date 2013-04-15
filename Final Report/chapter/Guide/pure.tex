@@ -269,6 +269,8 @@ To further illustrate this point, consider the following. Currently this impleme
 >    (x:xs) -> do put xs; return x
 >    _ -> lift Nothing
 
+\marginnote[-1.5em]{\anote The \scalenote{"lift"} function is used to access the inner monad, here causing the computation to fail by passing \scalenote{"Nothing"} into the \scalenote{"Maybe"} monad.}
+
 \end{haskell}
 \noindent Without any further changes, the following results are obtained:
 
@@ -279,7 +281,7 @@ Just [50]
 Nothing
 \end{verbatim}
 
-\noindent Extending this to include error reporting or different modes of failure is left as an exercise.
+\noindent Extending this to include error reporting or different modes of failure is achievable just as easily.
 
 It should be apparent that modelling effects using monads provides a good number of advantages, from separation of concerns to elegance of code. Writing new monads can be tricky, but the desired effects can usually be easily achieved by combining existing monad transformers. It is these advantages that make the monad such a widely used design pattern in Haskell code.
 
