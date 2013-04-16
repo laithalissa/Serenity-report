@@ -1,0 +1,86 @@
+\section{Risk Management}
+\label{sec:risk}
+ 
+A proactive approach to risk management was taken. This technique was chosen in order
+to maximise the probability of avoiding risks instead of having to move into `fire-fighting mode'
+if something went wrong.\citepage{pressman2010}{page 745}
+ 
+As part of this proactive risk management strategy, a number of potential risks were identified.
+These risks are shown in table~\ref{tab:risks} along with their estimated probabilities of occurring
+and impact if they were to occur.
+ 
+\begin{table*}
+	\small
+	\begin{tabular}{l p{\textwidth / 2} l l}
+		\toprule
+		\emph{Risk} & \emph{Description} & \emph{Probability} & \emph{Impact} \\
+		\midrule
+		Length underestimate & The time required to develop the software is underestimated & Medium & High \\
+		Team member illness & One or more team members unable to work due to illness & Medium & High \\
+		Hardware failure & Damage to critical hardware causing loss of data & Medium & Medium \\
+		Size underestimate & The size of the deliverable has been underestimated & Medium & Medium \\
+		Requirements change & Large number of changes to requirements during development & Low & Medium \\
+		Ambiguous requirements & Requirements are not fully understood or misinterpreted leading to
+			loss of development time as the specification is recreated & Low & Medium \\
+		\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption{Risk identification and analysis.}
+	\label{tab:risks}
+\end{table*}
+ 
+With the risks identified, and their likelihood and consequences estimated it is necessary
+to draw up plans to mitigate their effects. There are three types of management strategies 
+for individual risks: avoidance strategies to reduce the probability of the risk occurring;
+minimisation strategies to reduce the impact of the risk; and contingency plans to deal with
+the risk if it does arise.\citepage{sommerville2011}{page 601} It is best to avoid the risk,
+but if this is not possible then minimisation of the effects and, finally, contingency plans
+should reduce the overall impact of a risk on the project. The mitigation and management
+strategies for each risk previously identified are listed in table~\ref{tab:rmm}.
+ 
+\begin{table*}
+	\small
+	\begin{tabular}{l p{37em}}
+		\toprule
+		\emph{Risk} & \emph{Mitigation / Management} \\
+		\midrule
+		Length underestimate & Detailed work breakdown with weekly releases to ensure that
+			schedule slippage can be caught early \\
+		Team member illness & Well documented code (enforced by the software librarian) so
+			that other members can quickly start work on less familiar sections of
+			the codebase \\
+		Hardware failure & Backups and distributed source control, see section~\ref{sec:tools} \\
+		Size underestimate & Detailed work breakdown structure \\
+		Requirements change & Thorough change management system, see section~\ref{sec:control} \\
+		Ambiguous requirements & Thorough planning phase \\
+		\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption{Risk mitigation and management.}
+	\label{tab:rmm}
+\end{table*}
+ 
+The final stage of the risk management process is monitoring. Throughout the duration of
+the project each identified risk was reassessed for changes to its probability and
+impact. This allowed the mitigation and management strategies to be revisited to ensure that
+they were as effective as possible.
+ 
+The two previously identified risks that actually occurred were team member illness and length underestimate.
+On a couple of occasions a team member was ill and unable to attend group work sessions or work to their full
+capacity. Fortunately, the team was able to reduce the impact of this by ensuring that the work each individual
+was performing was not hindered by an absence. This was done by allocating work tasks to be as separate as
+possible to allow more parallel development to occur. Also, an illness was never so severe as to stop a team
+member from working for longer than a day or two. However, the issue of length underestimation was more serious.
+ 
+% Length underestimation
+%
+% 1. More time required for network and GUI than hoped
+% 2. (1) slowed the development of the ideal game
+% 3. (1) was very informative for our goal of investigation of Haskell for game development
+ 
+The proactive approach to risk management was a good choice. By reviewing the potential
+risks before starting the development phase of the project it was much easier to avoid risks that could
+have had disastrous consequences for the project. For example, by implementing a thorough backup strategy
+prior to any data loss actually taking place it was ensured that no work would have been lost if a hardware
+failure had occurred. Continuously monitoring and reassessing these risks was also helpful in preventing
+any risks becoming more probable or having a greater impact.

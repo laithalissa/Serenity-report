@@ -1,0 +1,294 @@
+\section[On the Separation of Interface from Implementation and Cause from Effect]{On the Separation of Interface from Implementation and Cause from Effect}
+\label{sec:pure}
+
+There has already been some discussion about separating pure code and code that must interact with the outside world in Section \ref{sec:architecture}, and on reducing dependancy between components in Section \ref{sec:encapsulation}. Here we discuss more specific design patterns that can address these and similar issues, in the more general setting of separation between interface and implementation.
+
+\subsection{Classes}
+
+Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{functor}.
+
+\vspace{-0.5em}
+\begin{listing}{list:functor}{The \emph{Functor} typeclass.}{The \scalenote{"Functor"} typeclass.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>class Functor f where
+>  fmap :: (a -> b) -> f a -> f b
+
+\end{haskell}
+\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (ie the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing \ref{list:listfmap}.
+
+\vspace{-0.5em}
+\begin{listing}{list:listfmap}{A \emph{Functor} instance for lists.}{A \scalenote{"Functor"} instance for lists.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>instance Functor [] where
+>  fmap = map
+
+\end{haskell}
+\noindent The advantage that this gives is that it is now possible to write functions that know nothing about the type of their inputs other than that they are an instance of some class. For example, we could define a version of "fmap" that works on a pair of different functors, like so:
+
+\vspace{-0.5em}
+\begin{listing}{list:pairfmap}{Example of writing a function using only the knowledge that the argument is a Functor.}{Example of writing a function using only the knowledge that the argument is a \scalenote{"Functor"}.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>fmap2 :: (Functor f1, Functor f2) => 
+>  (a -> b) -> (c -> d) -> (f1 a, f2 c) -> (f1 b, f2 d)
+>fmap2 g1 g2 (x,y) = (fmap g1 x, fmap g2 y)
+
+\end{haskell}
+\noindent This function can now be used whenever "Functor" instances are available on both types in a pair.
+
+Designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
+
+This pattern is used is several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
+
+\vspace{-0.5em}
+\begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time.}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(update, updates, command, commands, evolve, pure)
+\begin{haskell}
+
+>class Updateable a where
+>  update  ::  Update  -> a -> a
+>  updates :: [Update] -> a -> a
+>  updates = flip (foldr update)
+
+>class (Updateable a) => Commandable a where
+>  command  ::  Command  -> a -> [Update] 
+>  commands :: [Command] -> a -> [Update]
+>  command _ _ = []
+>  commands cs a = concatMap (flip command a) cs
+
+>class (Updateable a) => Evolvable a where
+>  evolve :: UpdateWire (a, Game)
+
+\marginnote[-1em]{\anote The type \scalenote{"UpdateWire"} is an object that gives logic for providing updates given the passing of time, and is discussed further in the section on functional reactive programming (Section \ref{sec:frp}).}\vspace{-1.7em}
+>  evolve = pure []
+
+\end{haskell}
+\noindent After this, all the server and client logic uses only these interfaces. This means that any types providing instances for these classes could take advantage of the server-client code --- this could be a completely different game! The proper usage of classes allows for a great deal of reusability. 
+
+\subsection{Separating Syntax and Semantics Part I: Interim Types}
+
+A very fundamental design pattern is to distinguish as much as possible between the form of a representation and its semantics. A classic example of this is the organisation of compilers into a front and back end. The front end is responsible for building a representation of the input string, usually in the form of an abstract syntax tree (AST), and the back end is responsible for converting the AST into code for the target system. This modularity confers a number of advantages, the foremost being that $n$ input languages and $m$ target architectures require only $n+m$ implementations rather than $nm$.\citepage{grune2012modern}{page PAGE NEEDED}
+
+This technique can be found throughout the Haskell runtime and in many of the popular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
+
+A motivating example will help to demonstrate the efficacy and need for this design pattern. Consider an entity within the state of a game. At various points this entity will need to be updated in various ways to react to different things. For the purposes of the running example we shall model: time passing, new orders being given from the player, and damage being inflicted. (This is clearly in the context of a strategy game similar to that made in the Serenity project).
+
+First some basic types are defined, without specific implementation details for brevity, for an entity, a command, and an amount of damage.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitytype}{Some basic types for the entity update example.}{Some basic types for the entity update example.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions()
+\begin{haskell}
+
+>data Entity = Entity {...}
+>data Order = Order {...}
+>data Damage = Damage {...}
+
+\end{haskell}
+\noindent Now the three types of update are to be implemented. Although these updates must eventually be applied ``in the real world'' by an IO routine, their behaviour can still be defined by pure functions. So an initial implementation might look like this:
+
+\vspace{-0.5em}
+\begin{listing}{list:basicentity}{A naive approach to entity semantics.}{A naive approach to entity semantics.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(updateTime, updateOrder, updateDamage)
+\begin{haskell}
+
+>updateTime :: Double -> Entity -> Entity
+>updateTime time entity = ...
+
+>updateOrder :: Order -> Entity -> Entity
+>updateOrder order entity = ... 
+
+>updateDamage :: Damage -> Entity -> Entity
+>updateDamage damage entity = ...
+
+\end{haskell}
+\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, ie "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
+
+The solution is to use an interim type to separate the two concerns. This type will stand for the concept of \emph{some kind of update that could be applied to an Entity}.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitymessage}{Entity update interim type.}{Entity update interim type.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>data EntityUpdate = 
+>  | UpdateTime Double
+>  | UpdateOrder Order
+>  | UpdateDamage Damage
+
+\end{haskell}
+\noindent This type provides a separation between the \emph{form} of, and the actual \emph{semantics} of, updating an entity. An instance of the type can be introspected (either via pattern matching or a proper provided interface --- the latter isn't detailed here to keep it simple), and other code is free to interpret the type in any way without making changes to it.
+
+A semantics can of course be provided alongside this type as a simple function without removing the benefits gained by the separation. Listing \ref{list:entitydefaultsemantics} illustrates such a function. An implementation can now introspect and store updates, call this function, and add any additional behaviour required.
+
+\vspace{-0.5em}
+\begin{listing}{list:entitydefaultsemantics}{Providing a default semantics.}{Providing a default semantics.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>update :: EntityUpdate -> Entity -> Entity
+>update (UpdateTime t) = ...
+>update (UpdateOrder o) = ...
+>update (UpdateDamage d) = ...
+
+\end{haskell}
+\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantages, especially when it is not obvious how to limit the use of impure code. For example, this implementation could be extended by adding an IO routine to be called on each update, without needing to change the existing pure functions. 
+The "Picture" type from the Gloss graphics library is an excellent example of this pattern in a real application. Instead of insisting that the caller uses IO drawing routines directly, the "Picture" type forms a pure interface to describe what \emph{should} be drawn.
+
+\subsection{Modelling Effects with Monads and Monad Transformers}
+
+In the discussion thus far the state of the game or program has not been considered in detail. At first sight one might assume that impure code must be responsible, at least at some level, for the update of this state, but this is not actually the case. It is possible to pass state entirely functionally, as the following small example of a stack machine demonstrates:
+
+\vspace{-0.5em}
+\begin{listing}{list:basicstack}{Modelling a simple stack machine using pure code only.}{Modelling a simple stack machine using pure code only.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(eval, run)
+\begin{haskell}
+
+>data Operation a = Push a |Pop |Sum |Diff |Mult |Dup
+
+>data State a = State {stack :: [a]}
+
+>eval :: Num a => Operation a -> State a -> State a
+>eval (Push a) (State s) = State (a:s)
+>eval Pop  (State s) = State (tail s)
+>eval Sum  (State (a:b:s)) = State (a+b:s)
+>eval Diff (State (a:b:s)) = State (a-b:s)
+>eval Mult (State (a:b:s)) = State (a*b:s)
+>eval Dup  (State (a:s)) = State (a:a:s)
+
+>run :: Num a => [Operation a] -> State a -> State a
+>run = flip $ foldl $ flip eval
+
+\end{haskell}
+\noindent But this approach has a number of weaknesses. Firstly there is having to deal manually with passing state, both in the type signatures and in the implementations, and there is the difficulty of extending the implementation to deal with errors or other concerns.
+
+An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad},\citefix[-5em]{wadler1992essence} and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix{peyton2001tackling}
+
+Monads are covered in some detail in Appendix \ref{app:monads}, and so some familiarity will be assumed here. Listing \ref{list:effectmonad} shows the "Monad" typeclass:
+
+\vspace{-0.5em}
+\begin{listing}{list:effectmonad}{The \emph{Monad} typeclass.}{The \scalenote{"Monad"} typeclass.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+
+>class Monad m where
+>  return :: a -> m a
+>  (>>=) :: m a -> (a -> m b) -> m b
+
+\end{haskell}
+\noindent A monad "m" can be thought of as a computational environment, where objects or routines can be combined using ">>=" (pronounced `bind') and "return" provides a way `into' the context. Notably here, the implementation of ">>=" can thread a state through a sequence of computations, and cause this state to be updated in any number of ways at each stage, reacting to errors etc. For this reason a monadic value "m a" is sometimes referred to as a monadic \emph{action}.
+
+\functions(get, put, modify, runState, execState, evalState)
+The standard Haskell distribution comes with a number of monads built in, including the "State" monad, which provides an environment that keeps track of a generic state. Inbuilt functions "get", "put", and "modify" are provided to put values into the state, get them out, and call a function over the contents of the state respectively. Listing \ref{list:statestack} shows the state machine example re-written to use the "State" monad.
+
+\vspace{-0.5em}
+\begin{listing}{list:statestack}{Modelling a simple stack machine using pure code only, this time using the \emph{State} monad.}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(pop, push)
+\begin{haskell}
+
+>import Control.Monad.State
+
+>type StackMachine a = State [a]
+
+>pop :: StackMachine a a
+>pop = do
+>  (x:xs) <- get
+>  put xs
+>  return x
+
+>push :: a -> StackMachine a ()
+>push x = do
+>  stack <- get
+>  put (x:stack)
+
+>eval' :: Num a => Operation a -> StackMachine a ()
+>eval' (Push a) = push a
+>eval' Pop  = do pop; return ()
+>eval' Sum  = do a <- pop; b <- pop; push (a+b)
+>eval' Diff = do a <- pop; b <- pop; push (a-b)
+>eval' Mult = do a <- pop; b <- pop; push (a*b)
+>eval' Dup  = do a <- pop; push a; push a
+
+>run' :: Num a => [Operation a] -> StackMachine a ()
+>run' = foldM (\_ -> eval') ()
+
+\end{haskell}
+\noindent The function "execState" can be used to find the value of the state after a computation, so the expression
+
+\begin{haskell}
+
+>execState (run' [Push 10, Push 5, Mult]) []
+
+\end{haskell}
+\noindent will yield "[50]".
+
+Note that no state is passed manually, and the implementation of "eval'" is dependant only on the interface to the monad "StackMachine a". From now on, extra functionality can be added by changing the implementation of the monad, without effecting the implementation of "eval'". 
+
+To further illustrate this point, consider the following. Currently this implementation will crash if operations are made when the stack does not have the required number of elements:
+
+\begin{verbatim}
+> execState (run' [Push 10, Mult]) []
+*** Exception: Pattern match failure in do expression
+\end{verbatim}
+
+\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. (For more details on monad transformers, see Appendix~\ref{app:monads}.) All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "pop", as shown in Listing~\ref{list:statestackerror} below.
+
+\vspace{-0.5em}
+\begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer.}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(lift)
+\begin{haskell}
+
+>type StackMachine a = StateT [a] Maybe
+
+>import Control.Monad.State
+
+>pop :: StackMachine a a
+>pop = do
+>  stack <- get
+>  case stack of
+>    (x:xs) -> do put xs; return x
+>    _ -> lift Nothing
+
+\marginnote[-1.5em]{\anote The \scalenote{"lift"} function is used to access the inner monad, here causing the computation to fail by passing \scalenote{"Nothing"} into the \scalenote{"Maybe"} monad.}
+
+\end{haskell}
+\noindent Without any further changes, the following results are obtained:
+
+\begin{verbatim}
+> execStateT (run' [Push 10, Push 5, Mult]) []
+Just [50]
+> execStateT (run' [Push 10, Mult]) []
+Nothing
+\end{verbatim}
+
+\noindent Extending this to include error reporting or different modes of failure is achievable just as easily.
+
+It should be apparent that modelling effects using monads provides a good number of advantages, from separation of concerns to elegance of code. Writing new monads can be tricky, but the desired effects can usually be easily achieved by combining existing monad transformers. It is these advantages that make the monad such a widely used design pattern in Haskell code.
+
+\subsection{Separating Syntax and Semantics Part II: Free Monads}
+
+It can be seen in the running example that --- at runtime --- the interface is still tied to to a particular implementation in one place in the code, in the signature of the "eval'" function. 
+
+\subsection{Summary of this section} Classes are an excellent tool for providing separation between interface and implementation, and for code reuse.
+
+

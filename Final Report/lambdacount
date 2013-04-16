@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CURRENT=`pwd`
+TEMPDIR=temp
+
+function on_exit()
+{
+    cd "$CURRENT"
+    rm -r $TEMPDIR
+}
+
+trap on_exit EXIT
+
+rsync -am --include='*.tex' -f 'hide,! */' . $TEMPDIR
+
+find $TEMPDIR -type f -name '*.tex' -exec sed -i '' s/\\$/dollar/g {} +
+cd $TEMPDIR
+texcount -inc -total document.tex

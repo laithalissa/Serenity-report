@@ -1,0 +1,70 @@
+# Linux
+*.swp
+
+# Mac OS X
+*.DS_Store
+
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# TextMate
+*.tm_build_error
+
+# Eclipse
+.classpath
+.project
+.settings
+
+# Other source repository archive directories (protects when importing)
+.hg
+.svn
+CVS
+
+# Latex files
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.tui
+*.top
+*.tmp
+*.mp
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.generated.*
+
+.texpadtmp
+
+*.pdf
+!Final\ Report/res/*.pdf
+!Specification/res/*.pdf
+
+# Java
+*.class
+
+# Haskell
+*.hi
+*.o

@@ -1,0 +1,75 @@
+
+
+\newcommand{\citefix}[2][0pt]{%
+  % Snag the last bibentry in the list for later comparison
+  \let\@temp@last@bibkey\@empty%
+  \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
+  \sidenote[][#1]{%
+    % Loop through all the bibentries, separating them with semicolons and spaces
+    \normalsize\normalfont\@tufte@citation@font%
+    \setcounter{@tufte@num@bibkeys}{0}%
+    \@for\@temp@bibkeyx:=#2\do{%
+      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
+        {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx}}%
+        {\@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx};\ }%
+      \stepcounter{@tufte@num@bibkeys}%
+    }%
+  }%
+}
+
+\newcommand{\citepage}[3][0pt]{%
+  % Snag the last bibentry in the list for later comparison
+  \let\@temp@last@bibkey\@empty%
+  \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
+  \sidenote[][#1]{%
+    % Loop through all the bibentries, separating them with semicolons and spaces
+    \normalsize\normalfont\@tufte@citation@font%
+    \setcounter{@tufte@num@bibkeys}{0}%
+    \@for\@temp@bibkeyx:=#2\do{%
+      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
+        {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx}}%
+        {\@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx};\ }%
+      \stepcounter{@tufte@num@bibkeys}%
+    }%
+	, #3
+  }%
+}
+
+
+
+\newcommand{\citelabel}[3][0pt]{%
+  % Snag the last bibentry in the list for later comparison
+  \let\@temp@last@bibkey\@empty%
+  \@for\@temp@bibkey:=#2\do{\let\@temp@last@bibkey\@temp@bibkey}%
+  \sidenote[][#1]{%
+    % Loop through all the bibentries, separating them with semicolons and spaces
+    \normalsize\normalfont\@tufte@citation@font%
+    \setcounter{@tufte@num@bibkeys}{0}%
+    \@for\@temp@bibkeyx:=#2\do{%
+      \ifthenelse{\equal{\@temp@last@bibkey}{\@temp@bibkeyx}}%
+        {\ifthenelse{\equal{\value{@tufte@num@bibkeys}}{0}}{}{and\ }%
+         \@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx}}%
+        {\@tufte@trim@spaces\@temp@bibkeyx% trim spaces around bibkey
+         \bibentry{\@temp@bibkeyx};\ }%
+      \stepcounter{@tufte@num@bibkeys}%
+    }%
+  \label{#3}
+  }%
+}
+
+\renewenvironment{fullwidth}
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+     {\ifthenelse{\boolean{@tufte@changepage}}{\begin{adjustwidth*}{}{-\@tufte@overhang}}{\begin{adjustwidth}[]{}{-\@tufte@overhang}}}%
+     {\begin{adjustwidth}{}{-\@tufte@overhang}}%
+  }%
+  {\ifthenelse{\boolean{@tufte@symmetric}}%
+    {\ifthenelse{\boolean{@tufte@changepage}}{\end{adjustwidth*}}{\end{adjustwidth}}}%
+    {\end{adjustwidth}}%
+  }

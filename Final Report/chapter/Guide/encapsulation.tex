@@ -1,0 +1,48 @@
+\section{Haskell Modules, Encapsulation, and Connascence}
+\label{sec:encapsulation}
+
+Connected with separation of code and concerns are the subjects of \emph{encapsulation} and \emph{Connascence}. Encapsulation (sometimes referred to as \emph{information hiding}) is the maintenance of a public interface that allows for implementation changes to be made without breaking another component that imports it, whereas connascence is a more general term for when modifying one piece of code must lead to modifying another in order to maintain correctness. Two pieces of code are connascent when a change in one necessitates a change in the other.\citefix{page1992comparing}
+
+Compared with Java and other similar OO languages, more effort has to be made in Haskell to have good encapsulation between modules. No formal effort was made to address encapsulation issues at the beginning of the Serenity project, and this has led to some (small) problems in a few places. In response to these, the conventions discussed below were adopted.
+
+Most of the issues with encapsulation in Haskell are due to user defined types using the "data" keyword. Exporting constructors directly is bad encapsulation, because changes to the structure of the type can lead to dependant implementations failing. For example consider the simple datatype in a module shown in Listing \ref{list:encapsulation_bad}.
+
+\vspace{-0.5em}
+\begin{listing}{list:encapsulation_bad}{An example of a badly encapsulated module interface.}{An example of a badly encapsulated module interface.}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{haskell}
+>module MyApp.Test where
+
+>data Example = Example Int Int
+
+\end{haskell}
+\noindent
+This leads to strong connascence between this module and any other importing it, because if an additional field were to be added to the "Example" type, every other module using the "Example" constructor would no longer compile. It also exposes the internals of the type and is such is bad encapsulation --- another module could come to rely on the way information is represented in the type and then break when changes to the implementation are made.
+
+The way to manage this is to use the Haskell record syntax, and to only export the field functions, and an abstract constructor (or constructors). This approach is shown in Listing \ref{list:encapsulation_good} below.
+
+\vspace{-0.5em}
+\begin{listing}{list:encapsulation_good}{A well encapsulated module interface.}{A well encapsulated module interface.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(example, exampleOne, exampleTwo)
+\begin{haskell}
+>module MyApp.Test (example, exampleOne, exampleTwo) where
+
+>data Example = Example { exampleOne :: Int, exampleTwo :: Int }
+
+>example :: Int -> Int -> Example
+>example = Example
+
+\end{haskell}
+\noindent
+Now the exported functions --- "example", "exampleOne", "exampleTwo" --- are the only available public interface to the module. If a field is added, or the internals of the type representation change, these three functions can be maintained (even if they are no longer defined through the record syntax). The implementation details of the module are now hidden and other modules importing it do not become connascent to it.
+
+There are various further improvements to this. Exporting lenses, rather than the basic deconstruction functions provided by the record syntax, is desirable.\sidenote{Lenses are the functional equivalent of setters and getters and key value coding. See Section \ref{sec:gui} below.} Also there are language extensions such as GADTs (Generalised Algebraic Datatypes) that can take this kind of method further.\sidenote[][3em]{For more information on GADTs see \url{http://en.wikibooks.org/wiki/Haskell/GADT} (accessed April 2013) or \bibentry{pottier2006stratified}.}
+
+Another desirable feature is to have a single point of entry for other modules to import a set of functionality. For this reason it is a desirable pattern to have a single module "App.X" for example, that re-exports the public interface of every module underneath it ("App.X.One", "App.X.Two" etc). Another module "App.Y" should only import "App.X" and not the inner parts of its implementation. This way module "App.X" can take care of the overall public interface, whereas modules underneath it in the hierarchy can share some implementation details if needed.
+
+As well as providing encapsulation and avoiding connascence, this pattern leads to cleanly separated interfaces and can avoid problems with circular imports. 
+
+\paragraph{Summary of this section} Some more care must be taken with encapsulation in Haskell than in OO languages like Java. However, it can be achieved by sticking to a couple of simple rules: don't export constructors directly, and keep inner module implementations cleanly separated.

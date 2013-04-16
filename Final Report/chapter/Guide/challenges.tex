@@ -1,0 +1,71 @@
+\section{The Good, the Bad, and the Ugly}
+
+% What was good, and what wasn't
+% What were the challenges
+  % Dependency Hell
+  % FP Familiarity
+  % Memory leak in Gloss - was ok but may not have been etc
+
+So far this chapter has largely considered ways in which FP is advantageous in development, and some design patterns to this end. This section considers various issues that are likely to occur in Haskell development for games but can be challenging to overcome. The severity of these issues are considered and some mitigating strategies are suggested.
+
+\subsection{Efficiency Problems}
+
+A game, a real time strategy game in particular, must run efficiently.
+However, reasoning about space and time usage in Haskell programs can be difficult due to the nature
+of lazy evaluation and its interaction with garbage collectors.\cite{cheplyaka2012} This difficulty
+can make it harder to develop an efficient game.
+
+A common efficiency problem encountered by Haskell developers is that of thunk leaks.
+A thunk leak is caused by a chain of dependent thunks stored in the heap waiting to
+be evaluated. Fortunately, once the cause of the problem has been located it can often
+be relatively simple to fix.\cite{ezyang2011} However, in other cases it may not be
+as easy to fix without more work going into redesigning and re-architecting large
+portions of code.
+
+During the early phases of the development of Serenity a memory leak was discovered in
+the Gloss graphics library. Even a very simple Gloss program to display the amount of time
+run so far would gradually consume more and more memory as it ran. Tests discovered that
+the program would acquire about twenty-five kilobytes of memory per second until it ran
+out of memory and crashed. With a much more complex program with a larger `world' to keep
+track of this behaviour would have been much worse. Thankfully, upon reporting this issue
+to the developer of Gloss he was able to quickly identify the problem as ``a typical
+laziness-induced space leak''. This example not only illustrates how
+common memory leaks can be, but also the benefit of working with open source libraries
+provided by a very helpful community.
+
+\subsection{Dependency Hell}
+
+The Haskell Common Architecture for Building Applications and Libraries (Cabal)\sidenote{\url{http://www.haskell.org/cabal/}} was used to ease
+building and packaging of the game. Using Cabal it was possible to create a package that could be
+distributed to users for them to install on their systems. Cabal allows a developer to provide a
+list of dependencies that must be installed before the package can be used. A user can then use
+the cabal-install program to install all of these dependencies automatically along with the package
+itself.
+
+Unfortunately dealing with dependencies did not work very smoothly and was a major source of
+frustration and time wasting. The first large indicator of this problem came when trying to
+update some dependencies on Mac OS X. The quickest and easiest way to start developing with Haskell on
+Mac OS X, the operating system used by three members of the team, is to install the Haskell platform\sidenote{\url{http://www.haskell.org/platform/}}.
+The Haskell platform provides a compiler and runtime, a number of useful developer tools (including
+Cabal and cabal-install), and a number of commonly used packages. However, the version of the
+Haskell platform available during the development of this project, version 2012.4, included a
+version of the Glasgow Haskell Compiler (GHC) which was incompatible with some of the newer
+versions of the packages that the project depended upon. These newer dependencies were required
+for the bug fixes and features that they contained, but it was impossible to compile and install
+these dependencies using the components of the Haskell platform at the time. In order to solve
+this issue the Haskell platform had to be removed in its entirety and replaced with the latest
+version of GHC compiled from source. Doing this also meant downloading and installing cabal-install
+from source as well. Working out the set of steps required to reliably fix the problem took
+a couple of hours. Replicating these steps on the other Macbooks took several more hours.
+
+This was not the end of all troubles with dependency management. On several occasions team
+members were forced to reinstall all dependencies. Compiling the Haskell code for almost thirty
+libraries and their dependencies is rather slow and time consuming, especially due to the size
+of some the requirements such as the Haskell bindings for the OpenGL graphics system.
+Complete reinstalls were required when cabal-install would seem to inexplicably become unable
+to install a new package due to conflicts. There appeared to be no easy solution to these
+problems other than to remove all previously installed packages and start again. It was also
+discovered that in order to install a library with profiling enabled all of its dependencies
+had to have been installed with profiling enabled as well. So, the Linux user also had to
+undergo the long and tedious reinstall cycle at the beginning of the project as the distribution
+had disabled library profiling by default.
