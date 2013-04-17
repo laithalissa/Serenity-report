@@ -169,12 +169,14 @@ which runs the entire suite of tests.
 With this test suite definition in place only a few commands a required to
 configure the project with the tests enabled, build it, and run the entire suite:
 
-\begin{verbatim}
-# cabal configure --enable-tests
-# cabal build
-# cabal test
-\end{verbatim}
+{\lstset{morekeywords={cabal}}
+\begin{lstlisting}
+$ cabal configure --enable-tests
+$ cabal build
+$ cabal test
+\end{lstlisting}}
 
+\noindent
 This set up allows easy use of a build server to run the test suite whenever a change
 is pushed to a master version control repository. For the Serenity project an instance
 of the Jenkins continuous integration server was set up for this purpose.\sidenote{See Section~\ref{sec:tools}}
@@ -182,7 +184,8 @@ Jenkins allows the user to specify a shell script to execute when building the p
 During the development of Serenity the following script was used to automatically run
 the test suite:
 
-\begin{verbatim}
+%Could have used "language=bash" here instead of manual keywords but the bash keywords 'enable' and 'test' makes this script look a little odd.
+\begin{listing}{list:test_suite}{Test suite script for Serenity.}{Test suite script for Serenity.}{morekeywords={cabal, set, cd}} 
 set -e
 cd '$WORKSPACE/Serenity/'
 cabal update
@@ -191,7 +194,7 @@ cabal clean
 cabal configure --enable-tests
 cabal build
 cabal test
-\end{verbatim}
+\end{listing}
 
 \noindent
 Using this script the build server installs any new dependencies and then runs the
