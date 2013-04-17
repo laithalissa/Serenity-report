@@ -15,7 +15,67 @@
 \input{chapter/Game/PlayTestingAndFeedback}
 \input{chapter/Game/FutureWork}
 
+\begin{comment}
 
+introduction
+------------
+Our project, irrelevent to implementation language has a very simliar foundation to all games, requiring networking between computers playing the game, graphics engine that can draw the game, assets/sprites for in game entities.
+
+The game's implementation will be designed with an infrastructure that is at the core. All game features will run on top of this infrastructure, having little dependency on other game features, but having complete dependency on the infastrcture. This architecture allows very module design with regards to game features, allowing new game features to be added to the implementation only a slight modification of the infrastructure to include the new feature. By designing the architecture like this, It faciliates a release based schedule.
+
+A high level specification is now available that specifices the elemnts of the game. To bring this high level specification to reality, the game design will be broken down into 3 major releases: Alpha, Beta 1, and Beta 2. Each release specifies the game features that must be in the game. Essentially the game design is broken down into game features, with higher priority game features being specified in earlier releases.
+Alpha Release is primarily focused on building the game's Infrastructure, this is the core of the game with all the back end logic that is never seen by the player. By the end of Alpha 1 the game infrastructure is mostly complete, and the game is in a state where game logic can now be added on like modules with little dependency 
+Beta 1 and Beta 2 are both game feature oriented, building on top of the existing infrastructure, adding features described in the specification. These releases will heavily focus on meeting the specification's specified game features.
+
+Laying The Foundation
+---------------------
+Terminology was the first step in the conversion process from specification to working game. 
+An initial ambiguity was that many of haskell libraries being looked into had a concept of 'world' which varied dramatically, which in term caused every member of the team to have a different meaning for the word. This caused many misunderstandings until an internal terminaology was devised within the team to describe common terms such as 'client state'. Once the terminology hurdle was solved, The team was able to share design ideas efficiently.
+
+By the end of alpha Stage a working 'game' was needed, somethat that could be used as a base to start adding game features.
+
+The infrastructure must provide a platform that the game features can be implemented ontop of, Hence it must contain:
+\begin{itemize}
+\item Server-Client communication
+\item Rendering capabilities for assets
+\item Game loop
+\item Model of game components
+\end{itemize}
+
+Mistakes at this stage will cost heavily later down the line, because so much will dependend on the infrastructure. 
+
+alpha stage layout
+------------------
+features wanted at this stage:
+    - networking
+    - server client loop
+    - game update model (lock-step no no no)
+    - ship move orders
+    - world rendering(easy debugging)
+    - more focus around infrastructure than features
+    
+    
+  - lack of libraries, implemeintg our own networking, GUI library.
+  - implementation of network library.
+  - server and client not distinquished just yet
+  - game loop
+  - lock-step big part
+    - arguments for and against
+  - integration of assets into game
+  - API for game how entities are added
+  - how generating diffs will work
+
+  - infrastructure components
+    - networking
+    - gameploop
+    - how the server and client synchronize
+    - graphics
+
+
+
+
+overall layout
+--------------
 game decisions
 where we got to in spec
 current state of game
@@ -42,5 +102,8 @@ layout:
 - play testing and feedback
     - LIE we did lots
 - future work(ryan's mum)
+ 
+\end{comment}
+
 
      
