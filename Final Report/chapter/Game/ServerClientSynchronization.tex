@@ -7,6 +7,39 @@ this section talks about the decision for server client architecture.
 server-client allows master copy to exist on server.
 
 - master copy of world on server
-- clients perform no logic, only apply updates to 
+- clients perform no logic, only apply updates to
+
+we need to work out how the computers talked to each other very early on
+2 considerations: peer 2 peer, client-server
+  - advantages of peer 2 peer
+  - advantages of peer server-client
+  - why server-client chosen 
+  - issues experienced with server-client
+    - jumpy ship movements
 
 \end{comment}
+
+The game was designed around being multiplayer, so our first goal was to decide how they would talk to each other.
+Since their was an arbitrary number of players (greater than 1), We needed a system that would scale, but would also be robust.
+The game was expecting all players to be on the same LAN (Local Area Network), hence a high bandwidth was available for the communications.
+
+
+% lockstep
+%   - each client has the master copy of the world
+%   - when a client does something, it tells all others
+%   - problems:
+%     - desycnhronization
+%     - currupted client fucks up everyone
+
+% simple server client
+%   - it's what we've implemented
+%   - no simulation on clients
+%   - 1 server that has master copy
+%   - server does all processing and sends updates to clients
+%   - clients just render the world and send commands to server
+
+% server client with simulation
+%   - similar to simple server client but client does 'some' simulation. They in no way can effect the world.
+%   - for instance if client knows ships destination and current location it can render the ship graciously moving instead of jumping on every update.
+
+
