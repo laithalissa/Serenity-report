@@ -41,6 +41,12 @@ Each ship will have its own cache of resources on board.
 When the ship is near one of it's planets, It will have access to resupply from the player's stockpile. The ship's resource cache will automaticaly refill when near the player's planets. 
 Larger class ships have bigger resource caches, and therefore can last longer before needing to resupply (subject to resource consuption).
 
+When a group of ships leaves the safety of its own planets, and starts entering battles, their resource supplies will eventually become empty unless they return to one of their planets. 
+If the group of ships continue to battle without resources they will eventually sustain damage to hull and will be more likely to loose the battle.
+When a battle takes place within proximately to the player's planet, that player will have the benefit of a constant resupply of resources to the ships in battle. For the other player to win that battle they would need to do so before ship's resources start to dwindle.
+This gives the defending player the advantage of endurance, being able to last a battle much longer.
+
+
 \subsection{Fuel}
 % what it's used for
 When a ship's shields are less than 100\%, Fuel is used by the ship to replenish the ship's shields.
@@ -48,23 +54,10 @@ The rate that the ship's shields are regenerated is dependent on the ship class,
 If the ship runs out of fuel, it will stop regenerating its shields.
 
 % how it effects the game
-When a group of ships leaves the safety of its own planets, and starts entering battles, their fuel supplies will eventually become empty unless they return to one of their planets. 
-If the group of ships continue to battle without shields they will sustain damage to hull and will be more likely to loose the battle.
-When a battle takes place within proximately to the player's planet, that player will have the benefit of a constant resupply of fuel to the ships in battle. For the other player to win that battle they would need to do so before they ran out of fuel.
-This gives the advantag to the defending side.
 
-
-% describe how each resource is used by the ships
-
-
-		different planets have different quantities of each resource.
-		planets are resource generators, every minute they generate a specific amount of each resource.
-		each player has a Fuel/AM/Metal value that is added to their global resource values.
-
-		every ship carries their own supply of F/AM/M which is constantly resupplied own the player's planet graph.
-		when exploring/attacking the ships will no longer be on the player's plenet graph hence they will start to eat through the ships resource capacity.
-
-		when a ship is on the player's planet graph they start to resupply draining the player's global resources.
+\subsection{Metal}
+When a ship's hull takes damage, the ship is able to repair it on the go with the use of Metal onboard.
+The ship will continue to drain it's supply of metal repairing the ship until it has full health again or its metal cache runs out.
 
 
 
