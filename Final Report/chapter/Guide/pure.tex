@@ -113,7 +113,7 @@ First some basic types are defined, without specific implementation details for 
 >updateDamage damage entity = ...
 
 \end{haskell}
-\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, ie "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
+\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, i.e. "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
 
 The solution is to use an interim type to separate the two concerns. This type will stand for the concept of \emph{some kind of update that could be applied to an Entity}.
 
@@ -293,7 +293,7 @@ The use of free monads as a design pattern was only discovered and experimented 
 
 The precise definition of a \emph{free} structure is a concept from Category Theory and out of the scope of any discussion here; but like monads, the technical details are not required to make use of the pattern as a programmer.
 
-In simple terms, then, a free monad is a monad that can be generated directly from a functor ``for free'' --- ie without any additional information being given or imposed. This is achieved by maintaining the structure of the operations (as a list or stream) without actually interpreting them. A monadic value in this free monad can then be interpreted, ie converted to a monadic value in another monad by imposing a certain semantics, at any time at a later date, and even in multiple ways at different times.
+In simple terms, then, a free monad is a monad that can be generated directly from a functor ``for free'' --- i.e. without any additional information being given or imposed. This is achieved by maintaining the structure of the operations (as a list or stream) without actually interpreting them. A monadic value in this free monad can then be interpreted, i.e. converted to a monadic value in another monad by imposing a certain semantics, at any time at a later date, and even in multiple ways at different times.
 
 Consider the stack machine example. After "run" (or "run'") has been called, the computation is complete and the components of it cannot be introspected in any way. So, while there is a compile time separation provided between the "Operation" type and the "StackMachine" monad, at runtime a "StackMachine" monadic value is essentially opaque.
 
@@ -303,7 +303,7 @@ To improve upon this situation, a free monad can be formed from the "Operation" 
 \begin{listing}{list:freeoperation}{Forming a free monad from the \emph{Operation} type.}{Forming a free monad from the \scalenote{"Operation"} type.}{}
 \end{listing}\vspace{-1.5em}
 
-\functions(liftFF, push, pop, sum, diff, mult, dup, example, interpret)
+\functions(liftFF, push, pop, sum, diff, mult, dup, example, interpret, using)
 \begin{haskell}
 >data FreeFunctor a cont = FreeFunctor a cont 
 >  deriving (Functor, Show)
@@ -321,39 +321,43 @@ To improve upon this situation, a free monad can be formed from the "Operation" 
 >dup = liftFF Dup
 
 >example :: AbstractMachine Int ()
->example = do push 9; push 5; mult; dup; mult; push 9; diff
+>example = do push 9; push 5; mult; dup; mult
 
 >interpret :: (Functor m, Monad m) => (forall x. f x -> m x) -> Free f a -> m a
 >interpret f = retract . hoistFree f
 
+>using :: Monad m => (t -> m a) -> FreeFunctor t b -> m b
+>using actionFor (FreeFunctor operation c) = do actionFor operation; return c
+
 \end{haskell}
 \noindent
-The "interpret" function can now be used to coerce a value of type "AbstractMachine a" (the free monad) into a full monadic type with a specific semantics. Three example semantics are shown in Listing~\ref{list:freesemantics}, firstly the normal operation of "StackMachine" with failure as implemented before, secondly some basic logging as a writer monad transformer, and lastly both of these simultaneously. 
+The "interpret" function can now be used to coerce a value of type "AbstractMachine a" (the free monad) into a full monadic type with a specific semantics. "using" is a shortcut to lift a function between operations and actions into the type required by "interpret".
 
-\vspace{-2em}
+Three example semantics are shown in Listing~\ref{list:freesemantics}, firstly the normal operation of "StackMachine" with failure as implemented before, secondly some basic logging as a writer monad transformer, and lastly both of these simultaneously. 
+
+\vspace{-0.5em}
 \begin{listing}{list:freesemantics}{Three example semantics for the \emph{AbstractMachine} free monad, the stack machine operation, basic logging, and both simultaneously.}{Three example semantics for the \scalenote{"AbstractMachine"} free monad, the stack machine operation, basic logging, and both simultaneously.}{}
-\end{listing}
+\end{listing}\vspace{-1.5em}
 
-\functions(asSM, asLog, asLogAndSM, tell)
+\functions(asStackMachine, asLog, asStackMachineWithLog, tell)
 \begin{haskell}
->asSM :: Num a => FreeFunctor (Operation a) c -> StackMachine a c
->asSM (FreeFunctor (Push a) c) = do pushM a; return c
->asSM (FreeFunctor Pop c)  = do popM; return (); return c
->asSM (FreeFunctor Summ c)  = do a <- popM; b <- popM; pushM (a+b); return c
->asSM (FreeFunctor Diff c) = do a <- popM; b <- popM; pushM (b-a); return c
->asSM (FreeFunctor Mult c) = do a <- popM; b <- popM; pushM (a*b); return c
->asSM (FreeFunctor Dup c)  = do a <- popM; pushM a; pushM a; return c
+>log' :: (Show a, MonadWriter [Char] m) => Operation a -> m ()
+>log' (Push a) = tell $ "Pushing " ++ show a ++ "\n"
+>log' Pop  = tell "Popping"
+>log' Summ = tell "Summing\n"
+>log' Diff = tell "Subtracting\n"
+>log' Mult = tell "Multiplying\n"
+>log' Dup  = tell "Duplicating\n"
+
+>asStackMachine :: Num a => FreeFunctor (Operation a) c -> StackMachine a c
+>asStackMachine = using eval'
 
 >asLog :: (Monad m, Show a) => FreeFunctor (Operation a) c -> WriterT String m c
->asLog (FreeFunctor (Push a) c) = do tell $ "Pushing " ++ show a ++ "\n"; return c
->asLog (FreeFunctor Pop c)  = do tell "Popping"; return c
->asLog (FreeFunctor Summ c)  = do tell "Summing\n"; return c
->asLog (FreeFunctor Diff c) = do tell "Subtracting\n"; return c
->asLog (FreeFunctor Mult c) = do tell "Multiplying\n"; return c
->asLog (FreeFunctor Dup c)  = do tell "Duplicating\n"; return c
+>asLog = using log'
 
->asLogAndSM :: (Show a, Num a) => FreeFunctor (Operation a) c -> WriterT String (StackMachine a) c
->asLogAndSM ff = do lift $ asSM ff; asLog ff
+>type StackMachineLog c = WriterT String (StackMachine a) c
+>asStackMachineWithLog :: (Show a, Num a) => FreeFunctor (Operation a) c -> StackMachineLog c
+>asStackMachineWithLog ff = do lift $ asStackMachine ff; asLog ff
 
 \end{haskell}
 \noindent
@@ -362,7 +366,7 @@ These results can now be obtained in GHCI:
 \begin{verbatim}
 > execStateT (interpret asStackMachine test) []
 \end{verbatim}\vspace{-1em}
->Just [2016]
+>Just [2025]
 
 \begin{verbatim}
 > putStr $ runIdentity $ execWriterT (interpret asLog test)
@@ -371,15 +375,19 @@ Pushing 5
 Multiplying
 Duplicating
 Multiplying
-Pushing 9
-Subtracting
 
-> runStateT (runWriterT (interpret asStackMachineWithLog test)) []
+> fmap snd $ runStateT (runWriterT (interpret asStackMachineWithLog test)) []
 \end{verbatim}\vspace{-1em}
->Just (((),"Pushing 9\nPushing 5\nMultiplying\nDuplicating\nMultiplying\nPushing 9\nSubtracting\n"),
->[2016])
+>Just [2025]
 
-It is clear that this approach is a very effective and powerful one, and can be expanded to allow for easy combination of different layers of concern, each with their own semantic interpretation, loosely coupled and swappable. There are several packages that build on this idea and make working with it easy, the most notable being \emph{operational},\sidenote[][-2em]{Heinrich Apfelmus 2011, \url{hackage.haskell.org/package/operational}} a package for building custom monads, and \emph{pipes},\sidenote{Gabriel Gonzalez 2013 \url{hackage.haskell.org/package/pipes}} which models separate interpretation layers as a pipeline, allowing for filtering at each stage, and passing information in both directions. These kind of design patterns are invaluable to complex systems like games, that require state based update at the same time as networking and journalling etc, and their use is highly recommended in any similar domain.
+\begin{verbatim}
+> fmap (snd.fst) $ runStateT (runWriterT (interpret asStackMachineWithLog test)) []
+\end{verbatim}\vspace{-1em}
+>Just "Pushing 9\nPushing 5\nMultiplying\nDuplicating\nMultiplying\nPushing 9\nSubtracting\n"
+
+\ 
+
+It is clear that this approach is a very effective and powerful one, and can be expanded to allow for easy combination of different layers of concern, each with their own semantic interpretation, loosely coupled and swappable. There are several packages that build on this idea and make working with it easy, the most notable being \emph{operational},\sidenote[][-2em]{Heinrich Apfelmus 2011, \url{hackage.haskell.org/package/operational}} a package for building custom monads, and \emph{pipes},\sidenote{Gabriel Gonzalez 2013 \url{hackage.haskell.org/package/pipes}} which models separate interpretation layers as a pipeline, allowing for filtering at each stage, and passing information in both directions. These kind of design patterns are invaluable to complex systems like games, that require multiple states to be maintained at the same time as networking, journalling, and various other activities; and their use is highly recommended in any similar domain.
 
 \subsection{Summary of this section} 
 
