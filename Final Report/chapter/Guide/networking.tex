@@ -1,5 +1,99 @@
 \section{Network Programming in Haskell}
 
-% How the problems of game networking were solved in the network layer
+Fast paced multiplayer games require efficient networking and real time packet delivery.
+If this is not provided then the network can become a bottleneck causing the game to
+lag or halt. This requirement means that the transmission control protocol (TCP) cannot
+be used for game network development because of the implementation of reliability
+in TCP. If a packet is lost when using TCP then the receiver stops and waits for that
+data to be resent and any new data that is sent is held in a queue until the lost packet
+arrives. Therefore, any packet loss on the network causes relatively large pauses in
+communication which will cause objects in the game world to stop receiving updates and
+the game hangs too.
 
-Lorum ipsum sit dolor amet.  \lipsum[2-4]
+So, networked multiplayer games that rely on real time network communications must use
+the user datagram protocol (UDP) since it does not enforce a stop-and-wait style reliability system.
+However, this means that a layer on top of UDP must also be used to implement an efficient
+form of reliability, deal with duplicate packets and out of order packets, and create virtual
+connections. Unfortunately, whilst Haskell provides a low level networking library, no suitable
+library for game networking could be found, so one had to be developed. % XXX Reference chapter 3?
+
+\subsection{Sending and Receiving Packets}
+
+The \texttt{network} package is a low level networking interface that can be used to
+send and receive packets using UDP.\sidenote{\url{http://hackage.haskell.org/package/network}}
+It provides an easy to use API for creating and sending data over sockets.
+
+\vspace{-0.5em}
+\begin{listing}{list:recv}{Example of receiving UDP packets}{Example of receiving UDP packets}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(main, port, withSocketsDo, socket, defaultProtocol, bind, socketPrint, recvFrom, putStrLn)
+\begin{haskell}
+>import Network.Socket
+>
+>port = 9900
+>
+>main :: IO ()
+>main = withSocketsDo $ do
+>  sock <- socket AF_INET Datagram defaultProtocol
+>  bind sock (SockAddrInet port iNADDR_ANY)
+>  socketPrint sock
+>
+>socketPrint :: Socket -> IO ()
+>socketPrint sock = do
+>  (msg, _, _) <- recvFrom sock 512
+>  putStrLn msg
+>  socketPrint sock
+
+\end{haskell}
+\noindent
+Listing~\ref{list:recv} shows a simple UDP server which receives packets sent to port 9900
+and prints the data that was received. First, this code initialises the networking subsystem
+using "withSocketsDo". This is only necessary on machines running the Windows operating system,
+but it is best practice to include this for portability. Then a UDP socket is created: "AF_INET"
+indicates the use of IPv4, the "Datagram" socket type sets UDP, and a default protocol number
+is set. The socket is bound to the specified listening port so that the operating system knows
+to forward incoming packets on port 9900 to this socket. The socket is then passed to a loop
+which reads incoming data with "recvFrom" and then prints it.
+
+\vspace{-0.5em}
+\begin{listing}{list:send}{Example of sending UDP packets}{Example of sending UDP packets}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(main, port, withSocketsDo, socket, defaultProtocol, inet_addr, sendTo, close)
+\begin{haskell}
+>import Network.Socket
+>
+>port = 9900
+>
+>main :: IO ()
+>main = withSocketsDo $ do
+>  sock <- socket AF_INET Datagram defaultProtocol
+>  addr <- inet_addr "127.0.0.1"
+>  sendTo sock "Hello world!" (SockAddrInet port addr)
+>  close sock
+
+\end{haskell}
+\noindent
+Sending a packet, as shown in Listing~\ref{list:send}, is just as simple. This is a very basic
+UDP client that creates a socket and sends a string to port 9900 on the local machine. "inet_addr"
+is used to convert a "String" into a network address in host byte order. This address can
+then be used as part of an argument that specifies the destination for the "sendTo" function.
+Finally the program cleans up after itself by closing the socket.
+
+These two examples show how simple it is to develop basic networking functionality in Haskell.
+However, UDP alone, as mentioned previously, is not robust enough to be used for games on real
+world networks which experience packet loss and packets arriving out of sequence. So, the next
+step is to develop a virtual connection over UDP.
+
+\subsection{Connections over UDP}
+
+
+\subsection{Reliability}
+
+
+\subsection{Networking threads}
+
+% Inbox + outbox loops
+% TChans
+% ConnectionMap
