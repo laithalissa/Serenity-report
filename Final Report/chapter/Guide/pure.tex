@@ -387,6 +387,7 @@ Multiplying
 
 \ 
 
+\noindent
 It is clear that this approach is a very effective and powerful one, and can be expanded to allow for easy combination of different layers of concern, each with their own semantic interpretation, loosely coupled and swappable. There are several packages that build on this idea and make working with it easy, the most notable being \emph{operational},\sidenote[][-2em]{Heinrich Apfelmus 2011, \url{hackage.haskell.org/package/operational}} a package for building custom monads, and \emph{pipes},\sidenote{Gabriel Gonzalez 2013 \url{hackage.haskell.org/package/pipes}} which models separate interpretation layers as a pipeline, allowing for filtering at each stage, and passing information in both directions. These kind of design patterns are invaluable to complex systems like games, that require multiple states to be maintained at the same time as networking, journalling, and various other activities; and their use is highly recommended in any similar domain.
 
 \subsection{Summary of this section} 
