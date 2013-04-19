@@ -76,7 +76,7 @@ This pattern is used is several places in the Serenity code, most notably to pro
 
 A very fundamental design pattern is to distinguish as much as possible between the form of a representation and its semantics. A classic example of this is the organisation of compilers into a front and back end. The front end is responsible for building a representation of the input string, usually in the form of an abstract syntax tree (AST), and the back end is responsible for converting the AST into code for the target system. This modularity confers a number of advantages, the foremost being that $n$ input languages and $m$ target architectures require only $n+m$ implementations rather than $nm$.\citepage{grune2012modern}{page PAGE NEEDED}
 
-This technique can be found throughout the Haskell runtime and in many of the popular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
+This technique can be found throughout the Haskell runtime and in many of the popMular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
 
 A motivating example will help to demonstrate the efficacy and need for this design pattern. Consider an entity within the state of a game. At various points this entity will need to be updated in various ways to react to different things. For the purposes of the running example we shall model: time passing, new orders being given from the player, and damage being inflicted. (This is clearly in the context of a strategy game similar to that made in the Serenity project).
 
@@ -113,7 +113,7 @@ First some basic types are defined, without specific implementation details for 
 >updateDamage damage entity = ...
 
 \end{haskell}
-\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, ie "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
+\noindent With these three functions implemented, a basic interface for updating an entity can be exported. But it is not very flexible. To see why, consider the code applying the updates to the game state. The updates can be applied as they come in, or buffered in some structure, which for simplicity can be assumed to be a list. What type is the list? Without any further structure it can only be of type "[Entity -> Entity]" and each element is one of the update functions partially applied, i.e. "[updateTime 4.3, updateDamage Damage {...}, ...]". Now say the writer of this code wants to add some additional behaviour as the "Entity" gets updated, such as logging, or notifying some other part of the state. He can't, as there is no way to introspect what is contained in each update, so any changes must be made to the update functions themselves, including their type signatures.
 
 The solution is to use an interim type to separate the two concerns. This type will stand for the concept of \emph{some kind of update that could be applied to an Entity}.
 
@@ -201,31 +201,31 @@ The standard Haskell distribution comes with a number of monads built in, includ
 \begin{listing}{list:statestack}{Modelling a simple stack machine using pure code only, this time using the \emph{State} monad.}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
 \end{listing}\vspace{-1.5em}
 
-\functions(pop, push)
+\functions(popM, pushM)
 \begin{haskell}
 
 >import Control.Monad.State
 
 >type StackMachine a = State [a]
 
->pop :: StackMachine a a
->pop = do
+>popM :: StackMachine a a
+>popM = do
 >  (x:xs) <- get
 >  put xs
 >  return x
 
->push :: a -> StackMachine a ()
->push x = do
+>pushM :: a -> StackMachine a ()
+>pushM x = do
 >  stack <- get
 >  put (x:stack)
 
 >eval' :: Num a => Operation a -> StackMachine a ()
->eval' (Push a) = push a
->eval' Pop  = do pop; return ()
->eval' Sum  = do a <- pop; b <- pop; push (a+b)
->eval' Diff = do a <- pop; b <- pop; push (a-b)
->eval' Mult = do a <- pop; b <- pop; push (a*b)
->eval' Dup  = do a <- pop; push a; push a
+>eval' (Push a) = pushM a
+>eval' Pop  = do popM; return ()
+>eval' Sum  = do a <- popM; b <- popM; pushM (a+b)
+>eval' Diff = do a <- popM; b <- popM; pushM (a-b)
+>eval' Mult = do a <- popM; b <- popM; pushM (a*b)
+>eval' Dup  = do a <- popM; pushM a; pushM a
 
 >run' :: Num a => [Operation a] -> StackMachine a ()
 >run' = foldM (\_ -> eval') ()
@@ -249,7 +249,7 @@ To further illustrate this point, consider the following. Currently this impleme
 *** Exception: Pattern match failure in do expression
 \end{verbatim}
 
-\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. (For more details on monad transformers, see Appendix~\ref{app:monads}.) All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "pop", as shown in Listing~\ref{list:statestackerror} below.
+\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. (For more details on monad transformers, see Appendix~\ref{app:monads}.) All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "popM", as shown in Listing~\ref{list:statestackerror} below.
 
 \vspace{-0.5em}
 \begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer.}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
@@ -262,8 +262,8 @@ To further illustrate this point, consider the following. Currently this impleme
 
 >import Control.Monad.State
 
->pop :: StackMachine a a
->pop = do
+>popM :: StackMachine a a
+>popM = do
 >  stack <- get
 >  case stack of
 >    (x:xs) -> do put xs; return x
@@ -275,9 +275,9 @@ To further illustrate this point, consider the following. Currently this impleme
 \noindent Without any further changes, the following results are obtained:
 
 \begin{verbatim}
-> execStateT (run' [Push 10, Push 5, Mult]) []
+> execStateT (run' [pushM 10, pushM 5, Mult]) []
 Just [50]
-> execStateT (run' [Push 10, Mult]) []
+> execStateT (run' [pushM 10, Mult]) []
 Nothing
 \end{verbatim}
 
@@ -287,8 +287,112 @@ It should be apparent that modelling effects using monads provides a good number
 
 \subsection{Separating Syntax and Semantics Part II: Free Monads}
 
-It can be seen in the running example that --- at runtime --- the interface is still tied to to a particular implementation in one place in the code, in the signature of the "eval'" function. 
+\functions(liftF, retract, hoistFree)
+A further technique for improving the separation between interface and implementation is the usage of \emph{free monads}, a relatively recent research area in the Haskell community.\sidenote{In the examples below, the free monad implementations come from Edward Kemmet's package \emph{free} (\url{hackage.haskell.org/package/free}), which also provides the functions \scalenote{"liftF"}, \scalenote{"retract"}, and \scalenote{"hoistFree"}. Various other free monad implementations are also available on Hackage.} 
+The use of free monads as a design pattern was only discovered and experimented with after the main bulk of Project Serenity was already implemented, and there are many parts of the design that could benefit a great deal by being refactored to make use of it. The use of free monads and why they can be so useful is the subject of the rest of this section.
 
-\subsection{Summary of this section} Classes are an excellent tool for providing separation between interface and implementation, and for code reuse.
+The precise definition of a \emph{free} structure is a concept from Category Theory and out of the scope of any discussion here; but like monads, the technical details are not required to make use of the pattern as a programmer.
 
+In simple terms, then, a free monad is a monad that can be generated directly from a functor ``for free'' --- i.e. without any additional information being given or imposed. This is achieved by maintaining the structure of the operations (as a list or stream) without actually interpreting them. A monadic value in this free monad can then be interpreted, i.e. converted to a monadic value in another monad by imposing a certain semantics, at any time at a later date, and even in multiple ways at different times.
+
+Consider the stack machine example. After "run" (or "run'") has been called, the computation is complete and the components of it cannot be introspected in any way. So, while there is a compile time separation provided between the "Operation" type and the "StackMachine" monad, at runtime a "StackMachine" monadic value is essentially opaque.
+
+To improve upon this situation, a free monad can be formed from the "Operation" type. A wrapper is used to form a functor, with an additional type variable that represents ``the rest of the computation'' or continuation (the functor instance can be automatically derived). From this functor the free monad is formed. The code for this is shown below in Listing~\ref{list:freeoperation}.
+
+\vspace{-0.5em}
+\begin{listing}{list:freeoperation}{Forming a free monad from the \emph{Operation} type.}{Forming a free monad from the \scalenote{"Operation"} type.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(liftFF, push, pop, sum, diff, mult, dup, example, interpret, using)
+\begin{haskell}
+>data FreeFunctor a cont = FreeFunctor a cont 
+>  deriving (Functor, Show)
+
+>type AbstractMachine a = Free (FreeFunctor (Operation a))
+
+>liftFF :: a -> Free (FreeFunctor a) ()
+>liftFF x = liftF $ FreeFunctor x ()
+
+>push a = liftFF $ Push a
+>pop = liftFF Pop
+>sum = liftFF Summ
+>diff = liftFF Diff
+>mult = liftFF Mult
+>dup = liftFF Dup
+
+>example :: AbstractMachine Int ()
+>example = do push 9; push 5; mult; dup; mult
+
+>interpret :: (Functor m, Monad m) => (forall x. f x -> m x) -> Free f a -> m a
+>interpret f = retract . hoistFree f
+
+>using :: Monad m => (t -> m a) -> FreeFunctor t b -> m b
+>using actionFor (FreeFunctor operation c) = do actionFor operation; return c
+
+\end{haskell}
+\noindent
+The "interpret" function can now be used to coerce a value of type "AbstractMachine a" (the free monad) into a full monadic type with a specific semantics. "using" is a shortcut to lift a function between operations and actions into the type required by "interpret".
+
+Three example semantics are shown in Listing~\ref{list:freesemantics}, firstly the normal operation of "StackMachine" with failure as implemented before, secondly some basic logging as a writer monad transformer, and lastly both of these simultaneously. 
+
+\vspace{-0.5em}
+\begin{listing}{list:freesemantics}{Three example semantics for the \emph{AbstractMachine} free monad, the stack machine operation, basic logging, and both simultaneously.}{Three example semantics for the \scalenote{"AbstractMachine"} free monad, the stack machine operation, basic logging, and both simultaneously.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(asStackMachine, asLog, asStackMachineWithLog, tell)
+\begin{haskell}
+>log' :: (Show a, MonadWriter [Char] m) => Operation a -> m ()
+>log' (Push a) = tell $ "Pushing " ++ show a ++ "\n"
+>log' Pop  = tell "Popping"
+>log' Summ = tell "Summing\n"
+>log' Diff = tell "Subtracting\n"
+>log' Mult = tell "Multiplying\n"
+>log' Dup  = tell "Duplicating\n"
+
+>asStackMachine :: Num a => FreeFunctor (Operation a) c -> StackMachine a c
+>asStackMachine = using eval'
+
+>asLog :: (Monad m, Show a) => FreeFunctor (Operation a) c -> WriterT String m c
+>asLog = using log'
+
+>type StackMachineLog c = WriterT String (StackMachine a) c
+>asStackMachineWithLog :: (Show a, Num a) => FreeFunctor (Operation a) c -> StackMachineLog c
+>asStackMachineWithLog ff = do lift $ asStackMachine ff; asLog ff
+
+\end{haskell}
+\noindent
+These results can now be obtained in GHCI:
+
+\begin{verbatim}
+> execStateT (interpret asStackMachine test) []
+\end{verbatim}\vspace{-1em}
+>Just [2025]
+
+\begin{verbatim}
+> putStr $ runIdentity $ execWriterT (interpret asLog test)
+Pushing 9
+Pushing 5
+Multiplying
+Duplicating
+Multiplying
+
+> fmap snd $ runStateT (runWriterT (interpret asStackMachineWithLog test)) []
+\end{verbatim}\vspace{-1em}
+>Just [2025]
+
+\begin{verbatim}
+> fmap (snd.fst) $ runStateT (runWriterT (interpret asStackMachineWithLog test)) []
+\end{verbatim}\vspace{-1em}
+>Just "Pushing 9\nPushing 5\nMultiplying\nDuplicating\nMultiplying\nPushing 9\nSubtracting\n"
+
+\ 
+
+\noindent
+It is clear that this approach is a very effective and powerful one, and can be expanded to allow for easy combination of different layers of concern, each with their own semantic interpretation, loosely coupled and swappable. There are several packages that build on this idea and make working with it easy, the most notable being \emph{operational},\sidenote[][-2em]{Heinrich Apfelmus 2011, \url{hackage.haskell.org/package/operational}} a package for building custom monads, and \emph{pipes},\sidenote{Gabriel Gonzalez 2013 \url{hackage.haskell.org/package/pipes}} which models separate interpretation layers as a pipeline, allowing for filtering at each stage, and passing information in both directions. These kind of design patterns are invaluable to complex systems like games, that require multiple states to be maintained at the same time as networking, journalling, and various other activities; and their use is highly recommended in any similar domain.
+
+\subsection{Summary of this section} 
+
+High level abstractions enabled by features of the Haskell language and type system can enable an extremely flexible coding style that maintains clear separation between concerns, and implementation from interface. The design patterns identified in this section give methods toward achieving these ends in a reliable way.
+
+Typeclasses are a basic language feature of Haskell, and provide a simple yet highly effective was to write reusable code components. A very powerful idiom for flexible code is to use interim types to separate concerns. Monads provide a very flexible approach to modelling effects, and this can be improved even further with the use of free monads.
 

@@ -112,12 +112,12 @@ call.
 >main = defaultMain allTests
 >
 >allTests =
-> [ Packet.tests
-> , Transport.tests
-> , Message.tests
-> -- ...
-> , MathUtil.tests
-> ]
+>  [  Packet.tests
+>  ,  Transport.tests
+>  ,  Message.tests
+>  -- ...
+>  ,  MathUtil.tests
+>  ]
 
 \end{haskell}
 \noindent Listing~\ref{list:testframework} is an extract from the main entry point to
@@ -142,10 +142,10 @@ in Serenity to build a group of tests to export is shown in Listing~\ref{list:te
 >import Test.Framework.QuickCheck2 (testProperty)
 >
 >tests = testGroup "Network utility tests"
-> [ testCase "Test readNTChan" testReadNTChan
-> , testCase "Test readTChanUntilEmpty" testReadTChanUntilEmpty
-> , testProperty "Empty TChan" prop_EmptyTChan
-> ]
+>  [  testCase "Test readNTChan" testReadNTChan
+>  ,  testCase "Test readTChanUntilEmpty" testReadTChanUntilEmpty
+>  ,  testProperty "Empty TChan" prop_EmptyTChan
+>  ]
 
 \end{haskell}
 \noindent
