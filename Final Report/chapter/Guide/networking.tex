@@ -175,6 +175,8 @@ or not to bother resending the packet. This suggests that packets should also in
 level identifiers to ensure that any resent packets can be detected as duplicates if necessary.
 
 % Sequence number wrap around
+% Time outs
+% Disconnection
 
 % \subsection{Security} ?
 %
@@ -185,3 +187,87 @@ level identifiers to ensure that any resent packets can be detected as duplicate
 % Inbox + outbox loops
 % TChans
 % ConnectionMap
+
+Now a fully fledged networking library is available it needs to be put to use. How should it
+be used without impacting the performance of the game animations. One option would be to
+ensure that all networking options are non-blocking so that the networking code can be called
+during the main game loop. However, for Project Serenity it was decided to use Haskell's
+powerful and easy to use support for parallel threads.
+
+The idea was to run two threads: one for incoming messages and the other for outgoing ones.
+To send a message it would be put into a shared queue by the main loop. The outgoing thread,
+consuming this queue, would read in the message and write it out onto the network. Similarly,
+as a message arrives the incoming thread would put it into a separate queue for the main loop
+to read from. Writing safe producers and consumers that operate like this is notoriously difficult
+to do correctly. Fortunately, however, the software transactional memory library, \texttt{stm},
+makes this very simple to do in Haskell.
+
+Software transactional memory is a technique for performing groups of memory operation atomically.\cite{stm}
+The idea is similar to that of transactions in databases. A block of code that is called "atomically"
+is guaranteed to be isolated from the memory operations of any other thread. Upon completion of the atomic
+transaction its transaction log is validated before the changes are committed to memory. If validation
+fails, e.g.\ because memory read was altered by another thread during execution, then the changes are
+discarded and the block is restarted. The use of transactions removes the complexity of traditional
+locks and allows concurrent code to be written with ease.
+
+The \texttt{stm} library provides a transactional first-in-first-out channel, "TChan", that is
+perfect for this situation. One thread can write values into the channel whilst another reads
+them out in the order they were put in. When a connection is established a "TransportInterface"
+is created. This contains two "TChan"s that are unique for the connection, one is the inbox and
+the other the outbox. The interface is placed into a map that maps from IP addresses to these
+channels. Using the connection map the networking workflow is as follows:
+
+\begin{enumerate}
+\item Create a socket and bind it to a known port.
+\item Accept incoming requests placing the new connections into the connection map.
+\item Spawn two threads which run indefinitely. One deals with the inbox channels; it receives
+      incoming messages from the socket and puts them into the inbox "TChan" created for that
+      IP address. The other reads in messages from all of the outbox channels and relays them
+      onto the network.
+\end{enumerate}
+
+\vspace{-0.5em}
+\begin{listing}{list:networking-threads}{Spawning threads to deal with network traffic}{Spawning threads to deal with network traffic. This is simplified version of the code in Project Serenity.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(sendAndReceive, forkIO, forever, inboxLoop, outboxLoop, receive, atomically, writeTChan, toList, channelInbox)
+\functions(mapM, readAndSend, send, tryReadTChan, channelOutbox)
+\begin{haskell}
+>type ConnectionMap = Map SockAddr TransportInterface
+>
+>data TransportInterface = TransportInterface
+>  { channelInbox :: TChan Message
+>  , channelOutbox :: TChan Message
+>  }
+>
+>sendAndReceive :: ConnectionMap -> Socket -> IO ()
+>sendAndReceive connections sock = do
+>  forkIO $ forever $ inboxLoop connections sock
+>  forkIO $ forever $ outboxLoop connections sock
+>  return ()
+>  where
+>    inboxLoop connections sock = do
+>      (message, channels) <- receive connections sock
+>      atomically $ writeTChan (channelInbox channels) message
+>
+>    outboxLoop transport = mapM_ (readAndSend socket) (M.toList connections)
+>
+>    readAndSend sock (addr, channels) = do
+>      message <- atomically $ tryReadTChan (channelOutbox channels)
+>      case message of
+>        Just m -> send sock m addr
+>        Nothing -> return ()
+
+\end{haskell}
+\noindent
+Listing~\ref{list:networking-threads} shows a simplified version of the code that performs
+step three of this workflow in Project Serenity. Two infinite loops are spawned on two new
+threads using "forkIO" to spark a new lightweight thread and "forever" to repeat monadic
+actions indefinitely. "inboxLoop" calls a function that reads an incoming packet and returns
+the message it contained with the "TransportInterface" associated with the sending address.
+The message is then atomically written into the inbox channel using "writeTChan". The "outboxLoop"
+does the reverse by attempting to read messages from all of the outbox channels --- this is
+done with the non-blocking "tryReadTChan" --- and firing off them off onto the network.
+This is a great example of how easy it can be write concurrent code using Haskell. It only
+takes one line of code to fork a new thread and a couple more to write data into shared
+memory free from deadlock or corruption.
