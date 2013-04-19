@@ -84,13 +84,101 @@ Finally the program cleans up after itself by closing the socket.
 These two examples show how simple it is to develop basic networking functionality in Haskell.
 However, UDP alone, as mentioned previously, is not robust enough to be used for games on real
 world networks which experience packet loss and packets arriving out of sequence. So, the next
-step is to develop a virtual connection over UDP.
+step is to develop a virtual connection over UDP and build a layer of reliability on top of that.
 
-\subsection{Connections over UDP}
+\subsection{Packets, Connections and Reliability}
 
+Firstly, a simple "Packet" data type is required to represent game packets to be sent out on
+the network. This is useful as it allows us to easily add headers to the packet and to pass
+around data that is simpler to manipulate and only convert it to a single set of bytes at the
+last minute.
 
-\subsection{Reliability}
+\vspace{-0.5em}
+\begin{listing}{list:packet}{Simple packet representation}{Simple packet representation}{}
+\end{listing}\vspace{-1.5em}
 
+\functions(packetProtocol, packetData)
+\begin{haskell}
+>import Data.Word (Word32)
+>import Data.ByteString.Char8 (ByteString)
+>
+>data Packet = Packet
+>  { packetProtocol :: Word32
+>  , packetData :: ByteString
+>  }
+
+\end{haskell}
+\noindent
+The first version of the "Packet" representation is show in Listing~\ref{list:packet}. This
+packet only contains a 32 bit protocol identifier and the actual packet data as a string of
+bytes. The use of a protocol identifier allows the networking code to ignore any incoming
+packets that do not have a matching identifier. This is necessary because client addresses
+are not known in advance, so another piece of information is required to distinguish legitimate
+packets from any other traffic.
+
+Now these packets must be used, or extended further, to initialise connections. One approach
+would be to just start sending packets and assume a connection. When a listening server receives
+a valid packet it can recognise it as the establishment of a connection. However, with multiple
+computers this might not be robust enough. Therefore, for Project Serenity a brief handshake
+sequence, similar to the one employed by TCP, was used. Partially copying the TCP connection
+establishment handshake requires adding a flag bit field to the packet header. Each bit represents
+a flag which can be on, bit set to one, or off, bit set to zero. Flags can then be specified
+to identify connection initialisation.
+
+% SYN, ACK, etc.
+
+\vspace{-0.5em}
+\begin{listing}{list:reliable-packet}{Reliable packet data structure}{Reliable packet data structure}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(packetSeq, packetAck, packetAckBits, packetFlags)
+\begin{haskell}
+>import Data.Word (Word32)
+>import Data.ByteString.Char8 (ByteString)
+>
+>data Packet = Packet
+>  { packetProtocol :: Word32
+>  , packetSeq :: Word32
+>  , packetAck :: Word32
+>  , packetAckBits :: Word32
+>  , packetFlags :: Word8
+>  , packetData :: ByteString
+>  }
+
+\end{haskell}
+\noindent
+The problem with TCP was that it forces packets to be delivered in an ordered stream. Instead
+of this games require packets to be delivered at a steady rate, but detect any loss and make a
+decision at the application level as to whether or not the packet should be resent. The first
+step to reliability is knowing which packets were received at the destination; this requires
+a method of identifying individual packets. Just like the establishment handshake, this can be
+stolen from TCP: each packet contains a sequence number. As packets are sent the sequence number
+is incremented monotonically. Listing~\ref{list:reliable-packet} shows the "packetSeq" field in
+the "Packet" data structure that holds the sequence number. The receiving end can now identify
+which packets it has received, but it still needs a method of relaying this information back
+to the sender.
+
+Letting the other end know about packets received is done using acks, short for acknowledgements.
+The idea is to record the sequence numbers of incoming packets as the remote sequence number for
+the connection. A list of recently received packets is also kept. Then when a packet is sent the
+"packetAck" is set to the remote sequence number, i.e.\ the sequence number of the most recently
+received packet, and the "packetAckBits" bitfield is set so as to identify which of the 32 packets
+prior have also been received. Bit $n$ in the "packetAckBits" bitfield is set to one if the $n$th
+most recent packet has been received. Using this method allows 33 acknowledgements per packet.
+
+When a packet is received its ack and ack bitfield can be checked to detect any lost packets.
+If an ack for a packet is not received within a certain timeframe then it can be deemed to be
+lost. This timeframe is dependent on the rate of network traffic, for example if approximately
+30 packets are sent per second then an acknowledgement is expected within one second. Notifications
+of packet loss can be passed up to the application layer where a decision can be made on whether
+or not to bother resending the packet. This suggests that packets should also include application
+level identifiers to ensure that any resent packets can be detected as duplicates if necessary.
+
+% Sequence number wrap around
+
+% \subsection{Security} ?
+%
+% Siphash
 
 \subsection{Networking threads}
 
