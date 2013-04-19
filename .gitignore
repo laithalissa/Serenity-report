@@ -59,8 +59,8 @@ CVS
 .texpadtmp
 
 *.pdf
-!Final\ Report/res/*.pdf
-!Specification/res/*.pdf
+!Final\ Report/res/**/*.pdf
+!Specification/res/**/*.pdf
 
 # Java
 *.class
