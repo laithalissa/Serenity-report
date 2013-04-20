@@ -1,6 +1,10 @@
 
 \section{Server-Client Sychronization}
 
+\newcommand{\stepOneName}{lockstep}
+\newcommand{\stepTwoName}{simple server client}
+\newcommand{\stepThreeName}{server client with simulation}
+
 \begin{comment}
 
 this section talks about the decision for server client architecture.
@@ -19,9 +23,50 @@ we need to work out how the computers talked to each other very early on
 
 \end{comment}
 
-The game was designed around being multiplayer, so our first goal was to decide how they would talk to each other.
+The game was designed around being multiplayer, so our first goal was to decide how the player's computers would talk to each other.
 Since their was an arbitrary number of players (greater than 1), We needed a system that would scale, but would also be robust.
 The game was expecting all players to be on the same LAN (Local Area Network), hence a high bandwidth was available for the communications.
+
+There are 3 strategies for the interactions between computers:
+\begin{itemize}
+\item \stepOneName
+\item \stepTwoName
+\item \stepThreeName
+\end{itemize}
+
+\begin{marginfigure}
+	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.png}
+	\caption{
+	\stepOneName : 4 clients connected. client 1 has just modified its game state, so it send the update to all other clients.
+	}
+	\label{fig:serverClientSychP2P}
+\end{marginfigure}
+
+% what
+\stepOneName is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
+Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
+When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
+
+% advantages
+%   playable with slow networks
+This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
+%   no dedicated server required
+No client is picked to act as server, which causes game to end if that selected client disconnects.
+Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals, such as Civilization series\cite{civilizationInMyPants}.
+
+
+
+% disadvantages
+%   disynchronization
+Maintaining synchronisation when using a peer-2-peer protocol can be very challenging from a technical point of view, with non-determinism being caused by messages being received by clients at different times causing race conditions.
+When this happens in a game, it can cause clients game states to desynchronise
+%   corrupted client can effect the entire game
+
+
+
+% res/computer_communication_architecture
+
+
 
 
 % lockstep
