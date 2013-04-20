@@ -1,22 +1,31 @@
+%Needs work done on it, needs proof reading etc etc, jo is a squid%
+
 \section{Literature Review: Designing a Game for 2013}
+
+Making a game successful largely depends on make the game fun to play, but since fun is an entirely subjective measurement, the success can also be measured on the criteria for existing successful games. By analysing best selling games and determining the components which make them best selling, a list of criteria can be formalised to guide development and later assess the success of the project.
+
+The game criteria list for the project was aggregated from a number of articles written by game industry professionals, but focussing mainly on Wolfgang Kramer's article ``What Makes a Game Good?''.
+%ref http://www.thegamesjournal.com/articles/WhatMakesaGame.shtml
+%ref http://www.pentadact.com/2011-05-27-what-makes-games-good/
+%ref http://www.petecollier.com/?p=243
 
 % Literature review on our game design
 
-\subsection*{Originality} A game should have some original content such as a unique storyline, an unsual physics engine, new weapon concepts, or anything which pulls away from conventional games and adds a new dimension to gaming.
+\subsection*{Originality} A game should have some original content such as a unique storyline, an unsual physics engine, new weapon concepts, or anything which pulls away from conventional games and adds a new dimension to gaming. If a game is has little originality then it risks becoming dull and uninteresting since it will appear to be a combination of existing game features instead of offering a new concept to the gaming community.
+
+\subsection*{Replayability} It's important to give players a unique gaming experience each time, this is often achieved by procedurally generated maps which makes it difficult to find an optimal strategy across all terrains, offering powerful weapons which are difficult to locate/obtain (temporary invulnerability, invisibility etc), 
 ...
-\subsection*{Replayability} It's important for a game to give the players a unique gaming experience each time, this is typically achieved by procedurally generated maps, providing temporary resource boosts (temporary invulnerability, invisibility etc),
-...
-\subsection*{Surprises} Hidden features, key events and tactical exploits which are not immedietly apparent, rewards those who spend more time playing and learning about the game. This is a rather typical pattern found in games such as...
+\subsection*{Surprises} Hidden features, key events and tactical exploits which are not immedietly apparent, rewards those who spend more time playing and learning about the game. A typical consequence of a well structured game is to have different possible outcomes for each possible decision. This is a rather typical pattern found in games such as Unreal Tournament, where a players weapon arsenal might allow him to fend off foes competing for an objective.
 % UT, 
 
 \subsection*{Equal opportunity}
-Equal opportuniity is a concept which applies to groups of human players within the game, and it ensures that no player has a distinct advantage over the others from starting locaiton, starting budget, construction options, health limits etc. Clearly different games have different requirements for fulfilling equal opportunity, but the main purpose is to ensure the game never favours a particular player....
+Ensuring that no human player has a distinct advantage over any other player, such imbalances could be caused by advantageous starting positions, unequal starting budgets, unbalanced construction options, different health capacities etc. Clearly, different games have different requirements for fulfilling equal opportunity, but one of the most important requirements of a multiplayer game is to give every player an equal chance to win the game from the starting point.
 
 \subsection*{No early elimination}
-No player should lose hope of winning early in the game, there should be ways to redeem initial poor progress, in this manor it's acceptable for the game to \emph{help} a player avoiding an impending elimination.....
+No player should lose hope of winning early in the game. In the event of poor playing in the start of the game, a player should be able to redeem themselves to regain a chance of winning the game, in this context it's acceptable for the game to \emph{help} a player (e.g. spawning health boosts near the player, or having the AI teams primarily target other players.
 
 \subsection*{Low waiting times}
-Players are interested in being involved with a game and don't want to endure period of low activity, common to early real-time-strategy games....
+Players are interested in being involved with a game and don't want to endure period of low activity. This was a common probelms in early real-time-strategy games such as Age of Empires, where a player would spend significant time in the ``setting up'' phase.
 % such as Age of Empires?
 
 %check hyphenation of rts
@@ -24,10 +33,13 @@ Players are interested in being involved with a game and don't want to endure pe
 \subsection*{moo?}
 
 %Decide whether to enumerate or to list
-Best selling games of 2011 \\
-\begin{tabular}{l l}
-    Title & Publisher\\
-	\hline \hline
+\begin{table*}[t]
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{p{19em} p{15em}}
+		\toprule
+		\emph{Title} & \emph{Publisher}\\
+		\midrule
 	Call of Duty: Modern Warfare 3 & Infinity Ward
 	\\
 	Fifa 12 & Electronic Arts
@@ -48,24 +60,50 @@ Best selling games of 2011 \\
 	\\
 	Batman: Arkham City & Warner Bros. Interactive Entertainment 
 	\\
-\end{tabular}
+	\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption[][1em]{Best selling games of 2011.}
+	\label{tab:bestSellingGames2011}
+\end{table*}
 %% http://www.guardian.co.uk/technology/gamesblog/2012/jan/11/best-selling-games-of-2011
 
-Best selling games of 2012
-\begin{enumerate}
-  \item{Call of Duty: Black Ops II - Ativision Blizzard}
-  \item{FIFA 13 – Electronic Arts}
-  \item{Assassin's Creed III - Ubisoft }
-  \item{Halo 4 - Microsoft}
-  \item{Hitman Absolution - Square Enix}
+\begin{table*}[t]
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{p{19em} p{15em}}
+		\toprule
+		\emph{Title} & \emph{Publisher}\\
+		\midrule
+	Call of Duty: Black Ops II & Ativision Blizzard
+	\\
+	FIFA 13 & Electronic Arts
+	\\
+	Assassin's Creed III & Ubisoft
+	\\
+    Halo 4 & Microsoft	
+    \\
+	Hitman Absolution & Square Enix
+	\\
+	Just Dance 4 & Ubisoft
+	\\
+	Far Cry 3 & Ubisoft
+	\\
+	FIFA 12 & Electronic Arts
+	\\
+	The Elder Scrolls V: Skyrim & Bethesda Softworks
+	\\
+	Borderlands 2 & 2k Games
+	\\
+	
+	\bottomrule
+	\end{tabular}
+	\vspace{1.5em}
+	\caption[][1em]{Best selling games of 2012.}
+	\label{tab:bestSellingGames2012}
+\end{table*}
 
-  \item{Just Dance 4 - Ubisoft}
-  \item{Far Cry 3 - Ubisoft}
-  \item{FIFA 12 - Electronic Arts}
-  \item{The Elder Scrolls V: Skyrim – Bethesda Softworks}
-  \item{Borderlands 2 - 2k Games}
-\end{enumerate}
 %% http://www.digitalspy.co.uk/gaming/news/a450921/top-100-best-selling-uk-games-2012-only-black-ops-fifa-sell-1-million.html
-The recent most popular games over the last few years have been first persion shooters, hack and slash, FIFA and  Fitness/Dance games. Unsurprisingly these games are published by gaming industry giants, implying that it's these types of games which are not necessarily the most popular, but certainly the most profitable. This makes designing a new game concept difficult, since it may be possible to develop a popular game outside these genres, but it would likely be a poor basis for founding a series of games or a company foucsing on these genres...
+The recent most popular games over the last few years have been first persion shooters, hack and slash, FIFA and  Fitness/Dance games. Unsurprisingly these games are of genres which are frequently published by gaming industry giants, implying they're significanntly more profitable than other genres, which in turn implies that such genres are also more popular. This makes designing a new game concept challanging, since there's an immediate bias towards a genre which shows promise for sustaining development and producing sequal games, and has the largest player base. 
 
-\citefix{church1932}
+This project intends to challange the conventional genre space by aiming to produce a real time strategy game. The RTS genre has given rise to some extremely popular productions in the early day of gaming corporations such as Total Annihilation, Supreme Commander and the Command and Conquer franchise. Early games lacked sophisticated hardware and game engines, so there was a large focus on developing the gameplay experience, which is likely why these games are so iconic. Since time frame and budget of the project is limited by time and resources, it seems that a simple RTS game would be prudent genre for the game.
