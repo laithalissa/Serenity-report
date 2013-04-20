@@ -47,6 +47,17 @@ There are 3 strategies for the interactions between computers:
 Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
 When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
+\begin{marginfigure}[-30em]
+	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
+	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation2.pdf}
+	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation3.pdf}		
+	\caption{
+	\stepOneName : example of desynchronization when using the \stepOneName strategy. Client 1 on left, client 2 on right. 
+	Each diagram represents state of game for that clients at a given time period.	3 diagrams vertically aligned, First one is top, second one is middle, third one is bottom.
+	}
+	\label{fig:serverClientDesync}
+\end{marginfigure}
+
 % advantages
 %   playable with slow networks
 This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
@@ -59,7 +70,8 @@ Since all clients act as server, any client can disconnect and the game continue
 % disadvantages
 %   disynchronization
 Maintaining synchronisation when using a peer-2-peer protocol can be very challenging from a technical point of view, with non-determinism being caused by messages being received by clients at different times causing race conditions.
-When this happens in a game, it can cause clients game states to desynchronise
+When this happens in a game, it can cause clients game states to desynchronise.
+For example, In Figure \ref{fig:serverClientDesync}, there are 2 clients.
 %   corrupted client can effect the entire game
 
 
