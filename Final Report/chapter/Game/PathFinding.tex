@@ -9,13 +9,13 @@ The specification made it clear --- by the way weapons and navigation between pl
 	\includegraphics[width=20em]{res/pathfinding/spacelanes_field}
 	\caption[Illustrations of different models for a path between current location and target utilising a space lane.]{Illustrations of different models for a path between current location and target utilising a space lane.}
 	\label{fig:spacelanes}
-\end{marginfigure} 
+\end{marginfigure}
 
 Intimately related to these questions is the precise nature of the spacelane mechanics. Many different models were discussed for this during design meetings. Initial ideas on the physical mechanism of the spacelane was that they conferred an additional optional acceleration: i.e. that if a ship is proximate to a lane it could opt to undergo greater acceleration than a ship far from a lane. But as mentioned, accurately modelling acceleration in space is somewhat contrary to the gameplay aspirations of the design. 
 
-A simpler mechanics for ships that was agreed to be more suitable is for them to have a top speed that they could reach relatively quickly, but for them to still have large turning circles. This makes their motion more similar to naval ships engaged in warfare. The interpretation of the spacelane in this model cannot be simply a gain in acceleration as this confers little benefit. Instead it is clear that the spacelane must confer an addition to top speed. A possible physical interpretation of these behaviours is that the ships are moving in some kind of ether with friction, and so will reach a terminal velocity. The spacelane is then an area with an  artificially induced lower density of ether.
+A simpler mechanics for ships that was considered to be more suitable, is for them to have a top speed that they could reach relatively quickly; but for them to still have large turning circles. This makes their motion more similar to naval ships engaged in warfare. The interpretation of the spacelane in this model cannot be simply a gain in acceleration as this confers little benefit. Instead it is clear that the spacelane must confer an addition to top speed. A possible physical interpretation of these behaviours is that the ships are moving in some kind of ether with friction, and so will reach a terminal velocity. The spacelane is then an area with an  artificially induced lower density of ether.
 
-Another fundamental question about the nature of the spacelane is whether its effects are immediately felt at full strength at a certain distance from it, or whether they fall off related to distance. the former is most definitely simpler, but the latter feels more natural as a mechanism. Figure~\ref{fig:spacelanes} shows the difference in the shortest paths that these approachs may generate, discounting the additional issue of ship turning.
+Another fundamental question about the nature of the spacelane is whether its effects are immediately felt at full strength at a certain distance from it, or whether they fall off related to distance. the former is most definitely simpler, but the latter feels more natural as a mechanism. Figure~\ref{fig:spacelanes} shows the difference in the shortest paths that these approaches may generate, discounting the additional issue of ship turning.
 
 \subsection{Algorithms for Pathfinding}
 
