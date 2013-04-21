@@ -29,8 +29,7 @@ The diffusion equation uses the following terms:
 For 2 adjacent blocks, b1 and b2, the volume of air that diffuses from b1 to b2 is:
 $$ transfer = \frac{c(b1) - c(b2)}{2} * t $$
 
-A problem with the over simplification of the air diffusion, is that this amount of air transferred from the centre block in Figure \ref{fig:SpaceBaseAirDiffusion} is less for each consecutive neighbour, ie the first neighbour gets more air than the second neighbour, and the second neighbour gets more air then third neighbour etc.
-
+A problem with the over simplification of the air diffusion, is that this amount of air transferred from the centre block in Figure \ref{fig:SpaceBaseAirDiffusion} is less for each consecutive neighbour, i.e. the first neighbour gets more air than the second neighbour, and the second neighbour gets more air then third neighbour etc.
 
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/MoonSurvivalAirDiffusion.pdf}
@@ -45,6 +44,19 @@ A problem with the over simplification of the air diffusion, is that this amount
 
 
 % controls (how to move about, collisions)
+The player has control of the mans movements as well as what item to place/remove.
+The player's movements controls are:
+\begin{description}
+\item [north] W
+\item [east] D
+\item [south] s
+\item [west] a
+\end{description}
+if an obstacle is blocking the way, the player will no move.
+A limitation of the movement system is that holding down a key does cause the player to continue to move in that direction, instead the key must be repeatedly tapped to have this effect. This is no limitation, but can be annoying for the player.
+
+The player also has 1 item equipped at any one item, and can switch between the items with the TAB key. The currently selected item is displayed in the command bar (discussed later).
+
 % GUI description (what each thing on screen is)
 % conclusion (what aspects liked, what aspects were missing, etc)
 
