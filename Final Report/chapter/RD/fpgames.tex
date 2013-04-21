@@ -66,3 +66,66 @@ approach. Giving real examples Hughes is able to make a strong case for the
 effectiveness of modularisation through laziness and higher order functions.
 The demonstration of a highly modular version of the alpha-beta pruning algorithm,
 in particular, is of great interest due to its applicability to game development.
+
+The author of the darcs version control system laments that a common reaction
+from people hearing about darcs is to say that ``it is a shame that it is
+written in Haskell''.\cite{roundy2005darcs} They believe that, because it is
+written in Haskell, darcs will be inefficient, hogging memory and running slowly.
+Roundy then goes on to discuss the problems and successes he encountered whilst
+developing darcs in Haskell to show how Haskell can be used to build useful, real
+world programs.
+
+Roundy talks about testing with Haskell and the power of the QuickCheck library.
+QuickCheck is a property based testing library that requires the developer to
+create specifications for their code. QuickCheck will then automatically generate
+test cases for these expected properties.\cite{claessen2000} Testing is extremely
+important aspect of good software development. Therefore, any programming language
+that is going to be used for real software projects requires good support for
+testing. The availability of testing libraries for Haskell that have been used
+successfully in existing projects is a good sign for the suitability of Haskell
+for developing real world applications. The same day that Roundy started making
+use of QuickCheck he was able to discover and fix a bug. However, he found that
+it was sometimes hard to develop custom data generators which worked correctly.
+Often it was found that test cases failed because of invalid patches being generated
+instead of bugs in the darcs code itself.
+
+Roundy goes on to talk about how essential the foreign function interface (FFI)
+was for the development of darcs. The FFI is used to links Haskell programs to
+other programs written in a different language, such as C. In darcs, for example,
+the FFI was used to interface with \texttt{libcurl} for HTTP support. The necessity
+for the FFI suggests that functional programming may not be suitable for all problems
+and that complex, functional projects might have to `resort' to making use of
+non-functional libraries. On the other hand, this paper was written in 2005, so
+the number of Haskell libraries for common problems will have increased. So,
+resorting to non-functional libraries is less likely to be required for common
+problems.
+
+Roundy also talks of the difficulty of optimisation in Haskell. He states that
+increasing laziness at a high level often helps to improve memory usage, whilst
+increasing strictness at lower levels usually makes functions faster. However,
+the difficulty is in determining which approach to take to optimise a given
+function and it is almost never obvious how a change will affect the laziness
+of a function. Efficiency is an important requirement for real time games, so
+difficulties with optimisation may have a negative impact on the quality of a
+game. On the other hand, Roundy praises the utility of the profiling tools that
+are available for Haskell. Using these tools it is much easier to pinpoint the
+areas of code to focus optimisation efforts on.
+
+Not only was deciding how to optimise a function in Haskell difficult, but it
+may require dropping into another language. Roundy states that for the lowest
+level functions ``optimisation has consisted of rewriting a key function in C
+or calling a C library function''. Again, this is not a good sign for the performance
+of functional programming. However, in the eight years since this paper was
+written, a large number of performance improvements have been made to Haskell
+compilers. This means that functional programs written today are more likely
+to perform well. It may also be the case that the optimisations that were made
+to darcs could have been made in a different manner whilst still making use of
+Haskell.
+
+Roundy concludes that darcs has been a highly successful project written in
+Haskell. His comments support the ideas of modularity proposed by Hughes stating
+that ``Haskell itself allows the creation of clean internal interfaces in the
+code''. These clearly separate modules allow contributors to focus on certain
+areas instead of having to learn the entire code base and all of its iteractions.
+And, although there have been efficiency problems in the past, they have mostly
+been fixed.
