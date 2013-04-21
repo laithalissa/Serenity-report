@@ -17,9 +17,36 @@
 The topology is a typical Star Network, with server in centre, and all clients only connecting to server.
 There are $N+1$ player connected, where client 0 is the client that is hosting the server.
 Since client 0 is hosting the server, they have special permissions to stop the server at any point, ending the game.
-This topology greatly simplifies the requirements of the networking, because every client has to only connect to server, and receive all its updates from 1 single place.
+This topology greatly simplifies the requirements of the networking, because every client has to only connect to server, and receive all its updates from 1 single place. 
 
 % protocol for synching game states between client server (command, update)
+Figure \ref{fig:loops} gives a good representation how the server and a given client communicate.
+When the player gives an order, i.e. to move a ship to a given destination, that order is sent to the server in the form of a command.
+On the server side, that command is used to 'update' the server's game model. Now the server's game state is at a later version than the clients. The server generates updates that can be applied to all client's game states to bring them to the same version as the server's version.
+
+% network traffic calcuation
+Both the server and client have a full copy of the model representing the game state. 
+The benefit of this was that it allowed the clients to scroll around the map without requiring any network traffic.
+Their were concerns that the volume of traffic required to maintain all the client's game states updates would be too great for a playable game.
+Therefore a traffic analysis was done to estimate how much network traffic would actually be required.
+
+
+
+
+
+			world updates per second 30
+			ships in world = 40
+			bullets in world = 1000
+			ship movement update = (shipId, x, y, direction) = 4 * 4bytes = 16 bytes.
+			bullet movement update = (bulletId, x, y, direction) = 4 * 4bytes = 16bytes
+			per client:
+				per update:
+ 					ship data = 40 * 16bytes = 640bytes
+					bullet data = 1000 * 16bytes = 16000bytes
+					total data = 16640bytes
+			    per second = 30 * 16640 = 499200bytes = 487.5KB/S
+			3 clients = 3 * 487.5KB/s = 1462.5KB/s = 1.43MB/s
+
 % advantages/disadvantages of lockstep
 % advantages/disadvantages of server client with simulation
 
