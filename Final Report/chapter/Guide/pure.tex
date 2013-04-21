@@ -39,9 +39,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 >fmap2 g1 g2 (x,y) = (fmap g1 x, fmap g2 y)
 
 \end{haskell}
-\noindent This function can now be used whenever "Functor" instances are available on both types in a pair.
-
-Designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
+\noindent This function can now be used whenever "Functor" instances are available on both types in a pair. This is a contrived example, but hopefully illustrative of the advantages of this approach --- designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
 
 This pattern is used is several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
 
@@ -341,19 +339,19 @@ Three example semantics are shown in Listing~\ref{list:freesemantics}, firstly t
 
 \functions(asStackMachine, asLog, asStackMachineWithLog, tell)
 \begin{haskell}
->log' :: (Show a, MonadWriter [Char] m) => Operation a -> m ()
->log' (Push a) = tell $ "Pushing " ++ show a ++ "\n"
->log' Pop  = tell "Popping"
->log' Summ = tell "Summing\n"
->log' Diff = tell "Subtracting\n"
->log' Mult = tell "Multiplying\n"
->log' Dup  = tell "Duplicating\n"
+>log :: (Show a, MonadWriter [Char] m) => Operation a -> m ()
+>log (Push a) = tell $ "Pushing " ++ show a ++ "\n"
+>log Pop  = tell "Popping"
+>log Summ = tell "Summing\n"
+>log Diff = tell "Subtracting\n"
+>log Mult = tell "Multiplying\n"
+>log Dup  = tell "Duplicating\n"
 
 >asStackMachine :: Num a => FreeFunctor (Operation a) c -> StackMachine a c
 >asStackMachine = using eval'
 
 >asLog :: (Monad m, Show a) => FreeFunctor (Operation a) c -> WriterT String m c
->asLog = using log'
+>asLog = using log
 
 >type StackMachineLog c = WriterT String (StackMachine a) c
 >asStackMachineWithLog :: (Show a, Num a) => FreeFunctor (Operation a) c -> StackMachineLog c
