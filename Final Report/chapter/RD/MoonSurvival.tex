@@ -1,4 +1,4 @@
-\subsection{\prototypeSiddall Prototype}
+\subsection{Moon Survival Prototype}
 
 
 % objective of game (build base, need oxygen, survive, sandbox)
@@ -34,7 +34,7 @@ A problem with the over simplification of the air diffusion, is that this amount
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/MoonSurvivalAirDiffusion.pdf}
 	\caption{
-	\prototypeSiddall : 3x3 area, where colour intensity represents volume of air. The higher the colour intensity the more air.
+	3x3 area, where colour intensity represents volume of air. The higher the colour intensity the more air.
 	The top diagram shows the centre square has a high volume of air, and its surrounding squares have no air.
 	In the bottom diagram, the air in the centre square has now diffused to its neighbours. Diagonal neighbours are included in this,
 	only the square immediately North, East, South, and West of the block are considered neighbours.
@@ -52,12 +52,28 @@ The player's movements controls are:
 \item [south] s
 \item [west] a
 \end{description}
+Figure \ref{fig:SpaceBaseControls} shows movement controls.
 if an obstacle is blocking the way, the player will no move.
 A limitation of the movement system is that holding down a key does cause the player to continue to move in that direction, instead the key must be repeatedly tapped to have this effect. This is no limitation, but can be annoying for the player.
 
 The player also has 1 item equipped at any one item, and can switch between the items with the TAB key. The currently selected item is displayed in the command bar (discussed later).
 
+To place an item, press the SPACE key. the item will be placed directly in front of player. 
+If the item is already in front of the player and the player presses the SPACE key, the item will be removed.
+For example, if the player is standing in front of a wall and facing it, the wall item is selected, and the player hits the SPACE key, that wall will be removed.
+
+\begin{marginfigure}
+	\includegraphics{res/space_base_prototype/MoonSurvivalControls.pdf}
+	\caption{MoonSurvivalControls.pdfPlayers controls highlighted}
+	\label{fig:SpaceBaseControls}
+\end{marginfigure}
+
+
+
 % GUI description (what each thing on screen is)
+
+
+
 % conclusion (what aspects liked, what aspects were missing, etc)
 
 
@@ -73,7 +89,7 @@ He has no space suit, so he needs air to breath.
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/no_base.pdf}
 	\caption{
-	\prototypeSiddall : player on moon with no base
+	player on moon with no base
 	}
 	\label{fig:SpaceBaseNoRoom}
 \end{marginfigure}
@@ -81,21 +97,22 @@ He has no space suit, so he needs air to breath.
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/empty_room.pdf}
 	\caption{
-	\prototypeSiddall : walled off room with 5x5 interior	}
+	walled off room with 5x5 interior	}
 	\label{fig:SpaceBaseWithRoom}
 \end{marginfigure}
 
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/room_with_air_generator.pdf}
 	\caption{
-	\prototypeSiddall : walled off room with 5x5 interior and air generator	}
+	walled off room with 5x5 interior and air generator	}
 	\label{fig:SpaceBaseWithAirGenerator}
 \end{marginfigure}
 
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/room_with_air.pdf}
 	\caption{
-	\prototypeSiddall : walled off room with 5x5 interior and air	}
+	walled off room with 5x5 interior and air	
+	}
 	\label{fig:SpaceBaseWithAir}
 \end{marginfigure}
 
