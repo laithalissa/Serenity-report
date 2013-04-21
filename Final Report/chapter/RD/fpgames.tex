@@ -1,7 +1,68 @@
 \section{Literature Review: Functional Programming for Games}
 \label{sec:fp_review}
-% Literature review of existing work
-
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
 
 \label{cf:code_organisation} % Reference from architecture section on OO vs FP code structure
+
+% Literature review of existing work
+% What this review is
+% Less about games, more about Haskell as a real world language ==> more literature
+% Discuss paper, critique, explain relevance
+
+This section will discuss the suitability of the functional approach, the use
+of Haskell in particular, in the real world. It will look at past projects and
+research into the use of functional programming languages in industry in an
+attempt to discover how functional programming helped or hindered development.
+% More intro
+
+John Hughes' paper ``Why functional programming matters'' aims to demonstrate how
+``vitally important'' functional programming is to the real world by exploring and
+demonstrating its advantages.\cite{hughes1989functional} Hughes argues that modularity
+is the key to designing and implementing successful programs for three main reasons.
+Firstly, small modules are much easier to code quickly because the requirements for
+a small component are much easier to reason about, design, and implement. Second,
+the more generic modules that are constructed can be reused. This leads to faster
+development during subsequent projects. Thirdly, the independence of modules allows
+them to developed and tested separately, helping to parallelise the work that needs
+to be done and reducing the amount of time required for debugging. Combined these
+advantages of modular design bring great improvements to productivity.
+
+However, the ability of the programmer to modularise their code is reliant on the
+ways in which they can glue solutions to subproblems together. This glue must
+often be provided by the programming language. Hughes argues that functional
+programming provides two very important kinds of glue: higher order functions
+and lazy evaluation. These two aspects of functional programming are very powerful
+and allow greatly improved modularisation.
+
+General higher order functions, such as "map" and "fold", can be used as glue for
+simpler, specialised functions to make more complex ones. Higher order functions
+are great examples of code reuse as they can be used to create many other functions
+with minimal effort. Hughes gives examples of operations over lists and trees, such
+as summing up the elements of a list, whose implementation is greatly simplified
+by the use of higher order functions. Lazy evaluation, on the other hand, allows
+whole programs to be glued together. When composing two programs it might be
+infeasible to store the entirety of the output of the first function in memory to
+pass on to the second. Lazy evaluation is a solution to this problem. The output
+function is only started when the input to the second function is required, and
+only runs for long enough to provide the required amount of input. If the consuming
+function terminates early then the producer can also quit. This even allows the
+producer to create an infinite amount of output. This allows modularisation by
+constructing a generator that outputs a large set of potential answers and a
+separate selector that chooses the correct one.
+
+Hughes finishes with an example from the field of artificial intelligence, a
+field of computer science that is very relevant to game development. He shows
+how the alpha-beta pruning algorithm can be constructed relatively simply using
+modularisation through higher order functions and lazy evaluation. The algorithm
+works by generating the entire set of possible game states that are reachable
+from the current position. This list can then be lazily evaluated to find the
+optimal move, but without actually constructing the entire, possibly infinite,
+game tree. Higher order functions are used throughout to build up complex
+functions from simpler ones. Hughes also shows that due to the modularisation
+of the example it is much easier to understand and make modifications to the
+program.
+
+This paper is a great example of the power of that is available from the functional
+approach. Giving real examples Hughes is able to make a strong case for the
+effectiveness of modularisation through laziness and higher order functions.
+The demonstration of a highly modular version of the alpha-beta pruning algorithm,
+in particular, is of great interest due to its applicability to game development.
