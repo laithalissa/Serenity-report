@@ -171,7 +171,7 @@ If an ack for a packet is not received within a certain timeframe then it can be
 lost. This timeframe is dependent on the rate of network traffic, for example if approximately
 30 packets are sent per second then an acknowledgement is expected within one second. Notifications
 of packet loss can be passed up to the application layer where a decision can be made on whether
-or not to bother resending the packet. This suggests that packets should also include application
+or not to bother resending the packet. This suggests that the packet data should include application
 level identifiers to ensure that any resent packets can be detected as duplicates if necessary.
 
 % Sequence number wrap around
@@ -271,3 +271,10 @@ done with the non-blocking "tryReadTChan" --- and firing off them off onto the n
 This is a great example of how easy it can be write concurrent code using Haskell. It only
 takes one line of code to fork a new thread and a couple more to write data into shared
 memory free from deadlock or corruption.
+
+\paragraph{Summary of this section} Haskell and its libraries have amazing support for
+networking and concurrency. "forkIO" is makes it very easy to create concurrent programs
+and the incredible power of the \texttt{stm} library makes it manageable to do so too.
+However, creating a networking framework suitable for a multiplayer game was still a huge
+undertaking and it is unfortunate that the library created for Project Serenity is not
+yet suitable for release and use in other games.
