@@ -30,7 +30,12 @@ The benefit of this was that it allowed the clients to scroll around the map wit
 Their were concerns that the volume of traffic required to maintain all the client's game states updates would be too great for a playable game.
 Therefore a traffic analysis was done to estimate how much network traffic would actually be required.
 
+A few constants were assumed to simplify calculation:
+$$ updates / second = 30 $$
+$$ #ships = 40 $$
 
+Hence a single ship movement update message would be:
+$$ size = (shipID, x, y, directionX, directionY) = 5 * 4 bytes = 20 bytes $$
 
 
 
