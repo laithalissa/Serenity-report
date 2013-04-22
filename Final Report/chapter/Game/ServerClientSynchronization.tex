@@ -98,7 +98,7 @@ When assumptions are made concerning the game, such as number of ships, number o
 The size of each update message will need to be estimated as well as how frequently that message will be sent.
 
 First, the size of field types will need estimating using language independent types such as int, float, double, etc.
-This is done in Table \ref{tab:positionUpdateExample}
+This is done in Table \ref{tab:typeSizes}
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em}}
     \toprule
@@ -112,10 +112,10 @@ This is done in Table \ref{tab:positionUpdateExample}
     \end{tabular}
     	\vspace{1em}
 	\caption{example of a position update message}
-	\label{tab:positionUpdateExample}
+	\label{tab:typeSizes}
 \end{margintable}
 
-Now we have estimates of size for the different types, we can assign types to the fields of the message
+Now we have estimates of size for the different types, we can assign types to each field of the updates messages to estimate the size of each update message, as shown in table \ref{tab:fieldSizes}
 
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em} p{5em}}
@@ -134,29 +134,33 @@ Now we have estimates of size for the different types, we can assign types to th
     \end{tabular}
     	\vspace{1em}
 	\caption{example of a position update message}
-	\label{tab:positionUpdateExample}
+	\label{tab:fieldSizes}
 \end{margintable}
-
-
 
 For the plan field, it was assumed that each action within the plan was approximately 20 bytes, and that the average plan has 5 steps.
 
-The following table estimates the size of a message to sent across network:
-\begin{center}
-    \begin{tabular}{| l | l | l |}
-    \hline
-    Update Type & size / bytes & frequency per game step \\ \hline
-    position & 20 & 1 \\ \hline
-    order & 19 & 0.2 \\ \hline
-    goal & 14 & 0.3 \\ \hline
-    plan & 104 & 0.3 \\ \hline
-    health & 12 & 0.1 \\ 
-    \hline
+
+\begin{margintable}
+    \begin{tabular}{p{5em} p{5em} p{5em}}
+    \toprule
+    \emph{Update Type} & \emph{size/bytes} & \emph{frequency} \\
+    \midrule
+    position & 20 & 1 \\ 
+    order & 19 & 0.2 \\
+    goal & 14 & 0.3 \\
+    plan & 104 & 0.3 \\
+    health & 12 & 0.1 \\   
+    \bottomrule
     \end{tabular}
-\end{center}
+    	\vspace{1em}
+	\caption{size of each update message and it's average frequency per game step}
+	\label{tab:updateMessageStats}
+\end{margintable}
 
 
-Now we have the size and frequency of each update message, we can calculate how many bytes are sent to a single client every game step. 
+Table \ref{tab:updateMessageStats} estimates the size of a message to sent across network.
+
+Now the size and frequency of each update message has been estimated, we calculated how many bytes are sent to a single client every game step.
 $$ bytes = 20*1 + 19*0.2 + 14*0.3 + 104*0.3 + 12*0.1 $$
 $$ bytes = 60.4 $$
 
@@ -164,17 +168,37 @@ We have $S$ representing the number of game steps per second, and $N$ representi
 The number of bytes the server sends per second is
 $$ bytes = S * N * 60.4 $$
 
-We now have a formula to calculate network traffic, we need to apply to to various values of $N$ and $S$.
+We now have a formula to calculate network traffic, we need to apply to to various values of $N$ and $S$, as shown in Table \ref{tab:networkRequirements}.
 
 % s=15, 30, 45, 60, n =2, 4, 8, 16
-\begin{center}
-    \begin{tabular}{| l | l | l |}
-    \hline
-    S & N & kB/second \\ \hline
-    15 & 2 & 1.77 \\ \hline
-    \hline
+
+\begin{margintable}
+    \begin{tabular}{p{5em} p{5em} p{5em}}
+    \toprule
+    \emph{S} & \emph{N} & \emph{kB/sec} \\
+    \midrule
+    15 & 2 & 1.77 \\
+    15 & 4 & 3.54 \\
+    15 & 8 & 7.08 \\
+    15 & 16 & 14.16 \\
+    30 & 2 & 3.54 \\
+    30 & 4 & 7.08 \\
+    30 & 8 & 14.16 \\
+    30 & 16 & 28.31 \\
+    45 & 2 & 5.31 \\
+    45 & 4 & 10.62 \\
+    45 & 8 & 21.23 \\
+    45 & 16 & 42.47 \\
+    60 & 2 & 7.08 \\
+    60 & 4 & 14.16 \\
+    60 & 8 & 28.31 \\
+    60 & 16 & 56.62 \\
+    \bottomrule
     \end{tabular}
-\end{center}
+    	\vspace{1em}
+	\caption{estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
+	\label{tab:networkRequirements}
+\end{margintable}
 
 -------------------------- worked upto here ------------------
 
