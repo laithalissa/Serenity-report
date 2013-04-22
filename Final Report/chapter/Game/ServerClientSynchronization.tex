@@ -21,6 +21,9 @@ This topology greatly simplifies the requirements of the networking, because eve
 
 % protocol for synching game states between client server (command, update)
 Figure \ref{fig:loops} gives a good representation how the server and a given client communicate.
+Both the server and client have a full copy of the model representing the game state.
+Their were a variety of benefits from this, the least of which it allowed the clients to scroll around the map without requiring any network traffic.
+
 When the player gives an order, i.e. to move a ship to a given destination, that order is sent to the server in the form of a command.
 On the server side, that command is used to 'update' the server's game model. Now the server's game state is at a later version than the clients. The server generates updates that can be applied to all client's game states to bring them to the same version as the server's version.
 
@@ -64,8 +67,6 @@ The following types of entity updates were devised:
     \begin{tabular}{| l | l | l |}
     \hline
     Update Usage Type & Description & Fields \\ \hline
-    location & used when the ship's location has changed & entityID, location \\ \hline
-    direction & used when the ship's direction has changed & entityID, direction \\ \hline
     position & used when both the ship's location and direction has changed & entityID, location, direction \\ \hline
     order & when a ship's orders change & entityID, order \\ \hline
     goal & when a ship's goal changes & entityID, goal \\ \hline
@@ -75,28 +76,65 @@ The following types of entity updates were devised:
     \end{tabular}
 \end{center}
 
-
-
+Now, when a ship's field, say direction changes, the direction update message is used instead of the old entity update message.
+This is significantly cheaper with regards to network usage because only the ship's ID and new location are sent.
 
 % network traffic calculation
-Both the server and client have a full copy of the model representing the game state. 
-The benefit of this was that it allowed the clients to scroll around the map without requiring any network traffic.
-Their were concerns that the volume of traffic required to maintain all the client's game states updates would be too great for a playable game.
+Their were concerns that the volume of traffic required to maintain all the client's game states updates would still be too great for a playable game.
 Therefore a traffic analysis was done to estimate how much network traffic would actually be required.
-The assumptions with regards to number of ships, amount of updates will be a worse case scenario. 
-If the network has the bandwidth for the heuristic from this calculation, then the network will not be a limiting factor for the majority of games.
+When assumptions are made concerning the game, such as number of ships, number of game steps per second, etc, worst case scenario will be assumed giving the limitations of the game, IE we will know the maximum number of ships the game can have before the game becomes effects by network bandwidth.
 
 
-The message has 5 fields:
-\begin{description}
-\item[shipID] integer field representing ship's unique id
-\item[x] float field representing ship's x-coordinate
-\item[y] float field representing ship's y-coordinate
-\item[direction x] float field representing ship's x direction. Used in tandem with direction-y field.
-\item[direction y] float field representing ship's y direction. Used in tandem with direction-x field.
-\end{description}
 
-There are a varying number of different update messages depending on what part of the game is being updated:
+The size of each update message will need to be estimated as well as how frequently that message will be sent.
+
+First, the size of field types will need estimating using language independent types such as int, float, double, etc.
+\begin{center}
+    \begin{tabular}{| l | l |}
+    \hline
+    Field Type & field size / bytes \\ \hline
+    int & 4 \\ \hline
+    long & 8 \\ \hline
+    float & 4 \\ \hline
+    double & 8 \\
+    \hline
+    \end{tabular}
+\end{center}
+
+To estimate message size, each field size will need to be estimated.
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    Field Name & size / bytes \\ \hline
+    entityID & 4 \\ \hline
+    location & 8 \\ \hline
+    direction & 8 \\ \hline
+    order & 15 \\ \hline
+    goal & 9 \\ \hline
+    plan & 100 \\ \hline
+    hull & 4 && \\ \hline
+    shield & 4 && \\
+    \hline
+    \end{tabular}
+\end{center}
+
+For the plan field, it was assumed that each action within the plan was approximately 20 bytes, and that the average plan has 5 steps.
+
+The following table estimates the size of a message to sent across network:
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    Update Type & size / bytes & frequency per game step \\ \hline
+    position & 20 & 1 \\ \hline
+    order & 19 & 0.2 \\ \hline
+    goal & 14 & 0.3 \\ \hline
+    plan & 104 & 0.3 \\ \hline
+    health & 12 & 0.1 \\ 
+    \hline
+    \end{tabular}
+\end{center}
+
+-------------------------- worked upto here ------------------
 
 
 constants for calculation:
