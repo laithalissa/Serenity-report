@@ -24,18 +24,35 @@ Figure \ref{fig:loops} gives a good representation how the server and a given cl
 When the player gives an order, i.e. to move a ship to a given destination, that order is sent to the server in the form of a command.
 On the server side, that command is used to 'update' the server's game model. Now the server's game state is at a later version than the clients. The server generates updates that can be applied to all client's game states to bring them to the same version as the server's version.
 
-% network traffic calcuation
+% network traffic calculation
 Both the server and client have a full copy of the model representing the game state. 
 The benefit of this was that it allowed the clients to scroll around the map without requiring any network traffic.
 Their were concerns that the volume of traffic required to maintain all the client's game states updates would be too great for a playable game.
 Therefore a traffic analysis was done to estimate how much network traffic would actually be required.
+The assumptions with regards to number of ships, amount of updates will be a worse case scenario. 
+If the network has the bandwidth for the heuristic from this calculation, then the network will not be a limiting factor for the majority of games.
+
+constants for calculation:
+\begin{center}
+    \begin{tabular}{| l | l |}
+    \hline
+    Constant & Value \\ \hline
+    frame rate & 33 \\ 
+    \hline
+    \end{tabular}
+\end{center}
+
+
 
 A few constants were assumed to simplify calculation:
 $$ updates / second = 30 $$
-$$ #ships = 40 $$
+$$ \#ships = 40 $$
+
+The next step was to calculate the size of a ship update message.
 
 Hence a single ship movement update message would be:
-$$ size = (shipID, x, y, directionX, directionY) = 5 * 4 bytes = 20 bytes $$
+$$ size = (shipID, x, y, directionX, directionY, hullHealth) = 5 * 4 bytes = 20 bytes $$
+To send a single ship update to a single client is 20 bytes.
 
 
 
