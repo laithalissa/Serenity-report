@@ -224,7 +224,8 @@ When client 1 updates performs some actions, they must update their game state, 
 	\label{fig:serverClientSychP2P}
 \end{marginfigure}
 
-\begin{marginfigure}[-30em]
+% \begin{marginfigure}[-30em]
+\begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation2.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation3.pdf}		
@@ -256,7 +257,8 @@ For example, In Figure \ref{fig:serverClientDesync}, there are 2 clients.
 By allowing the clients to simulate their game independent of the server, it greatly reduce the volume of network traffic, because many pieces of information that are sent across can be calculated from the existing game state, such as the ship's next location given its current location and destination.
 One of the big issues with \stepTwoName is that the ships move in little 'jumps' where the clients have just received their next position and they move the ship to the next position and the player sees the ship do lots of little jumps before it makes it to its destination. This can be solved with \stepThreeName because the server just needs to send the ship's plan across and the client can then execute the plan.
 
-However it does suffer with problems, because the clients are simulating their game they can fall out of sync with the server, just like \stepOneName. However the architecture means that the clients will never desynchronise too far because the server has the master copy of the game so it will always override the client's version of game state if there ever is a conflict.
+However it does suffer with problems, because the clients are simulating their game they can fall out of sync with the server, just like \stepOneName. However the architecture means that the clients will never desynchronise too far because the server has the master copy of the game so it will always override the client's version of game state if there ever is a conflict. 
+Adding simulation on client side can add much complexity to the client's logic which is one of the primary reasons for choosing the \stepTwoName strategy instead of \stepThreeName.
 
 
 %
