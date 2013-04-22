@@ -39,7 +39,30 @@ The move update will look something like this:
 
 Instead of the server telling the client where the ship's destination is, and letting the client move the ship their, the server tells the client when to the next jump location. In this example the ship with ID 43 has been given a position update to the new coordinates (10,15), facing North which is (0, 1).
 
-Their are a variety of updates message, depending 
+Their are a variety of updates message, depending on which part of the game needs to be updated. 
+Originally there was only 3 types of updates:
+\begin{description}
+\item[addEntity] used for adding an entity to the game. It contains the entity being added to the game.
+\item[deleteEntity] used for deleting an entity. An example of use would be when an entity was just blown up. Only contains the entiyID
+\item[updateEntity] most common update, used to update an entity. It contains the new entity, and the existing entity is replaced with the entity inside this update.
+\end{description}
+
+Having 3 updates provided a very simple design. 
+2 out of the 3 updates(addEntity and updateEntity) contains an entity object which is very large in size.
+To send an entity object across the network can be very slow and should only be done when necessary.
+
+The addEntity update needs to contain an entity because that entity is currently not in the game, so all the fields of the entity need to be sent across to all the clients. Since addEntity is primarily used at the start of a game when all the entities are loaded into the game, this is not a problem.
+
+However the updateEntity update is sent every time an entity changes location, direction, targets, etc.
+Each time an entity's field changes the entire entity must be sent across the network to all the clients.
+Not only is this taking up a large amount of bandwidth, but it is sending a large proportion of redundant fields which haven't been changed.
+The solution to this was to split the updateEntity update into multiple updates, each one for a common update usage.
+The different types of updates to an entity were identifies and a new update message was given to it. 
+The following updates were devised:
+
+
+
+
 
 
 
