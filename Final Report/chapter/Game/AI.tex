@@ -75,3 +75,29 @@ For example, the code that implements the action to move to another ship will ch
 if the target ship is still near to its location when the plan was originally formulated.
 If the target ship has moved too far then the current plan is scrapped so that a new
 plan can be constructed.
+
+\subsection{Targeting Enemy Ships}
+
+As well as constructing a planning framework for executing player given orders,
+it was necessary to build some systems to carry out intelligent actions outside
+of the usual planning loop. One such example is that of targeting enemy ships to
+attack. As a ship moves about the sector it will fire upon any enemy ship that
+it encounters. However, if there are multiple ships in the vicinity then it is
+necessary to select which to target as it may not be possible to attack all of
+them at once. A clever targeting system had to be devised to solve this problem
+in an effective manner.
+
+The first step is to generate a list of all potential enemy targets. This is a list
+of all enemy ships that are in range of any of the ship's weapons. A list of
+enemy ships to attack is selected for each weapon by taking the enemy ships that
+would be attacked by the least number of other weapons as well. This method of
+target selection means that a ship will spread its attacks out to hit as many
+enemy ships as possible.
+
+This pattern of list generation and selection fits the one described by John Hughes
+very well.\cite{hughes1989whyfp} This is one of the reasons why the Project Serenity
+team found Haskell to be highly adept for programming AI algorithms. The separation
+between the potential target list generation and the selection from the list also means
+that it would be very simple to modify the selection strategy. For example, a
+possible enhancement to the game would be to allow players to configure a targeting
+strategy for their fleet which would focus attacks on the weakest enemies.
