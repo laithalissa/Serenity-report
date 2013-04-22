@@ -45,7 +45,6 @@ The move update will look something like this:
 	\label{tab:positionUpdateExample}
 \end{margintable}
 
-
 Instead of the server telling the client where the ship's destination is, and letting the client move the ship their, the server tells the client when to the next jump location. In the example in Figure \ref{tab:positionUpdateExample} the ship with ID 43 has been given a position update to the new coordinates (10,15), facing North which is (0, 1).
 
 Their are a variety of updates message, depending on which part of the game needs to be updated. 
@@ -67,20 +66,24 @@ Each time an entity's field changes the entire entity must be sent across the ne
 Not only is this taking up a large amount of bandwidth, but it is sending a large proportion of redundant fields which haven't been changed.
 The solution to this was to split the updateEntity update into multiple updates, each one for a common update usage.
 The different types of updates to an entity were identifies and a new update message was given to it. 
-The following types of entity updates were devised:
+Table \ref{tab:updateMessageTypes} contains the update messages devised.
 
-\begin{center}
-    \begin{tabular}{| l | l | l |}
-    \hline
-    Update Usage Type & Description & Fields \\ \hline
-    position & used when both the ship's location and direction has changed & entityID, location, direction \\ \hline
-    order & when a ship's orders change & entityID, order \\ \hline
-    goal & when a ship's goal changes & entityID, goal \\ \hline
-    plan & when a ship's plan to achieve its goal changes & entityID, plan \\ \hline
+\begin{table}
+    \begin{tabular}{p{5em} p{15em} p{6em}}
+    \toprule
+    \emph{Update Type} & \emph{Description} & \emph{Fields} \\
+    \midrule
+    position & used when both the ship's location and direction has changed & entityID, location, direction \\
+    order & when a ship's orders change & entityID, order \\
+    goal & when a ship's goal changes & entityID, goal \\
+    plan & when a ship's plan to achieve its goal changes & entityID, plan \\
     health & when a ship's hull or shields health changes & entityID, hull health, shield health \\ 
-    \hline
+    \bottomrule
     \end{tabular}
-\end{center}
+    	\vspace{1em}
+	\caption{each type of update message, description of its usage, and the fields it will contain}
+	\label{tab:updateMessageTypes}
+\end{table}
 
 Now, when a ship's field, say direction changes, the direction update message is used instead of the old entity update message.
 This is significantly cheaper with regards to network usage because only the ship's ID and new location are sent.
@@ -95,34 +98,46 @@ When assumptions are made concerning the game, such as number of ships, number o
 The size of each update message will need to be estimated as well as how frequently that message will be sent.
 
 First, the size of field types will need estimating using language independent types such as int, float, double, etc.
-\begin{center}
-    \begin{tabular}{| l | l |}
-    \hline
-    Field Type & field size / bytes \\ \hline
-    int & 4 \\ \hline
-    long & 8 \\ \hline
-    float & 4 \\ \hline
-    double & 8 \\
-    \hline
+This is done in Table \ref{{tab:positionUpdateExample}
+\begin{margintable}
+    \begin{tabular}{p{5em} p{5em}}
+    \toprule
+    \emph{Field Type} & \emph{Field Size/bytes} \\
+    \midrule
+    int & 4 \\ 
+    long & 8 \\ 
+    float & 4 \\
+    double & 8 \\    
+    \bottomrule
     \end{tabular}
-\end{center}
+    	\vspace{1em}
+	\caption{example of a position update message}
+	\label{tab:positionUpdateExample}
+\end{margintable}
 
-To estimate message size, each field size will need to be estimated.
-\begin{center}
-    \begin{tabular}{| l | l | l |}
-    \hline
-    Field Name & size / bytes \\ \hline
-    entityID & 4 \\ \hline
-    location & 8 \\ \hline
-    direction & 8 \\ \hline
-    order & 15 \\ \hline
-    goal & 9 \\ \hline
-    plan & 100 \\ \hline
-    hull & 4  \\ \hline
-    shield & 4  \\
-    \hline
+Now we have estimates of size for the different types, we can assign types to the fields of the message
+
+\begin{margintable}
+    \begin{tabular}{p{5em} p{5em} p{5em}}
+    \toprule
+    \emph{Field Name} & \emph{Size/bytes} \\
+    \midrule
+    entityID & 4 \\ 
+    location & 8 \\
+    direction & 8 \\ 
+    order & 15 \\
+    goal & 9 \\ 
+    plan & 100 \\ 
+    hull & 4  \\ 
+    shield & 4  \\  
+    \bottomrule
     \end{tabular}
-\end{center}
+    	\vspace{1em}
+	\caption{example of a position update message}
+	\label{tab:positionUpdateExample}
+\end{margintable}
+
+
 
 For the plan field, it was assumed that each action within the plan was approximately 20 bytes, and that the average plan has 5 steps.
 
