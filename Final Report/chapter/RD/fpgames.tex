@@ -16,7 +16,7 @@ attempt to discover how functional programming helped or hindered development.
 
 John Hughes' paper ``Why functional programming matters'' aims to demonstrate how
 ``vitally important'' functional programming is to the real world by exploring and
-demonstrating its advantages.\cite{hughes1989functional} Hughes argues that modularity
+demonstrating its advantages.\cite{hughes1989whyfp} Hughes argues that modularity
 is the key to designing and implementing successful programs for three main reasons.
 Firstly, small modules are much easier to code quickly because the requirements for
 a small component are much easier to reason about, design, and implement. Second,
@@ -105,10 +105,70 @@ arguments a function will \emph{always} return the same result. Removing state
 and side effects eases understanding of programs because they are easier to
 reason about and test: ``avoiding side effects has serendipitous effects on testing.''\cite{smallbone2011}
 
-% Complexity from control
+However, Moseley and Marks suggest that ``the main weakness of functional programming
+is the flip side of its main strength --- namely that problems arise when (as is often the
+case) the system to be built must maintain state of some kind.'' Games are an
+example of programs that must keep some kind of state, such as a score or the
+positions of entities in the world. Is it possible to simulate the necessary state
+in a functional language that has removed mutable state? One possibility would be
+to add a new parameter and change the return type of functions to allow them to
+accept and output state. In this way the state can be threaded through the entire
+program. Moseley and Marks point out that this would recreate a pool of global
+variables and, although referential transparency is maintained, the ease of understanding
+is lost. The all important concept of modularity is raised again by Wadler who
+notes that ``it is with regard to modularity that explicit data flow becomes both
+a blessing and a curse.''\cite{wadler1995monads} He describes explicit data flow
+as ``the ultimate in modularity'' since all data in and out is seen clearly and is
+accessible. On the other hand, ``the essence of an algorithm can become buried under
+the plumbing required to carry data from its point of creation to its point of use.''
+The other approach, applicable to Haskell, is to use monads. Wadler explains that
+monads can be used to ``mimic the effect of impure features such as exceptions,
+state, and continuations.''\cite{wadler1992essence} The use of monads in functional
+programming allows a developer to work with state without drowning under the huge
+amount of explicit data flow required in the former approach. Although, Moseley and Marks
+are still concerned that ``despite their huge strengths monads have as yet been
+insufficient to give rise to widespread adoption of functional techniques.''
 
-% Complexity from code volume
+The second cause of complexity identified by Moseley and Marks is complexity
+from control. Control is the order in which things happen within a program.
+In most programming languages the developer is concerned with control because
+often the ordering is controlled by the order in which code appears in a program
+and because this order is further modified by branching and looping instructions.
+The problem with control is that it hinders informal reasoning about a program.
+A reviewer must assume that the ordering of statements is significant until
+proven otherwise. If a mistake is made in this process then subtle bugs can
+be introduced into a program. Functional programming helps slightly with this
+problem since the approach encourages more abstract control with functions
+such as "map" instead of explicit loops. Also, due to the referentially transparent
+nature of functional programming, the order of execution of function calls
+is irrelevant.\cite{hughes1989whyfp}\cite{wadler1995monads}
 
+The final major cause of complexity is code volume. Large, bloated programs
+require much more effort to fully understand. Brooks believed that the complexity
+of a software project increases nonlinearly with its size.\cite{brooks1987bullet}
+For this reason it is ``vital to reduce the amount of code to an absolute
+minimum''.\cite{moseley2006tarpit} The functional approach to programming
+has been noted to produce much more concise programs. For example, Hughes
+states that ``functional programs are an order of magnitude shorter'' than
+their conventional counterparts.\cite{hughes1989whyfp} Marks and Moseley
+also argue that by reducing the complexity caused by state and control it
+is much less likely that complexity with grow with code volume in a nonlinear
+fashion, citing Dijkstra\cite{dijkstra1972humble}:
+
+\begin{quote}
+It has been suggested that there is some kind of law of nature telling us that
+the amount of intellectual effort needed grows with the square of program length.
+But, thank goodness, no one has been able to prove this law. And this is because
+it need not be true. [...] As a result I tend to the assumption --- up till now
+not disproved by experience --- that by suitable application of our powers of
+abstraction, the intellectual effort needed to conceive or to understand a program
+need not grow more than proportional to program length.
+\end{quote}
+
+It has been shown in the explorations of the previous two causes of complexity
+that functional programming can help to reduce the complexity of state and
+control. Therefore, the issue of code volume may be less of a cause for complexity
+than in other programming paradigms.
 
 Common misonceptions surround the use of functional languages for practical
 software projects. Many seem to believe that functional programming restricts
@@ -158,7 +218,7 @@ game. On the other hand, Roundy praises the utility of the profiling tools that
 are available for Haskell. Using these tools it is much easier to pinpoint the
 areas of code to focus optimisation efforts on.
 
-Not only was deciding how to optimise a function in Haskell difficult, but it
+Deciding how to optimise a function in Haskell is not the only difficultly. It
 may require dropping into another language. Roundy states that for the lowest
 level functions ``optimisation has consisted of rewriting a key function in C
 or calling a C library function''. Again, this is not a good sign for the performance
