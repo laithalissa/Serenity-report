@@ -23,21 +23,22 @@ a small component are much easier to reason about, design, and implement. Second
 the more generic modules that are constructed can be reused. This leads to faster
 development during subsequent projects. Thirdly, the independence of modules allows
 them to developed and tested separately, helping to parallelise the work that needs
-to be done and reducing the amount of time required for debugging. Combined these
-advantages of modular design bring great improvements to productivity. These benefits
+to be done and reducing the amount of time required for debugging. These advantages
+of modular design combine to bring great improvements to productivity. These benefits
 of modularisation are also espoused by Parnas who agrees that modular programming
 shortens development time, improves comprehensibility of the resulting programs,
 and increases flexibility --- it is possible to make large changes to one module
 without affecting any of the others.\cite{parnas1972modular}
 
 However, the ability of the programmer to modularise their code is reliant on the
-ways in which they can glue solutions to subproblems together. This glue must
-often be provided by the programming language. Hughes argues that functional
+ways in which they can glue the solutions of subproblems together. This glue must
+often be provided by the programming language itself. Hughes argues that functional
 programming provides two very important kinds of glue: higher order functions
 and lazy evaluation. These two aspects of functional programming are very powerful
 and allow greatly improved modularisation.
 
-General higher order functions, such as "map" and "foldl", can be used as glue for
+\functions(reduce)
+General higher order functions, such as "map" and "reduce"\sidenote{The \scalenote{"reduce"} function is called \scalenote{"foldl"} in Haskell}, can be used as glue for
 simpler, specialised functions to make more complex ones. Higher order functions
 are great examples of code reuse as they can be used to create many other functions
 with minimal effort. Hughes gives examples of operations over lists and trees, such
@@ -80,8 +81,8 @@ housekeeping operators.''\cite{backus1978liberate}
 In his 1987 paper ``No Silver Bullet'', Brooks identified four difficulties that
 are inherent in the nature of software development: complexity, conformity,
 changeability, and invisibility.\cite{brooks1987bullet} Brooks believes that
-because of these four essential difficulties make it very unlikely that there
-will be a ``single development, in either technology or in management technique,
+these four essential difficulties make it very unlikely that there will be a
+``single development, in either technology or in management technique,
 that by itself promises even one order-of-magnitude improvement in productivity,
 in reliability, in simplicity.'' However, Moseley and Marks argue that complexity
 is the only significant problem; that ``complexity is \emph{the} root cause of the
@@ -125,7 +126,7 @@ The other approach, applicable to Haskell, is to use monads. Wadler explains tha
 monads can be used to ``mimic the effect of impure features such as exceptions,
 state, and continuations.''\cite{wadler1992essence} The use of monads in functional
 programming allows a developer to work with state without drowning under the huge
-amount of explicit data flow required in the former approach. Although, Moseley and Marks
+amount of explicit data flow required in the former approach. Although Moseley and Marks
 are still concerned that ``despite their huge strengths monads have as yet been
 insufficient to give rise to widespread adoption of functional techniques.''
 
@@ -150,7 +151,7 @@ For this reason it is ``vital to reduce the amount of code to an absolute
 minimum''.\cite{moseley2006tarpit} The functional approach to programming
 has been noted to produce much more concise programs. For example, Hughes
 states that ``functional programs are an order of magnitude shorter'' than
-their conventional counterparts.\cite{hughes1989whyfp} Marks and Moseley
+their conventional counterparts.\cite{hughes1989whyfp} Moseley and Marks
 also argue that by reducing the complexity caused by state and control it
 is much less likely that complexity with grow with code volume in a nonlinear
 fashion, citing Dijkstra\cite{dijkstra1972humble}:
@@ -164,7 +165,7 @@ not disproved by experience --- that by suitable application of our powers of
 abstraction, the intellectual effort needed to conceive or to understand a program
 need not grow more than proportional to program length.
 \end{quote}
-
+\noindent
 It has been shown in the explorations of the previous two causes of complexity
 that functional programming can help to reduce the complexity of state and
 control. Therefore, the issue of code volume may be less of a cause for complexity
