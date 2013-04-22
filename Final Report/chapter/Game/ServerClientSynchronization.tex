@@ -21,7 +21,7 @@ This topology greatly simplifies the requirements of the networking, because eve
 
 % protocol for synching game states between client server (command, update)
 Figure \ref{fig:loops} gives a good representation how the server and a given client communicate.
-Both the server and client have a full copy of the model representing the game state.
+This method is \stepTwoName, where both the server and client have a full copy of the model representing the game state.
 Their were a variety of benefits from this, the least of which it allowed the clients to scroll around the map without requiring any network traffic.
 
 When the player gives an order, i.e. to move a ship to a given destination, that order is sent to the server in the form of a command.
@@ -200,82 +200,21 @@ We now have a formula to calculate network traffic, we need to apply to to vario
 	\label{tab:networkRequirements}
 \end{margintable}
 
--------------------------- worked upto here ------------------
 
-
-constants for calculation:
-\begin{center}
-    \begin{tabular}{| l | l |}
-    \hline
-    Constant & Value \\ \hline
-    world updates / second & 30 \\ \hline
-    ships & 40 \\
-    \hline
-    \end{tabular}
-\end{center}
-
-A 
-
-The next step was to calculate the size of a ship update message.
-
-Hence a single ship movement update message would be:
-$$ size = (shipID, x, y, directionX, directionY, hullHealth) = 5 * 4 bytes = 20 bytes $$
-To send a single ship update to a single client is 20 bytes.
-
-
-
-			world updates per second 30
-			ships in world = 40
-			bullets in world = 1000
-			ship movement update = (shipId, x, y, direction) = 4 * 4bytes = 16 bytes.
-			bullet movement update = (bulletId, x, y, direction) = 4 * 4bytes = 16bytes
-			per client:
-				per update:
- 					ship data = 40 * 16bytes = 640bytes
-					bullet data = 1000 * 16bytes = 16000bytes
-					total data = 16640bytes
-			    per second = 30 * 16640 = 499200bytes = 487.5KB/S
-			3 clients = 3 * 487.5KB/s = 1462.5KB/s = 1.43MB/s
-
-% advantages/disadvantages of lockstep
-% advantages/disadvantages of server client with simulation
-
-
-\begin{comment}
-
-This section talks about how multiplayer was achieved.
-This includes the network topology.
-server-client allows master copy to exist on server.
-
-- master copy of world on server
-- clients perform no logic, only apply updates to
-- 
-
-
-
-
------------------------------------ old gay -----------------------------------------
-
-we need to work out how the computers talked to each other very early on
-2 considerations: peer 2 peer, client-server
-  - advantages of peer 2 peer
-  - advantages of peer server-client
-  - why server-client chosen 
-  - issues experienced with server-client
-    - jumpy ship movements
-\end{comment}
-
-The game was designed around being multiplayer, so our first goal was to decide how the player's computers would talk to each other.
-Since their was an arbitrary number of players (greater than 1), We needed a system that would scale, but would also be robust.
-The game was expecting all players to be on the same LAN (Local Area Network), hence a high bandwidth was available for the communications.
-
-There are 3 strategies for the interactions between computers:
+% overview of other strategies
+When deciding on how the server and client would synchronise their game states, we had 3 choices:
 \begin{itemize}
 \item \stepOneName
 \item \stepTwoName
 \item \stepThreeName
 \end{itemize}
 
+\stepTwoName was the method chosen, however it wasn't a clear choice which would be the best since there is no total ordering between them, each one has its own benefits under different circumstances.
+
+% advantages/disadvantages of lockstep
+\emph{\stepOneName} is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
+Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
+When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.png}
@@ -284,11 +223,6 @@ There are 3 strategies for the interactions between computers:
 	}
 	\label{fig:serverClientSychP2P}
 \end{marginfigure}
-
-% what
-\stepOneName is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
-Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
-When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
 \begin{marginfigure}[-30em]
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
@@ -315,30 +249,104 @@ Since all clients act as server, any client can disconnect and the game continue
 Maintaining synchronisation when using a peer-2-peer protocol can be very challenging from a technical point of view, with non-determinism being caused by messages being received by clients at different times causing race conditions.
 When this happens in a game, it can cause clients game states to desynchronise.
 For example, In Figure \ref{fig:serverClientDesync}, there are 2 clients.
-%   corrupted client can effect the entire game
 
 
+% advantages/disadvantages of server client with simulation
+\empth{\stepThreeName} is very similar to \stepTwoName with the addition that there is restricted game simulation on the client.
+By allowing the clients to simulate their game independent of the server, it greatly reduce the volume of network traffic, because many pieces of information that are sent across can be calculated from the existing game state, such as the ship's next location given its current location and destination.
+One of the big issues with \stepTwoName is that the ships move in little 'jumps' where the clients have just received their next position and they move the ship to the next position and the player sees the ship do lots of little jumps before it makes it to its destination. This can be solved with \stepThreeName because the server just needs to send the ship's plan across and the client can then execute the plan.
 
-% res/computer_communication_architecture
+However it does suffer with problems, because the clients are simulating their game they can fall out of sync with the server, just like \stepOneName. However the architecture means that the clients will never desynchronise too far because the server has the master copy of the game so it will always override the client's version of game state if there ever is a conflict.
 
 
-
-
-% lockstep
-%   - each client has the master copy of the world
-%   - when a client does something, it tells all others
-%   - problems:
-%     - desycnhronization
-%     - currupted client fucks up everyone
-
-% simple server client
-%   - it's what we've implemented
-%   - no simulation on clients
-%   - 1 server that has master copy
-%   - server does all processing and sends updates to clients
-%   - clients just render the world and send commands to server
-
-% server client with simulation
-%   - similar to simple server client but client does 'some' simulation. They in no way can effect the world.
-%   - for instance if client knows ships destination and current location it can render the ship graciously moving instead of jumping on every update.
-
+%
+%
+%
+%----------------------------------- old gay -----------------------------------------
+%
+%we need to work out how the computers talked to each other very early on
+%2 considerations: peer 2 peer, client-server
+%  - advantages of peer 2 peer
+%  - advantages of peer server-client
+%  - why server-client chosen 
+%  - issues experienced with server-client
+%    - jumpy ship movements
+%\end{comment}
+%
+%The game was designed around being multiplayer, so our first goal was to decide how the player's computers would talk to each other.
+%Since their was an arbitrary number of players (greater than 1), We needed a system that would scale, but would also be robust.
+%The game was expecting all players to be on the same LAN (Local Area Network), hence a high bandwidth was available for the communications.
+%
+%There are 3 strategies for the interactions between computers:
+%\begin{itemize}
+%\item \stepOneName
+%\item \stepTwoName
+%\item \stepThreeName
+%\end{itemize}
+%
+%
+%\begin{marginfigure}
+%	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.png}
+%	\caption{
+%	\stepOneName : 4 clients connected. client 1 has just modified its game state, so it send the update to all other clients.
+%	}
+%	\label{fig:serverClientSychP2P}
+%\end{marginfigure}
+%
+%% what
+%\stepOneName is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
+%Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
+%When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
+%
+%\begin{marginfigure}[-30em]
+%	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
+%	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation2.pdf}
+%	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation3.pdf}		
+%	\caption{
+%	\stepOneName : example of desynchronization when using the \stepOneName strategy. Client 1 on left, client 2 on right. 
+%	Each diagram represents state of game for that clients at a given time period.	3 diagrams vertically aligned, First one is top, second one is middle, third one is bottom.
+%	}
+%	\label{fig:serverClientDesync}
+%\end{marginfigure}
+%
+%% advantages
+%%   playable with slow networks
+%This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
+%%   no dedicated server required
+%No client is picked to act as server, which causes game to end if that selected client disconnects.
+%Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals, such as Civilization series\cite{civilizationInMyPants}.
+%
+%
+%
+%% disadvantages
+%%   disynchronization
+%Maintaining synchronisation when using a peer-2-peer protocol can be very challenging from a technical point of view, with non-determinism being caused by messages being received by clients at different times causing race conditions.
+%When this happens in a game, it can cause clients game states to desynchronise.
+%For example, In Figure \ref{fig:serverClientDesync}, there are 2 clients.
+%%   corrupted client can effect the entire game
+%
+%
+%
+%% res/computer_communication_architecture
+%
+%
+%
+%
+%% lockstep
+%%   - each client has the master copy of the world
+%%   - when a client does something, it tells all others
+%%   - problems:
+%%     - desycnhronization
+%%     - currupted client fucks up everyone
+%
+%% simple server client
+%%   - it's what we've implemented
+%%   - no simulation on clients
+%%   - 1 server that has master copy
+%%   - server does all processing and sends updates to clients
+%%   - clients just render the world and send commands to server
+%
+%% server client with simulation
+%%   - similar to simple server client but client does 'some' simulation. They in no way can effect the world.
+%%   - for instance if client knows ships destination and current location it can render the ship graciously moving instead of jumping on every update.
+%
