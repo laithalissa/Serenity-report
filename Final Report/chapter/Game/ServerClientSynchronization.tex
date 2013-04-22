@@ -101,22 +101,22 @@ First, the size of field types will need estimating using language independent t
     \end{tabular}
 \end{center}
 
-%To estimate message size, each field size will need to be estimated.
-%\begin{center}
-%    \begin{tabular}{| l | l | l |}
-%    \hline
-%    Field Name & size / bytes \\ \hline
-%    entityID & 4 \\ \hline
-%    location & 8 \\ \hline
-%    direction & 8 \\ \hline
-%    order & 15 \\ \hline
-%    goal & 9 \\ \hline
-%    plan & 100 \\ \hline
-%    hull & 4 && \\ \hline
-%    shield & 4 && \\
-%    \hline
-%    \end{tabular}
-%\end{center}
+To estimate message size, each field size will need to be estimated.
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    Field Name & size / bytes \\ \hline
+    entityID & 4 \\ \hline
+    location & 8 \\ \hline
+    direction & 8 \\ \hline
+    order & 15 \\ \hline
+    goal & 9 \\ \hline
+    plan & 100 \\ \hline
+    hull & 4  \\ \hline
+    shield & 4  \\
+    \hline
+    \end{tabular}
+\end{center}
 
 For the plan field, it was assumed that each action within the plan was approximately 20 bytes, and that the average plan has 5 steps.
 
