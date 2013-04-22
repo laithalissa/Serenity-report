@@ -24,6 +24,25 @@ Figure \ref{fig:loops} gives a good representation how the server and a given cl
 When the player gives an order, i.e. to move a ship to a given destination, that order is sent to the server in the form of a command.
 On the server side, that command is used to 'update' the server's game model. Now the server's game state is at a later version than the clients. The server generates updates that can be applied to all client's game states to bring them to the same version as the server's version.
 
+An example of an update message is: A ship has been given a move order to a location on opposite side of map.
+Since their is no simulation on the client side, the ship will only move if the server sends an position update to the clients, moving it slightly closer to its destination. This means that for every time step, every ship that is moving will require an update message send across the network to every client. 
+
+The move update will look something like this:
+\begin{center}
+    \begin{tabular}{| l | l | l | l | l |}
+    \hline
+    shipID & x & y & direction x & direction y \\ \hline
+    43 & 10 & 15 & 0 & 1 \\ \hline
+    \hline
+    \end{tabular}
+\end{center}
+
+Instead of the server telling the client where the ship's destination is, and letting the client move the ship their, the server tells the client when to the next jump location. In this example the ship with ID 43 has been given a position update to the new coordinates (10,15), facing North which is (0, 1).
+
+Their are a variety of updates message, depending 
+
+
+
 % network traffic calculation
 Both the server and client have a full copy of the model representing the game state. 
 The benefit of this was that it allowed the clients to scroll around the map without requiring any network traffic.
@@ -32,21 +51,31 @@ Therefore a traffic analysis was done to estimate how much network traffic would
 The assumptions with regards to number of ships, amount of updates will be a worse case scenario. 
 If the network has the bandwidth for the heuristic from this calculation, then the network will not be a limiting factor for the majority of games.
 
+
+The message has 5 fields:
+\begin{description}
+\item[shipID] integer field representing ship's unique id
+\item[x] float field representing ship's x-coordinate
+\item[y] float field representing ship's y-coordinate
+\item[direction x] float field representing ship's x direction. Used in tandem with direction-y field.
+\item[direction y] float field representing ship's y direction. Used in tandem with direction-x field.
+\end{description}
+
+There are a varying number of different update messages depending on what part of the game is being updated:
+
+
 constants for calculation:
 \begin{center}
     \begin{tabular}{| l | l |}
     \hline
     Constant & Value \\ \hline
-    frame rate & 33 \\ 
+    world updates / second & 30 \\ \hline
+    ships & 40 \\
     \hline
     \end{tabular}
 \end{center}
 
-
-
-A few constants were assumed to simplify calculation:
-$$ updates / second = 30 $$
-$$ \#ships = 40 $$
+A 
 
 The next step was to calculate the size of a ship update message.
 
