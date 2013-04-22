@@ -157,7 +157,6 @@ For the plan field, it was assumed that each action within the plan was approxim
 	\label{tab:updateMessageStats}
 \end{margintable}
 
-
 Table \ref{tab:updateMessageStats} estimates the size of a message to sent across network.
 
 Now the size and frequency of each update message has been estimated, we calculated how many bytes are sent to a single client every game step.
@@ -199,6 +198,9 @@ We now have a formula to calculate network traffic, we need to apply to to vario
 	\caption{estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
 	\label{tab:networkRequirements}
 \end{margintable}
+
+According to these network estimations, when game steps is 60, and there are 16 clients, the network usage per second is 56.62kB/second. This is highly acceptable for running multiplayer over internet as well as LAN networks.
+
 
 
 % overview of other strategies
