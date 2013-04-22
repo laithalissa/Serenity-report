@@ -24,7 +24,11 @@ the more generic modules that are constructed can be reused. This leads to faste
 development during subsequent projects. Thirdly, the independence of modules allows
 them to developed and tested separately, helping to parallelise the work that needs
 to be done and reducing the amount of time required for debugging. Combined these
-advantages of modular design bring great improvements to productivity.
+advantages of modular design bring great improvements to productivity. These benefits
+of modularisation are also espoused by Parnas who agrees that modular programming
+shortens development time, improves comprehensibility of the resulting programs,
+and increases flexibility --- it is possible to make large changes to one module
+without affecting any of the others.\cite{parnas1972modular}
 
 However, the ability of the programmer to modularise their code is reliant on the
 ways in which they can glue solutions to subproblems together. This glue must
@@ -33,7 +37,7 @@ programming provides two very important kinds of glue: higher order functions
 and lazy evaluation. These two aspects of functional programming are very powerful
 and allow greatly improved modularisation.
 
-General higher order functions, such as "map" and "fold", can be used as glue for
+General higher order functions, such as "map" and "foldl", can be used as glue for
 simpler, specialised functions to make more complex ones. Higher order functions
 are great examples of code reuse as they can be used to create many other functions
 with minimal effort. Hughes gives examples of operations over lists and trees, such
@@ -66,7 +70,50 @@ approach. Giving real examples Hughes is able to make a strong case for the
 effectiveness of modularisation through laziness and higher order functions.
 The demonstration of a highly modular version of the alpha-beta pruning algorithm,
 in particular, is of great interest due to its applicability to game development.
+The conclusion that the functional approach leads to more general, reusable
+modules is supported by John Backus' ACM Turing award lecture from 1977. Backus
+gives the example of a program to calculate the inner product and finds that
+``the functional version is nonrepetitive, [...], is more hierarchically constructed,
+is completely general, and creates `housekeeping' operations by composing high-level
+housekeeping operators.''\cite{backus1978liberate}
 
+In his 1987 paper ``No Silver Bullet'', Brooks identified four difficulties that
+are inherent in the nature of software development: complexity, conformity,
+changeability, and invisibility.\cite{brooks1987bullet} Brooks believes that
+because of these four essential difficulties make it very unlikely that there
+will be a ``single development, in either technology or in management technique,
+that by itself promises even one order-of-magnitude improvement in productivity,
+in reliability, in simplicity.'' However, Moseley and Marks argue that complexity
+is the only significant problem; that ``complexity is \emph{the} root cause of the
+vast majority of problems with software today.''\cite{moseley2006tarpit} Other
+problems can either be classified as complexity, or derive from unmanageable
+complexity. They argue that simplicity is vital to successful software development,
+and that functional programming can help to deliver this simplicity.
+
+Moseley and Marks indentify several causes of complexity in real software systems.
+The first cause is mutable state. Brooks also mentions the problem of state,
+saying that from ``the difficulty of enumerating, much less understanding, all
+the possible states of the program, [...] comes the unreliability''.\cite{brooks1987bullet}
+State hinders understanding of software through testing and reasoning about the code.
+This is because testing a program in one state does not guarantee anything about
+how the program will behave when in a different state. The vast number of different
+possible states also makes it infeasible to understand them all. The functional
+solution to the complexity of state is to discard state and side effects.
+Programming with a pure functional language, such as Haskell, creates referentially
+transparent programs. Referential transparency means that given the same set of
+arguments a function will \emph{always} return the same result. Removing state
+and side effects eases understanding of programs because they are easier to
+reason about and test: ``avoiding side effects has serendipitous effects on testing.''\cite{smallbone2011}
+
+% Complexity from control
+
+% Complexity from code volume
+
+
+Common misonceptions surround the use of functional languages for practical
+software projects. Many seem to believe that functional programming restricts
+a developer; that it is too hard to build graphical programs, work with input
+and output, or perform other stateful computation, such as networking.
 The author of the darcs version control system laments that a common reaction
 from people hearing about darcs is to say that ``it is a shame that it is
 written in Haskell''.\cite{roundy2005darcs} They believe that, because it is
