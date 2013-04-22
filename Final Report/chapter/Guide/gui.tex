@@ -1,4 +1,42 @@
 \section{Implementing a Graphical User Interface (GUI) Framework, and the Power of Lenses}
 \label{sec:gui}
 
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
+Gloss provided an interim layer to abstract away the complexities of OpenGL and impure drawing code, but as it turned out further abstractions on top of this were desirable. Gloss provides no ``widgets'' (buttons, scroll bars, etc), nor does it facilitate separable concerns for event handling.
+
+Some time was spent in developing a framework on top of Gloss to enable easier construction of graphical interfaces, which has been glibly titled \emph{Sheen}\index{Sheen}. Provided by Sheen is a mechanism for event handling, recursively nested views, and various pre-built widgets such as labels, buttons, and text boxes. The best approach to the design of Sheen was not obvious, and its structure, and use of \emph{lenses} (see below) is considered to be quite novel and a demonstration of good Haskell style. This section considers various aspects of the Sheen design, but first it is worth examining lenses as significant use of them are made in the framework.
+
+\subsection{On Lenses}
+
+A lens is the functional equivalent of a setter and a getter at the same time. One way of thinking of a lens is it having the type
+
+\functions(view, get, set, lens)
+>data Lens a b = {get :: a -> b, set :: b -> a -> a}
+
+Normally lenses are not actually implemented this way, but in such a way to be isomorphic to this. The most popular implementation of lenses is currently in the \emph{lens} package by Edward Kmett,\sidenote{Edward A. Kmett, Copyright 2012-2013 \url{https://github.com/ekmett/lens/}.} which uses a generalised form of a so called van Laarhoven lenses. A van Laarhoven lens as type
+
+>type Lens a b = forall f. Functor f => (b -> f b) -> a -> f a
+
+and the generalised notion of a lens family has type
+
+>type LensFamily a b c d = forall f. Functor f => (c -> f d) -> a -> f b
+
+The advantage of this definition of lenses is that they can be composed normally as functions using "(.)" and "id" from the Haskell prelude. This, and the large number of combinators provided in the \emph{lens} package, is what makes lenses so vastly useful. For a full technical explanation of this implementation of lenses see \url{comonad.com/reader/2012/mirrored-lenses}; here the way they are used is all that need be considered.
+
+\functions(makeLenses, makeClassy, _bar, _baz, bar, baz, sndLens)
+There are two ways of creating lenses. First is to use the "lens" function to build the lens from a getting and setting function directly, for example
+
+>sndLens = lens snd (\(a,_) b -> (a,b))
+
+This leads to a lot of boilerplate however. The alternative is to use the template Haskell routines provided in the library, "makeLenses" or "makeClassy". These do require Template Haskell (and hence GHC) but are very useful indeed. In the expression
+
+>data Foo a = Foo
+>  {  _bar :: a
+>  ,  _baz :: [a]
+>  }
+>makeLenses ''Foo
+
+the last line will create two addition functions
+
+>bar :: Functor f => (a -> f a) -> Foo a -> f (Foo a)
+>baz :: Functor f => ([a] -> f [a]) -> Foo a -> f (Foo a)
+
