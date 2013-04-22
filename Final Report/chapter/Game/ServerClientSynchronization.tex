@@ -58,10 +58,22 @@ Each time an entity's field changes the entire entity must be sent across the ne
 Not only is this taking up a large amount of bandwidth, but it is sending a large proportion of redundant fields which haven't been changed.
 The solution to this was to split the updateEntity update into multiple updates, each one for a common update usage.
 The different types of updates to an entity were identifies and a new update message was given to it. 
-The following updates were devised:
+The following types of entity updates were devised:
 
-
-
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    Update Usage Type & Description & Fields \\ \hline
+    location & used when the ship's location has changed & entityID, location \\ \hline
+    direction & used when the ship's direction has changed & entityID, direction \\ \hline
+    position & used when both the ship's location and direction has changed & entityID, location, direction \\ \hline
+    order & when a ship's orders change & entityID, order \\ \hline
+    goal & when a ship's goal changes & entityID, goal \\ \hline
+    plan & when a ship's plan to achieve its goal changes & entityID, plan \\ \hline
+    health & when a ship's hull or shields health changes & entityID, hull health, shield health \\ 
+    \hline
+    \end{tabular}
+\end{center}
 
 
 
