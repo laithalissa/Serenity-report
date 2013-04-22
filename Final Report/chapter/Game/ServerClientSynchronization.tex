@@ -31,16 +31,22 @@ An example of an update message is: A ship has been given a move order to a loca
 Since their is no simulation on the client side, the ship will only move if the server sends an position update to the clients, moving it slightly closer to its destination. This means that for every time step, every ship that is moving will require an update message send across the network to every client. 
 
 The move update will look something like this:
-\begin{center}
-    \begin{tabular}{| l | l | l | l | l |}
-    \hline
-    shipID & x & y & direction x & direction y \\ \hline
-    43 & 10 & 15 & 0 & 1 \\ \hline
-    \hline
-    \end{tabular}
-\end{center}
 
-Instead of the server telling the client where the ship's destination is, and letting the client move the ship their, the server tells the client when to the next jump location. In this example the ship with ID 43 has been given a position update to the new coordinates (10,15), facing North which is (0, 1).
+\begin{margintable}
+    \begin{tabular}{l l l l l}
+    \toprule
+    \emph{shipID} & \emph{x} & \emph{y} & \emph{direction x} & \emph{direction y} \\ 
+    \midrule
+    43 & 10 & 15 & 0 & 1 \\
+    \bottomrule
+    \end{tabular}
+    	\vspace{1em}
+	\caption{example of a position update message}
+	\label{tab:positionUpdateExample}
+\end{margintable}
+
+
+Instead of the server telling the client where the ship's destination is, and letting the client move the ship their, the server tells the client when to the next jump location. In the example in Figure \ref{tab:positionUpdateExample} the ship with ID 43 has been given a position update to the new coordinates (10,15), facing North which is (0, 1).
 
 Their are a variety of updates message, depending on which part of the game needs to be updated. 
 Originally there was only 3 types of updates:
@@ -130,6 +136,27 @@ The following table estimates the size of a message to sent across network:
     goal & 14 & 0.3 \\ \hline
     plan & 104 & 0.3 \\ \hline
     health & 12 & 0.1 \\ 
+    \hline
+    \end{tabular}
+\end{center}
+
+
+Now we have the size and frequency of each update message, we can calculate how many bytes are sent to a single client every game step. 
+$$ bytes = 20*1 + 19*0.2 + 14*0.3 + 104*0.3 + 12*0.1 $$
+$$ bytes = 60.4 $$
+
+We have $S$ representing the number of game steps per second, and $N$ representing the number of clients connected to server.
+The number of bytes the server sends per second is
+$$ bytes = S * N * 60.4 $$
+
+We now have a formula to calculate network traffic, we need to apply to to various values of $N$ and $S$.
+
+% s=15, 30, 45, 60, n =2, 4, 8, 16
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    S & N & kB/second \\ \hline
+    15 & 2 & 1.77 \\ \hline
     \hline
     \end{tabular}
 \end{center}
