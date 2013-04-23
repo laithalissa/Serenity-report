@@ -1,61 +1,35 @@
 \section{Resources: The Currency of the Game}
 
-\begin{comment}
+The game was designed to include a resource system. Players would collect resources to be used to power their fleets. In this way, resources represent the currency of the game and a player's access to sufficient resources has a dramatic affect on their chances of winning a battle. There are three different types of resource: fuel, metal, and anti-matter. Each resource has a unique purpose in the game, requiring the player to modify their strategy according to the quantity of resources they have access to.
 
-what are resources
-
-how they effects the game
-
-for each resources:
-  - what it's used for
-
-\end{comment}
-
-The resources represent the currency of the game. The player's access to resources can dramatically effect hit chances of winning a battle.
-
-Each resources has a unique purpose in the game, requiring the player to change strategy depending on the type and quantity of resources the player has access to.
-
-The three resources are:
-\begin{itemize}
-\item Fuel
-\item Metal
-\item Anti-Matter
-\end{itemize}
-
-% describe how their are gained (from planets)
-Each planet on the map will have a supply of resources. 
-The quantity of resources on each planet will vary, but will relate to the planet's type.
-When that planet is captured, it will provide a constant trickle of its resources to the player.
-For instance if a planet has the following resources:
 \begin{description}
-\item[Fuel]: 1
-\item[Metal]: 2
-\item[Anti-Matter]: 0
+\item[Fuel] Fuel is used to regenerate a ship's shields. As discussed previously, shields are vitally important to the protection of a ship since they prevent or reduce the amount of damage that is done to the ship's hull. Without fuel a ship would be much more vulnerable to attack since it is unable to replenish its shields. An extension to this concept would be to require ships to have fuel to power their shields at all, however, this potential dynamic has not been explored fully.
+
+\item[Metal] If a ship's hull has been damaged then the supply of metal can be used to slowly repair it. Access to a greater quantity of metal allows a player to adopt a bolder strategy since their damaged ships can be brought back to full health if they are not destroyed completely. Without metal any damaged ships become easy prey for the enemy since they are unable to recover from attacks and will quickly be destroyed.
+
+\item[Anti-matter] There are certain very powerful weapons that a ship can be equipped with. However, these weapons require a supply of anti-matter, the rarest of the three resources, to be used. Having access to anti-matter allows a player to unleash devastating attacks from these special weapons and could possibly turn the tide of battle in their favour.
 \end{description}
-And is captured by player 1, then every minute, they will receive 2 metal from the planet, and 1 fuel. 
-The planet will continue to supply the player with resources until the game ends or another player captures the planet.
+\noindent
+A player is able to mine resources from the planets that are under their control.\sidenote{See Section~\ref{sec:planetary-capture} on how to gain control of planets} As discussed in Section~\ref{sec:model}, each planet in the sector has a supply of resources that varies depending on its ecotype. Planets that are owned by a player will provide a constant trickle of resources to the player.
 
-% describe how the ship has access to the resources
-Each ship will have its own cache of resources on board.
-When the ship is near one of it's planets, It will have access to resupply from the player's stockpile. The ship's resource cache will automatically refill when near the player's planets. 
-Larger class ships have bigger resource caches, and therefore can last longer before needing to resupply (subject to resource consumption).
+Although the framework for the resource system is in place, the actual usage of resources has not been implemented yet. This is because discussions about the mechanics of resource consumption never really came to a concrete conclusion. So, it was decided that it would be better to focus on the other planned features and to return to resources if there was time. The remainder of this section discusses the two potential resource systems that were debated.
 
-When a group of ships leaves the safety of its own planets, and starts entering battles, their resource supplies will eventually become empty unless they return to one of their planets. 
-If the group of ships continue to battle without resources they will eventually sustain damage to hull and will be more likely to loose the battle.
-When a battle takes place within proximately to the player's planet, that player will have the benefit of a constant resupply of resources to the ships in battle. For the other player to win that battle they would need to do so before ship's resources start to dwindle.
-This gives the defending player the advantage of endurance, being able to last a battle much longer.
+% Two possible mechanics?
+% 1. Ships have individual supplies that is drawn from the global supply if stationed at a friendly planet
+% 2. Ships drain a global supply
 
+The first possibility is that each ship in a player's fleet has an individual supply of resources. When the ship is stationed near to a friendly planet then it will be able to resupply from the player's global stockpile. The quantity of resources that an individual ship can store for use would be dependent upon its type, larger ships being able to carry more supplies than smaller ones. Once a ship leaves the safety of home territory and starts receiving damage or using special weapons it will start to drain its internal resource cache. The ship's supplies will eventually empty out and it would have to return to a home planet to receive any more. If a ship continues to battle without resources then it will eventually sustain damage that it is unable to repair and will be more likely to get destroyed.
 
-\subsection{Fuel}
-When a ship's shields are less than 100\%, Fuel is used by the ship to replenish the ship's shields.
-The rate that the ship's shields are regenerated is dependent on the ship class, not the quantity of the ship's fuel cache.
-If the ship runs out of fuel, it will stop regenerating its shields.
+The other option would be to only have a single global supply of resources. Ships would then drain that global stockpile as needed no matter where they are located in the sector. This mechanism would probably encourage more aggressive playing styles since ships will be receiving resources to help repair themselves so long as there are resources available. To ensure there are enough resources to supply this rampaging fleet the player's strategy is likely to focus on capturing as many planets as possible, a highly attacking style of play.
 
-\subsection{Metal}
-When a ship's hull takes damage, the ship is able to repair it on the go with the use of Metal onboard.
-The ship will continue to drain it's supply of metal repairing the ship until it has full health again or its metal cache runs out.
+% (1) is more realistic and requires more tactics surrounding ship location
+% (2) is simpler and might be easier to implement
 
-\subsection{Anti-Matter}
-The rarest of resources, is used as ammunition for a ship's most powerful weapons.
-These weapons can only fire if the ship has Anti-Matter on board.
-This reason can easilly swap the tide in battle.
+There are advantages to both options which is why a relatively long time was spent discussing and deliberating the design. The former design is more realistic since ships are not magically furnished with extra supplies whenever they require them, instead they must travel back to a depot on a friendly planet to restock. It also would give rise to a more tactical and positional style of play since the players must keep their ships within reach of fresh supplies. However, this requirement to continously return to base could lengthen the battles which are supposed to be short. The second option is simpler and might be easier to implement since only one resource count needs to be stored for each player instead of storing counts for each ship in play.
+
+% Another question is whether or not planets have a finite supply of resources?
+% Finite could be good to enforce short battles
+
+Another question about the resource system that needs answering is whether or not planets have a finite supply of resources. If planets have an infinite resource supply then they will continue to produce resources for their respective owners every game tick until the game ends. On the other hand, a finite supply of resources per planet would mean that planet owners can mine resources from their planets as before, but after a while that supply of resources will dry out. The benefits of this finite design would be that it is more realistic since planets cannot actually hold an infinite amount of material, and that it could be a good way of enforcing shorter battle times --- a player would want to gain as many resources as possible which means attacking as many planets as possible and taking the fight to the other player as quickly as possible.
+
+It is a shame that the full resource system was not added to the game before the end of term two. However, it was important that its design had a chance to be carefully thought out and correctly specified otherwise it could have ended up detracting from the entertainment instead of enhancing it.
