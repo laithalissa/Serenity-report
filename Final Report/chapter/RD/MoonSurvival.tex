@@ -31,7 +31,7 @@ $$ transfer = \frac{c(b1) - c(b2)}{2} * t $$
 
 A problem with the over simplification of the air diffusion, is that this amount of air transferred from the centre block in Figure \ref{fig:SpaceBaseAirDiffusion} is less for each consecutive neighbour, i.e. the first neighbour gets more air than the second neighbour, and the second neighbour gets more air then third neighbour etc.
 
-\begin{marginfigure}
+\begin{marginfigure}[-30em]
 	\includegraphics{res/space_base_prototype/MoonSurvivalAirDiffusion.pdf}
 	\caption{
 	3x3 area, where colour intensity represents volume of air. The higher the colour intensity the more air.
@@ -56,18 +56,23 @@ Figure \ref{fig:SpaceBaseControls} shows movement controls.
 if an obstacle is blocking the way, the player will no move.
 A limitation of the movement system is that holding down a key does cause the player to continue to move in that direction, instead the key must be repeatedly tapped to have this effect. This is no limitation, but can be annoying for the player.
 
-The player also has 1 item equipped at any one item, and can switch between the items with the TAB key. The currently selected item is displayed in the command bar (discussed later).
-
-To place an item, press the SPACE key. the item will be placed directly in front of player. 
-If the item is already in front of the player and the player presses the SPACE key, the item will be removed.
-For example, if the player is standing in front of a wall and facing it, the wall item is selected, and the player hits the SPACE key, that wall will be removed.
-
 \begin{marginfigure}
 	\includegraphics{res/space_base_prototype/MoonSurvivalControls.pdf}
 	\caption{MoonSurvivalControls.pdfPlayers controls highlighted}
 	\label{fig:SpaceBaseControls}
 \end{marginfigure}
 
+The player also has 1 item equipped at any one item, and can switch between the items with the TAB key. The currently selected item is displayed in the command bar (discussed later).
+
+\begin{marginfigure}
+	\includegraphics{res/space_base_prototype/MoonSurvivalGUI.pdf}
+	\caption{layout of GUI}
+	\label{fig:SpaceBaseGUI}
+\end{marginfigure}
+
+To place an item, press the SPACE key. the item will be placed directly in front of player. 
+If the item is already in front of the player and the player presses the SPACE key, the item will be removed.
+For example, if the player is standing in front of a wall and facing it, the wall item is selected, and the player hits the SPACE key, that wall will be removed.
 
 % GUI description (what each thing on screen is)
 The GUI is described in Figure \ref{fig:SpaceBaseGUI}.
@@ -75,12 +80,6 @@ The window is broken down into 2 windows: Game Panel, and Command Panel.
 The Game Panel displays that player and his immediate surroundings.
 The Command Panel displays the available items the player has access to.
 The selected item is displayed in red.
-
-\begin{marginfigure}
-	\includegraphics{res/space_base_prototype/MoonSurvivalGUI.pdf}
-	\caption{layout of GUI}
-	\label{fig:SpaceBaseGUI}
-\end{marginfigure}
 
 % conclusion (what aspects liked, what aspects were missing, etc)
 The player was able to build a base of their choosing and play the mechanics of air diffusion.

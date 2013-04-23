@@ -74,7 +74,7 @@ in particular, is of great interest due to its applicability to game development
 The conclusion that the functional approach leads to more general, reusable
 modules is supported by John Backus' ACM Turing award lecture from 1977. Backus
 gives the example of a program to calculate the inner product and finds that
-``the functional version is nonrepetitive, [...], is more hierarchically constructed,
+``the functional version is nonrepetitive, \ldots is more hierarchically constructed,
 is completely general, and creates `housekeeping' operations by composing high-level
 housekeeping operators.''\cite{backus1978liberate}
 
@@ -94,7 +94,7 @@ and that functional programming can help to deliver this simplicity.
 Moseley and Marks indentify several causes of complexity in real software systems.
 The first cause is mutable state. Brooks also mentions the problem of state,
 saying that from ``the difficulty of enumerating, much less understanding, all
-the possible states of the program, [...] comes the unreliability''.\cite{brooks1987bullet}
+the possible states of the program, \ldots comes the unreliability''.\cite{brooks1987bullet}
 State hinders understanding of software through testing and reasoning about the code.
 This is because testing a program in one state does not guarantee anything about
 how the program will behave when in a different state. The vast number of different
@@ -154,13 +154,13 @@ states that ``functional programs are an order of magnitude shorter'' than
 their conventional counterparts.\cite{hughes1989whyfp} Moseley and Marks
 also argue that by reducing the complexity caused by state and control it
 is much less likely that complexity with grow with code volume in a nonlinear
-fashion, citing Dijkstra\cite{dijkstra1972humble}:
+fashion, citing Dijkstra:\cite{dijkstra1972humble}
 
 \begin{quote}
 It has been suggested that there is some kind of law of nature telling us that
 the amount of intellectual effort needed grows with the square of program length.
 But, thank goodness, no one has been able to prove this law. And this is because
-it need not be true. [...] As a result I tend to the assumption --- up till now
+it need not be true\ldots As a result I tend to the assumption --- up till now
 not disproved by experience --- that by suitable application of our powers of
 abstraction, the intellectual effort needed to conceive or to understand a program
 need not grow more than proportional to program length.

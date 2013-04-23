@@ -1,0 +1,103 @@
+\section{Artificial Intelligence: Orders, Goals, and Plans}
+
+A sophisticated artificial intelligence (AI) system was highlighted as one of the major
+functional requirements for the project. The plan was to use the AI to take high
+level orders from the player and convert them into a detailed plan for individual
+ships to execute. In this way the player would direct the overall strategy of their
+fleet, but without actually captaining the individual ships. This would reduce the
+amount of micromanagement a player has to undertake and increase the sense of realism
+--- the admiral of a real fleet is unable to directly control individual ships under
+their command. This plan for a high level AI was seen as one of the larger challenges
+that the project would face.
+
+Artificial intelligence can often be a make-or-break factor in determining the success of
+a game.\citepage{rabin2002}{page 3} Without a convincing intelligence system, a game can
+quickly become infuriating to play. This is because a human player expects any computer
+controlled components to behave sensibly. In some cases well known algorithms exist that
+enable `intelligent' behaviour to be implemented relatively easily, for example the use
+of the A* search algorithm for pathfinding. However, higher level intelligence systems
+are much more challenging. A system capable of creating and executing quality plans
+from abstract orders is going to be one of the hardest components to implement.
+
+As well as providing an entertaining experience an AI system must also be efficient.
+There cannot be large delays between the user giving an order and it being carried
+out. Any planning algorithms have to run quickly otherwise the lag in feedback will
+detract from the realism of the game. An inefficient AI system could also stop the game
+from running smoothly --- which is of great importance for a real-time strategy game.
+This would lead to a poor user experience causing people to stop playing the game.
+For these reasons, careful thought was put into designing a system that could fulfill
+the important requirements for a successful AI system.
+
+The AI framework that was implemented in Project Serenity is based on a planning
+hierarchy. At highest level are orders, such as move to a given location or capture
+the specified planet. These orders are under the control of the player, but it is
+the job of the AI system to plan a series of actions to acheive them. The first step
+is to convert the order into a goal. There is mostly a one-to-one mapping between
+orders and goals, for example "OrderMove" maps to "GoalBeAt", however this layer of
+abstraction allows the AI to choose unrelated goals if the current order is impossible
+or would result in the needless loss of a ship. The goal is then decomposed into a
+plan which is a series of actions that are performed to complete the current goal
+(and hopefully fulfill the current order too).
+
+The current planning cycle for a ship is as follows:
+
+\vspace{-0.5em}
+\begin{listing}{list:planning}{Planning cycle pseudocode}{Pseudocode for the AI framework's planning cycle}{}
+\end{listing}\vspace{-1.5em}
+
+\begin{tabbing}
+{\bf if} the current plan is empty {\bf then} \\
+\quad{\bf if} the current order is complete {\bf then} \\
+\quad\quad Reset the ship's order to "OrderNone" \\
+\quad\bf else \\
+\quad\quad $g \leftarrow$ create goal from the current order \\
+\quad\quad $p \leftarrow$ create a plan from the new goal, $g$ \\
+\quad\quad Update the ship's goal and plan with $g$ and $p$ \\
+\quad\bf fi \\
+\bf else \\
+\quad{\bf if} the first action in the current plan is complete {\bf then} \\
+\quad\quad Remove the action from the head of the ship's plan \\
+\quad\bf else \\
+\quad\quad Perform the action at the head of the ship's plan \\
+\quad\bf fi \\
+\bf fi
+\end{tabbing}
+\noindent
+This planning cycle runs every server tick so that all ships in the game can
+continuously formulate and update their goals and plans.
+
+An improvement to the planning cycle would be to add in periodic replanning steps.
+This would allow a ship to change its plan if the world around it changes, for example
+to disregard an order to capture a planet if it is guarded by multiple enemy ships
+and there is no friendly support in the area. In the current implementation this is
+done on a bit of an ad-hoc basis instead of being formalised into the planning loop.
+For example, the code that implements the action to move to another ship will check
+if the target ship is still near to its location when the plan was originally formulated.
+If the target ship has moved too far then the current plan is scrapped so that a new
+plan can be constructed.
+
+\subsection{Targeting Enemy Ships}
+
+As well as constructing a planning framework for executing player given orders,
+it was necessary to build some systems to carry out intelligent actions outside
+of the usual planning loop. One such example is that of targeting enemy ships to
+attack. As a ship moves about the sector it will fire upon any enemy ship that
+it encounters. However, if there are multiple ships in the vicinity then it is
+necessary to select which to target as it may not be possible to attack all of
+them at once. A clever targeting system had to be devised to solve this problem
+in an effective manner.
+
+The first step is to generate a list of all potential enemy targets. This is a list
+of all enemy ships that are in range of any of the ship's weapons. A list of
+enemy ships to attack is selected for each weapon by taking the enemy ships that
+would be attacked by the least number of other weapons as well. This method of
+target selection means that a ship will spread its attacks out to hit as many
+enemy ships as possible.
+
+This pattern of list generation and selection fits the one described by John Hughes
+very well.\cite{hughes1989whyfp} This is one of the reasons why the Project Serenity
+team found Haskell to be highly adept for programming AI algorithms. The separation
+between the potential target list generation and the selection from the list also means
+that it would be very simple to modify the selection strategy. For example, a
+possible enhancement to the game would be to allow players to configure a targeting
+strategy for their fleet which would focus attacks on the weakest enemies.
