@@ -1,7 +1,7 @@
 \section{Haskell Modules, Encapsulation, and Connascence}
 \label{sec:encapsulation}
 
-Connected with separation of code and concerns are the subjects of \emph{encapsulation} and \emph{Connascence}. Encapsulation (sometimes referred to as \emph{information hiding}) is the maintenance of a public interface that allows for implementation changes to be made without breaking another component that imports it, whereas connascence is a more general term for when modifying one piece of code must lead to modifying another in order to maintain correctness. Two pieces of code are connascent when a change in one necessitates a change in the other.\citefix{page1992comparing}
+Connected with separation of code and concerns are the subjects of \emph{encapsulation} and \emph{connascence}. Encapsulation (sometimes referred to as \emph{information hiding}) is the maintenance of a public interface that allows for implementation changes to be made without breaking another component that imports it, whereas connascence is a more general term for when modifying one piece of code must lead to modifying another in order to maintain correctness. Two pieces of code are connascent when a change in one necessitates a change in the other.\citefix{page1992comparing}
 
 Compared with Java and other similar OO languages, more effort has to be made in Haskell to have good encapsulation between modules. No formal effort was made to address encapsulation issues at the beginning of the Serenity project, and this has led to some (small) problems in a few places. In response to these, the conventions discussed below were adopted.
 

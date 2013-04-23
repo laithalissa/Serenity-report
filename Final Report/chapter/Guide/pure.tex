@@ -1,7 +1,7 @@
 \section[On the Separation of Interface from Implementation and Cause from Effect]{On the Separation of Interface from Implementation and Cause from Effect}
 \label{sec:pure}
 
-There has already been some discussion about separating pure code and code that must interact with the outside world in Section \ref{sec:architecture}, and on reducing dependancy between components in Section \ref{sec:encapsulation}. Here we discuss more specific design patterns that can address these and similar issues, in the more general setting of separation between interface and implementation.
+There has already been some discussion about separating pure code and code that must interact with the outside world in Section~\ref{sec:architecture}, and on reducing dependency between components in Section~\ref{sec:encapsulation}. Here we discuss more specific design patterns that can address these and similar issues, in the more general setting of separation between interface and implementation.
 
 \subsection{Classes}
 
@@ -16,7 +16,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 >  fmap :: (a -> b) -> f a -> f b
 
 \end{haskell}
-\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (ie the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing \ref{list:listfmap}.
+\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (i.e.\ the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing~\ref{list:listfmap}.
 
 \vspace{-0.5em}
 \begin{listing}{list:listfmap}{A \emph{Functor} instance for lists.}{A \scalenote{"Functor"} instance for lists.}{}
@@ -74,7 +74,7 @@ This pattern is used is several places in the Serenity code, most notably to pro
 
 A very fundamental design pattern is to distinguish as much as possible between the form of a representation and its semantics. A classic example of this is the organisation of compilers into a front and back end. The front end is responsible for building a representation of the input string, usually in the form of an abstract syntax tree (AST), and the back end is responsible for converting the AST into code for the target system. This modularity confers a number of advantages, the foremost being that $n$ input languages and $m$ target architectures require only $n+m$ implementations rather than $nm$.\citepage{grune2012modern}{page PAGE NEEDED}
 
-This technique can be found throughout the Haskell runtime and in many of the popMular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
+This technique can be found throughout the Haskell runtime and in many of the popular Haskell libraries. The IO monad that allows a running Haskell program to interact with the real world is a perfect example. During compilation, actions in the IO monad are simply descriptions of operations to be performed, that can only be semantically interpreted to yield actual values at runtime.\cite{peyton1993imperative}
 
 A motivating example will help to demonstrate the efficacy and need for this design pattern. Consider an entity within the state of a game. At various points this entity will need to be updated in various ways to react to different things. For the purposes of the running example we shall model: time passing, new orders being given from the player, and damage being inflicted. (This is clearly in the context of a strategy game similar to that made in the Serenity project).
 
@@ -143,7 +143,7 @@ A semantics can of course be provided alongside this type as a simple function w
 >update (UpdateDamage d) = ...
 
 \end{haskell}
-\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantages, especially when it is not obvious how to limit the use of impure code. For example, this implementation could be extended by adding an IO routine to be called on each update, without needing to change the existing pure functions. 
+\noindent This example illustrates a somewhat trivial case, but the general pattern is extremely advantageous, especially when it is not obvious how to limit the use of impure code. For example, this implementation could be extended by adding an IO routine to be called on each update, without needing to change the existing pure functions. 
 The "Picture" type from the Gloss graphics library is an excellent example of this pattern in a real application. Instead of insisting that the caller uses IO drawing routines directly, the "Picture" type forms a pure interface to describe what \emph{should} be drawn.
 
 \subsection{Modelling Effects with Monads and Monad Transformers}
@@ -238,7 +238,7 @@ The standard Haskell distribution comes with a number of monads built in, includ
 \end{haskell}
 \noindent will yield "[50]".
 
-Note that no state is passed manually, and the implementation of "eval'" is dependant only on the interface to the monad "StackMachine a". From now on, extra functionality can be added by changing the implementation of the monad, without effecting the implementation of "eval'". 
+Note that no state is passed manually, and the implementation of "eval'" is dependent only on the interface to the monad "StackMachine a". From now on, extra functionality can be added by changing the implementation of the monad, without effecting the implementation of "eval'". 
 
 To further illustrate this point, consider the following. Currently this implementation will crash if operations are made when the stack does not have the required number of elements:
 
@@ -388,7 +388,7 @@ Multiplying
 \noindent
 It is clear that this approach is a very effective and powerful one, and can be expanded to allow for easy combination of different layers of concern, each with their own semantic interpretation, loosely coupled and swappable. There are several packages that build on this idea and make working with it easy, the most notable being \emph{operational},\sidenote[][-2em]{Heinrich Apfelmus 2011, \url{hackage.haskell.org/package/operational}} a package for building custom monads, and \emph{pipes},\sidenote{Gabriel Gonzalez 2013 \url{hackage.haskell.org/package/pipes}} which models separate interpretation layers as a pipeline, allowing for filtering at each stage, and passing information in both directions. These kind of design patterns are invaluable to complex systems like games, that require multiple states to be maintained at the same time as networking, journalling, and various other activities; and their use is highly recommended in any similar domain.
 
-\subsection{Summary of this section} 
+\subsection{Summary of this section}
 
 High level abstractions enabled by features of the Haskell language and type system can enable an extremely flexible coding style that maintains clear separation between concerns, and implementation from interface. The design patterns identified in this section give methods toward achieving these ends in a reliable way.
 
