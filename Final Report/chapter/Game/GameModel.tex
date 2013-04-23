@@ -41,6 +41,13 @@ It specifies the layout of the map, it contains fields that are described in Tab
 When the player starts the game, they are able to choose which sector they want to play by its name. 
 The spawn points on the sector are typically as far apart as possible. 
 This means that bigger sector will typically have longer playing periods relative to smaller sectors.
+The sector specifies which planets are includes as well as which planets are connected by space lanes as shown in Figure \ref{fig:model:sectorRelation}
+
+\begin{marginfigure}
+	\includegraphics{res/model/sector.pdf}
+	\caption{relationship between setor, planet, and space lanes}
+	\label{fig:model:sectorRelation}
+\end{marginfigure}
 
 % planet
 Planets in the sector have a variety of properties that make the planet unique.
@@ -85,6 +92,10 @@ Some ecotypes will typically have a greater proportion of say metal relative to 
 	\label{fig:model:metalPlanet}
 \end{marginfigure}
 
+
+% space lanes
+A Space Lane can be harnessed by ships to travel between planets incredible fast.
+Each sector will have its own Space Lanes unique to that Sector.
 
 % ship
 
