@@ -1,4 +1,4 @@
-\chapter[Summary of Conclusions]{Summary of Conclusions}
+\chapter[Overall Conclusions]{Overall Conclusions}
 \label{ch:conclusions}
 %\containsfigures{Summary of Conclusions}
 %\containslistings{Summary of Conclusions}
@@ -6,6 +6,23 @@
 
 \chapterepigraph{Haskell is an abstract research language used only in academia, education, banking, stock trading, circuit design, embedded systems, cryptography, operating systems research, bioinformatics, phone apps, and web services.}{Jafet, quoted in \emph{Haskell Weekly News} Issue 265}
 
-\newthought{Brief intro} for this section. \lipsum[4]
+\newthought{Much has been learnt over the course of this project}, but as always it is hard to crystallise the full advantage of personnel experience into an widely accessible form. The importance of continued research into software design principles is clear: software continues to be a driving force for society and computer use is still increasing at a brisk pace,\cite{borodovsky2006marching} yet actually writing software remains difficult and error prone.\cite[1em]{paulk1993capability} 
 
-\lipsum[4]
+This project aimed to show the paradigm of functional programming in action, and specifically the language Haskell. What was once considered a merely a research language is now finding uses in many places in industry, and has an active and numerous online community. Haskell and FP remain outside of the mainstream, however, and education and encouragement will be required before these techniques can be widely taken advantage of. This project has attempted to contribute to this agenda, by demonstrating that Haskell is effective in a field thought normally to be the preserve only of C++, that of game programming. 
+
+The details of developing the game \emph{Project Serenity} have held some surprises, but overall has been like any other software project. Some problems were circumnavigated easily, others required some time and the invention of novel solutions. Some parts of the implementation, such as the AI framework and data model, very much suited the standard functional approach, whereas others, such as the GUI framework required some thought to code in a functional way. Advantages and disadvantages to Haskell were apparent, and have been discussed. But the main finding to be stressed is that the disadvantages were small: the difference between the classical problems `suited' to FP, and areas such as graphics and networking that people assume would be difficult or impossible are either small or non-existent. The hardest problems to be overcome during the project were instead from unexpected directions and generally not related to the functional paradigm, such as dependency problems with Cabal (see Section~\ref{ssec:dephell}).
+
+It is important to stress this point, and it can be seen as the most important point that this project has aimed to demonstrate. When talking about the project during the course of the development, the project team were asked frequently questions like `what parts of the implementation really suited Haskell / really didn't suit Haskell', or 'how has the game you have designed been made to really demonstrate FP'. The point is that the game was designed simply to be a good game, and the development was \emph{all} eminently doable in Haskell. Some areas were harder than others, but this would be the same in any language. If Project Serenity is to have demonstrated anything, it is that the advantages of FP really do exist (testability, maintainability, equational reasoning, etc) while most of the usually cited disadvantages (low performance, hard to understand, can't handle IO well, even lack of library support) do not.
+
+\section{The Importance of Design Patterns}
+
+One of the main weapons brought to bear against software complexity is that of design patterns, and their importance as software development tools is well established.\sidenote{See, for example, the well renown software practice guide: \bibentry{martin2003agile}.} However, because FP can be so different from OO programming, different design patterns are required; or, alternatively, a different perspective on the \emph{same} underlying principles is needed. A big focus in the presentation of the results in this report, especially those in Chapter~\ref{ch:guide}, is on design patterns for the functional programmer. This focus is to enable functional techniques to be accessible to a wider audience than the usual academic style of research into these languages usually allows.
+
+Many of the techniques used in Haskell programming --- such as use of Monads, Monoids, Arrows, etc --- has come about through mathematical results and reasoning. Category theory has, somewhat surprisingly, turned out to be a rich source of design patterns to be used in practical programming. One does not need to know anything about category theory to actually make use of any of these results, but still many of the best Haskell techniques discovered in recent years (such as separation of concerns with free monads) are still understood by few because they are yet to be translated from mathematics into the language of software design patterns.
+
+\section{Development as Research}
+
+\section{Limitations of the Project}
+
+\section{Recommendations for Future Work}
+
