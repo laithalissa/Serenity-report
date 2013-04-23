@@ -1,5 +1,44 @@
 \section{Review of Requirements}
+\label{sec:reviewrequirements}
 
-%Examination of requirements met and unment, reasons why and ways to improve
+The project was successful in fulfilling most of the requirements but due to delays during development, not all the features could be completed in time, rather than risk not having a playable game, some of the minor features were deferred until the end of the project, and focus was shifted to the project's critical chain.
 
-Lorum ipsum sit dolor amet.\citefix{church1932}  \lipsum[2-4]
+\subsection{Functional Requirements}
+
+\begin{description}
+
+  \item[Multiplayer] The game supports a minimum of two players, the number of players is in theory unlimited, but in practice the game dynamics would decay when the number of players exceeded the capacity of the selected map.
+
+  \item[Fleets] Each player is given the opportunity to customise the fleet they wish to deploy by selecting ships they wish to include in deployment and (optionally) naming each ship. Each player's customised fleet is then deployed at the start of the battle.
+
+  \item[Ship Customisation] Each ship can be constructed using one of three different hull types, each offering a different ship speed, health and shield capacity. The larger the ship the higher its health/shield capacity, and the slower its speed.
+
+  \item[Resource System] The framework for the resource system was completed, however the game mechanics for resources remains unfinished. The implementation 
+would be fairly straightforward in the event that this project is continued.
+
+  \item[Planetary Capture] Player's can capture a neutral planet if their fleet secures the area for a sufficient amount of time. Once the planet has been held securely by one player for sufficient time, the planet then falls under that player's control, which would provide them with a steady stream of resources and contribute towards a victory condition. Planet's can also be captured from other players in the same way a neutral plant can be captured, except it takes the capturing player longer to secure the planet, giving an advantage to being the first player to capture a planet.
+
+  \item[Fog of War] Although the mechanics was simple, fog of war was not completed in time since it was low priority. 
+
+  \item[AI] Ships are capable of using AI to re-plan strategies as their environment changes, they are also capable of planning the most optimal route to their current objective.
+  %todo: Can Jon revise this because I've forgotten what he told me!
+
+  \item[Campaign] Since multiplayer was a focus, single player functionality was deferred and does not currently feature in the game.
+
+  \item[Operating System Requirements] The game compiles and runs on both Mac OS X and Linux. Windows systems were not tested during development, but measures were taken to ensure the game can be supported on windows, for example there are function calls available in the sockets module to facilitate networking on Windows.
+
+\end{description}
+
+\subsection{Non-Functional Requirements}
+\begin{description}
+  \item[Fun] The project group find the game fun, as did a small group of pre-alpha testers, but since there was no time for a formal play testing there's little data to support how \emph{fun} the game experience is. The game experience almost certainly would have improved had missing features been implemented in time, the project group even had concepts to improve gameplay beyond the scope of the specification.
+    
+  \item[Short game sessions] Game session timings are not enforced by the game, and there is insufficient data available to guage average play time, however, it seems that under normal circumstances a game should be no longer than 35 minutes if players are seriously aiming to win.
+
+  \item[Approachable] Only the host's IP address is required to play a networked game, which is typical of most standalone games.  
+
+  \item[Reliable] The program was thoroughly tested to ensure it wouldn't easily crash and results show the game, other than a few minor bugs, is sufficiently stable.
+
+  \item[Secure] %TODO: For jon to deal with
+
+\end{description}
