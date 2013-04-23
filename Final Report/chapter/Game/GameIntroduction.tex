@@ -15,14 +15,26 @@
 % - path finding 
 % - assets
 
-This chapter describe the process of taking the revised specification and converting it into a game design.
-It will cover the major aspects of the project, not in the prospective eye of implementation, but of game design.
-How will the GUI look? What path will the ships take to get to their destination? These high level questions need answers before an implementation can take place.
-The following topics will be covered:
-\begin{description}
-\item[Server Client Synchronisation] The topology of the network, The protocol the server and client will use to sync their game states
-\item[Graphics] insert penis here...
-\end{description}
+This chapter describes the design process of the game.
+The design process involves taking the abstract system requirements specifies in the specification and producing a design that discusses how these specification requirements will be achieved.
+The major aspects of the game will covered, including:
+\begin{itemize}
+\item server client synchronisation
+\item GUI
+\item model of the game concepts
+\item AI
+\item path finding
+\end{itemize}
+
+%
+%This chapter describe the process of taking the revised specification and converting it into a game design.
+%It will cover the major aspects of the project, not in the prospective eye of implementation, but of game design.
+%How will the GUI look? What path will the ships take to get to their destination? These high level questions need answers before an implementation can take place.
+%The following topics will be covered:
+%\begin{description}
+%\item[Server Client Synchronisation] The topology of the network, The protocol the server and client will use to sync their game states
+%\item[Graphics] insert penis here...
+%\end{description}
 
 
 The game's implementation will be designed with an infrastructure that is at the core. All game features will run on top of this infrastructure, having little dependency on other game features, but having complete dependency on the infrastructure. This architecture allows very module design with regards to game features, allowing new game features to be added to the implementation only a slight modification of the infrastructure to include the new feature. By designing the architecture like this, It facilitates a release based schedule.
