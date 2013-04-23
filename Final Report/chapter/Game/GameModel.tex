@@ -17,7 +17,7 @@ Initially, the game model was simple, but as the design stage progressed, the ga
 % sector
 The game's terrain is called a sector. The sector has the following fields:
 \begin{margintable}
-    \begin{tabular}{p{3em} p{9em}}
+    \begin{tabular}{p{4em} p{11em}}
     \toprule
     \emph{fields} & \emph{description} \\
     \midrule
@@ -54,7 +54,7 @@ Planets in the sector have a variety of properties that make the planet unique.
 Table \ref{tab:model:planetFields} gives a breakdown of the planet's properties.
 
 \begin{margintable}
-    \begin{tabular}{p{3em} p{9em}}
+    \begin{tabular}{p{4em} p{11em}}
     \toprule
     \emph{Fields} & \emph{Description} \\
     \midrule
@@ -104,12 +104,38 @@ The ship part of the model is actually broken down into 3 key concepts: Ship, Sh
 The Ship Class represents the the hull of the ship, its size, number of weapon sots etc. Every ship in the game will have exactly one ship class. The Ship Configuration specifies which weapons and systems go in which slots. Figure \ref{fig:model:shipRelation} demonstrates this relation.
 This distinction between Ship, Ship Configuration and Ship Class was a revised addition, because it allowed multiple ships to belong to the same class as well as being able to save the ship configuration to disk, whilst it wouldn't make sense to save a ship to disk since it only exists in that instance of the game.
 
+% ship class
+The ship class is a container that is treated as the ship's hull, but in fast it provides more information than just that, it also provides meta-data about the image being used as the ship's hull.
+The image being used for the ship's hull has no meta-data attached to it, so this must be specified somewhere, and it is, in the ship class.
+The reason the image needs this meta-data is because properties such as centre of rotation cannot be determined. 
+They are intrinsically linked to the style of ship. 
+For example take 2 images used for ship's hulls, they have identical dimensions but the first one has engines at the front of the ship so you would want the centre of rotation much closer to the front than the second one. 
+Table \ref{tab:model:shipClassFields} gives a detailed description of the ship class properties.
+
 \begin{marginfigure}
 	\includegraphics{res/model/ship.pdf}
 	\caption{ship layout}
 	\label{fig:model:shipRelation}
 \end{marginfigure}
 
+\begin{margintable}
+    \begin{tabular}{p{4em} p{11em}}
+    \toprule
+    \emph{Fields} & \emph{Description} \\
+    \midrule
+    centre of rotation & point on the ship class where it rotates when turning \\
+    speed & maximum speed of this hull \\
+    health & health of the hull \\
+    weapon slots & specifies where the weapon slots are on the hull and what type they are \\
+    system slots & specifies where the system slots are on the hull \\
+    name & name of the hull, used by player \\
+    cost & cost of adding a ship with this hull to the fleet \\
+    \bottomrule
+    \end{tabular}
+    	\vspace{1em}
+	\caption{properties of ship class}
+	\label{tab:model:shipClassFields}
+\end{margintable}
 
 
 % ship, ship configuration, ship class, weapons, system
