@@ -3,6 +3,12 @@
 
 Gloss provided an interim layer to abstract away the complexities of OpenGL and impure drawing code, but as it turned out further abstractions on top of this were desirable. Gloss provides no ``widgets'' (buttons, scroll bars, etc), nor does it facilitate separable concerns for event handling.
 
+\begin{marginfigure}
+	\includegraphics{res/sheen/fleetbuilder1.png}
+	\caption[Fleet builder UI built using Sheen]{Part of the fleet builder UI built using.}
+	\label{fig:openglbasicout}
+\end{marginfigure}
+
 Some time was spent in developing a framework on top of Gloss to enable easier construction of graphical interfaces, which has been glibly titled \emph{Sheen}\index{Sheen}. Provided by Sheen is a mechanism for event handling, recursively nested views, and various pre-built widgets such as labels, buttons, and text boxes. The best approach to the design of Sheen was not obvious, and its structure, and use of \emph{lenses} (see below) is considered to be quite novel and a demonstration of good Haskell style. This section considers various aspects of the Sheen design, but first it is worth examining lenses as significant use of them are made in the framework.
 
 \subsection{On Lenses}
