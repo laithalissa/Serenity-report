@@ -12,6 +12,8 @@
 
 The model that makes up the game consists of the internal representation of the various game entities, such as ships and planets, as well as the business logic that is used to manage and control them and the relationships between them. During the alpha phase, this model was rather simple as it only existed to store the locations of the entities. As development progressed, it grew in complexity and feature completeness. Currently there are two sets of models: one for the fleets of ships, and the other for the map of planets and spacelanes.\sidenote{Spacelanes are connections between some planets that allow ships travelling along or nearby them to move more quickly. See Section~\ref{sec:pathfinding} for complete details.} This section will describe and discuss these models and the reasonings behind their design.
 
+\subsection{Sectors and Planets}
+
 \begin{margintable}
     \begin{tabular}{p{4em} p{11em}}
     \toprule
@@ -79,6 +81,7 @@ The list of planets that make up the sector are specified using the planetary mo
 % 	\label{fig:model:metalPlanet}
 % \end{marginfigure}
 
+\subsection{Ships, Classes and Configurations}
 
 \begin{margintable}
     \begin{tabular}{p{4em} p{11em}}
@@ -111,3 +114,11 @@ This layered model approach to representing the ships was used to separate the d
 % 	\caption{ship layout}
 % 	\label{fig:model:shipRelation}
 % \end{marginfigure}
+
+\subsection{Weapons and Support Systems}
+
+Talk about weapon types and systems.
+
+\subsection{Defining Model Instances}
+
+Talk about YAML configuration.
