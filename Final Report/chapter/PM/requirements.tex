@@ -16,12 +16,11 @@ The project was successful in fulfilling most of the requirements but due to del
   \item[Resource System] The framework for the resource system was completed, however the game mechanics for resources remains unfinished. The implementation 
 would be fairly straightforward in the event that this project is continued.
 
-  \item[Planetary Capture] Player's can capture a neutral planet if their fleet secures the area for a sufficient amount of time. Once the planet has been held securely by one player for sufficient time, the planet then falls under that player's control, which would provide them with a steady stream of resources and contribute towards a victory condition. Planet's can also be captured from other players in the same way a neutral plant can be captured, except it takes the capturing player longer to secure the planet, giving an advantage to being the first player to capture a planet.
+  \item[Planetary Capture] Players can capture a neutral planet if their fleet secures the area for a sufficient amount of time. Once the planet has been held securely by one player for sufficient time, the planet then falls under that player's control, which would provide them with a steady stream of resources and contribute towards a victory condition. Planet's can also be captured from other players in the same way a neutral plant can be captured, except it takes the capturing player longer to secure the planet, giving an advantage to being the first player to capture a planet.
 
   \item[Fog of War] Although the mechanics was simple, fog of war was not completed in time since it was low priority. 
 
-  \item[AI] Ships are capable of using AI to re-plan strategies as their environment changes, they are also capable of planning the most optimal route to their current objective.
-  %todo: Can Jon revise this because I've forgotten what he told me!
+  \item[AI] An advanced artificial intelligence framework was implemented. It took orders from the player and converted them into a lower level plan to execute. Some replanning is possible, but it is not a formal piece of the framework and it could be improved. Intelligent path finding algorithms were created to get ships to take the optimal route to their planned destinations. This AI system mostly met requirements, but is a bit less powerful than originally intended. However, its flexibility should allow it to be extended in useful ways in the future.
 
   \item[Campaign] Since multiplayer was a focus, single player functionality was deferred and does not currently feature in the game.
 
@@ -39,6 +38,6 @@ would be fairly straightforward in the event that this project is continued.
 
   \item[Reliable] The program was thoroughly tested to ensure it wouldn't easily crash and results show the game, other than a few minor bugs, is sufficiently stable.
 
-  \item[Secure] %TODO: For jon to deal with
+  \item[Secure] Since the game runs as with a master server controlling the entire simulation of the game the amount of cheating that is possible for a player is significantly reduced. Incoming messages are verified to be from whichever player they claim to be sent from by checking the originating IP and port. Players are also blocked from sending commands to ships that they do not actually control. However, packet forgery is still possible since there is no authentication or integrity checking at the network layer. This was briefly investigated by using a message authentication code algorithm such as SipHash,\cite{aumasson2012siphash} but it was decided that it would be better to focus efforts on completing the game logic and return to network layer packet verification at a later date.
 
 \end{description}
