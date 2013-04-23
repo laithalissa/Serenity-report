@@ -10,7 +10,7 @@
 % early on
 % 
 
-The model that makes up the game consists of the internal representation of the various game entities, such as ships and planets, as well as the business logic that is used to manage and control them and the relationships between them. During the alpha phase, this model was rather simple as it only existed to store the locations of the entities. As development progressed, it grew in complexity and feature completeness. Currently there are complex models for the fleets of ships, and the map of planets and spacelanes.\sidenote{Spacelanes are connections between some planets that allow ships travelling along or nearby them to move more quickly. See Section~\ref{sec:pathfinding} for complete details.} This section will describe and discuss these models and the reasonings behind their design.
+The model that makes up the game consists of the internal representation of the various game entities, such as ships and planets, as well as the business logic that is used to manage and control them and the relationships between them. During the alpha phase, this model was rather simple as it only existed to store the locations of the entities. As development progressed, it grew in complexity and feature completeness. Currently there are two sets of models: one for the fleets of ships, and the other for the map of planets and spacelanes.\sidenote{Spacelanes are connections between some planets that allow ships travelling along or nearby them to move more quickly. See Section~\ref{sec:pathfinding} for complete details.} This section will describe and discuss these models and the reasonings behind their design.
 
 \begin{margintable}
     \begin{tabular}{p{4em} p{11em}}
@@ -79,43 +79,35 @@ The list of planets that make up the sector are specified using the planetary mo
 % 	\label{fig:model:metalPlanet}
 % \end{marginfigure}
 
-% ship
-The ship part of the model is actually broken down into 3 key concepts: Ship, Ship Configuration and Ship Class.
-The Ship Class represents the the hull of the ship, its size, number of weapon sots etc. Every ship in the game will have exactly one ship class. The Ship Configuration specifies which weapons and systems go in which slots. Figure \ref{fig:model:shipRelation} demonstrates this relation.
-This distinction between Ship, Ship Configuration and Ship Class was a revised addition, because it allowed multiple ships to belong to the same class as well as being able to save the ship configuration to disk, whilst it wouldn't make sense to save a ship to disk since it only exists in that instance of the game.
-
-% ship class
-The ship class is a container that is treated as the ship's hull, but in fast it provides more information than just that, it also provides meta-data about the image being used as the ship's hull.
-The image being used for the ship's hull has no meta-data attached to it, so this must be specified somewhere, and it is, in the ship class.
-The reason the image needs this meta-data is because properties such as centre of rotation cannot be determined. 
-They are intrinsically linked to the style of ship. 
-For example take 2 images used for ship's hulls, they have identical dimensions but the first one has engines at the front of the ship so you would want the centre of rotation much closer to the front than the second one. 
-Table \ref{tab:model:shipClassFields} gives a detailed description of the ship class properties.
-
-\begin{marginfigure}
-	\includegraphics{res/model/ship.pdf}
-	\caption{ship layout}
-	\label{fig:model:shipRelation}
-\end{marginfigure}
 
 \begin{margintable}
     \begin{tabular}{p{4em} p{11em}}
     \toprule
-    \emph{Fields} & \emph{Description} \\
+    \emph{Field} & \emph{Description} \\
     \midrule
-    centre of rotation & point on the ship class where it rotates when turning \\
-    speed & maximum speed of this hull \\
-    health & health of the hull \\
-    weapon slots & specifies where the weapon slots are on the hull and what type they are \\
-    system slots & specifies where the system slots are on the hull \\
-    name & name of the hull, used by player \\
-    cost & cost of adding a ship with this hull to the fleet \\
+    Location & Current location of the ship within the sector \\
+    Direction & The direction the ship is facing \\
+    Damage & How much damage the ship has taken \\
+    Order & Current player given order for the ship \\
+    Goal & Current goal the ship is trying to achieve \\
+    Plan & Current plan to execute in pursuit of the goal \\
+    Targets & List of enemy ships that the ship is attacking \\
+    Config. & Class of ship and its customisations \\
     \bottomrule
     \end{tabular}
-    	\vspace{1em}
-	\caption{properties of ship class}
-	\label{tab:model:shipClassFields}
+    \vspace{1em}
+    \caption{Fields of the Ship model}
+    \label{tab:ship-fields}
 \end{margintable}
 
+The second set of models deals with the fleets of ships that are controlled by each player. A fleet is simply a list of ships which a client sends to the server having chosen which ships to include and made their customisations to these ships. The representation of a ship is actually broken down into a generic ship model and its specific configuration. The general ship model contains the configuration as well as the attributes that are updated during game play, such as the ship's orders and plans, and its current location and direction. The full list of fields for this model is shown in Table~\ref{tab:ship-fields}. The use of location, direction, and damage should hopefully be obvious. They are updated every tick by the server's main loop as the ship moves around the sector and engages with the enemy. Orders, goals, and plans are used by the artificial intelligence that controls the ships, see Section~\ref{sec:ai} for more details. The list of targets that a ship is currently attacking is also controlled by the artificial intelligence. The most interesting part of the ship is its configuration which specifies what base type the ship as and the customisations that have been applied by the user to this base.
 
-% ship, ship configuration, ship class, weapons, system
+The ship configuration contains the chosen ship class along with the lists of weapons and support systems that the player selected to add to the ship. The ship class represents the type of ship specifying the basic statistics of the ship. The set of statistics defined by the class is: ship speed, ship hull health, shield health, details of each of the weapon slots, details of the support system slots, and the cost of the ship. These statistics are used by the simulation code in the server to determine how the ship moves, how much more damage it can sustain before being destroyed, how much damage it does to the enemy ships it is attacking, and so on. A player is able to select the set of classes that they wish to include in their fleet, but they are restricted by a fixed budget. There are three ship classes that come with the game by default: corvette, destroyer, and dreadnought. The corvette is the smallest and quickest ship that can only be given one weapon. The destroyer is of middling strength and speed, it allows for five weapons to be added. Finally, the dreadnought is the largest and slowest of the three, but it packs the largest punch by supporting up to nine weapons.
+
+This layered model approach to representing the ships was used to separate the different types of data that have to be stored. The ship model deals with the dynamic data that is updated during gameplay, the ship class is concerned with the static statistics that define the ships behaviour, and the configuration stores the user's customisations. This is useful because it allows a more efficient method of storing custom fleets on disk. Only the list of ship configurations needs to be kept since the class data is the same for all ships of the same type so can be loaded at run time and the rest of the ship data is only relevant during a battle.
+
+% \begin{marginfigure}
+% 	\includegraphics{res/model/ship.pdf}
+% 	\caption{ship layout}
+% 	\label{fig:model:shipRelation}
+% \end{marginfigure}
