@@ -12,7 +12,7 @@ A lens is the functional equivalent of a setter and a getter at the same time. O
 \functions(view, get, set, lens)
 >data Lens a b = {get :: a -> b, set :: b -> a -> a}
 
-Normally lenses are not actually implemented this way, but in such a way to be isomorphic to this. The most popular implementation of lenses is currently in the \emph{lens} package by Edward Kmett,\sidenote{Edward A. Kmett, Copyright 2012-2013 \url{https://github.com/ekmett/lens/}.} which uses a generalised form of a so called van Laarhoven lenses. A van Laarhoven lens as type
+Normally lenses are not actually implemented this way, but in such a way to be isomorphic to this. The most popular implementation of lenses is currently in the \emph{lens} package by Edward Kmett,\sidenote{Edward A. Kmett, Copyright 2012-2013 \url{https://github.com/ekmett/lens/}.} which uses a generalised form of a so called van Laarhoven lenses. A van Laarhoven lens has type
 
 >type SimpleLens a b = forall f. Functor f => (b -> f b) -> a -> f a
 
