@@ -74,6 +74,7 @@ There a variety of planet ecotypes, some examples shown in Figure \ref{fig:model
 The ecotype of a planet effects its appearance as well as its distribution of resources.
 Some ecotypes will typically have a greater proportion of say metal relative to fuel and anti-matter, whilst another ecotype may favour fuel.
 
+% TODO fix margin diagrams, all appearing below the page (invisible)
 \begin{marginfigure}
 	\includegraphics{res/planets/star.png}
 	\caption{ecotype: star}
@@ -98,7 +99,9 @@ A Space Lane can be harnessed by ships to travel between planets incredible fast
 Each sector will have its own Space Lanes unique to that Sector.
 
 % ship
-
+The ship part of the model is actually broken down into 3 key concepts: Ship, Ship Configuration and Ship Class.
+The Ship Class represents the the hull of the ship, its size, number of weapon sots etc. Every ship in the game will have exactly one ship class. The Ship Configuration specifies which weapons and systems go in which slots. Figure \ref{fig:model:shipRelation} demonstrates this relation.
+This distinction between Ship, Ship Configuration and Ship Class was a revised addition, because it allowed multiple ships to belong to the same class as well as being able to save the ship configuration to disk, whilst it wouldn't make sense to save a ship to disk since it only exists in that instance of the game.
 
 \begin{marginfigure}
 	\includegraphics{res/model/ship.pdf}
