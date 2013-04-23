@@ -5,10 +5,12 @@
 
 The process of designing a game involves taking the basic concept of the game and the system requirements that were created for the specification, and producing a plan for implementing these features. This design is then implemented step by step to iteratively create a working game that fits the original requirements. The major aspects of this design and implementation process will be covered including the server-client architecture, the models and mechanisms that underpin the game concept, the artificial intelligence and path finding systems, and the creation of the assets and graphics that make up the GUI.
 
+The project proceeded in two major phases: the alpha phase that took place during term one, and the beta phase that started in the Christmas holidays and continued through to the end of second term and the Easter holidays. The aim of the alpha stage was to lay the foundations of the game and create a prototype release that comprised of the minimal set of features to be called a `working game'. This foundation would be the infrastructure on which the actual gameplay features could be built. This included a networking architecture and library, basic model of the game components, the basic game loops that would update these models, and finally some assets to be used to represent game entities and a rendering process to display them. The alpha stage produced what was desired, a networked program with a usable GUI. Two or more players could launch the program such that they would communicate with each other. Each player was in charge of their own ship and could control it by clicking on a location for the ship to fly to.
+
+The beta stage started by fixing some bugs and introducing some enhancements to this groundwork. The main bulk of the work, however, was to flesh out the game mechanics on top of the foundations. This work introduced the major features of the game including an artificial intelligence framework to handle invidual ship behaviour, a proper GUI menu for launching games, improved graphics and GUI elements to match the mockup drawn up for the specification, and the gameplay mechanisms such as attacking and planetary capture. All of this development culminated in the release of a fully working game in which players have access to an elegant GUI which enables them to easily play a real time strategy game set in space. The following sections will explore the work from both of these stages in greater detail.
 
 
-
-
+\begin{comment}
 \newthought{Our project, irrelevant to implementation language}, has a very similar foundation to all games, requiring networking between computers playing the game, graphics engine that can draw the game, assets/sprites for in game entities.
 
 % what does this chapter talk about:
@@ -66,7 +68,7 @@ The infrastructure must provide a platform that the game features can be impleme
 \end{itemize}
 
 Mistakes at this stage will cost heavily later down the line, because so much will depend on the infrastructure. 
-
+\end{comment}
 \begin{comment}
 
 alpha stage layout
