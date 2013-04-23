@@ -170,7 +170,7 @@ We now have a formula to calculate network traffic, we need to apply to to vario
 
 % s=15, 30, 45, 60, n =2, 4, 8, 16
 
-\begin{margintable}
+\begin{margintable}[2em]
     \begin{tabular}{p{5em} p{5em} p{5em}}
     \toprule
     \emph{S} & \emph{N} & \emph{kB/sec} \\
@@ -217,6 +217,15 @@ When deciding on how the server and client would synchronise their game states, 
 Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
 When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
+% advantages
+%   playable with slow networks
+This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
+%   no dedicated server required
+No client is picked to act as server, which causes game to end if that selected client disconnects.
+Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals, such as Civilization series\cite{civilizationInMyPants}.
+
+
+
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.pdf}
 	\caption{
@@ -236,14 +245,6 @@ When client 1 updates performs some actions, they must update their game state, 
 	}
 	\label{fig:serverClientDesync}
 \end{marginfigure}
-
-% advantages
-%   playable with slow networks
-This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
-%   no dedicated server required
-No client is picked to act as server, which causes game to end if that selected client disconnects.
-Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals, such as Civilization series\cite{civilizationInMyPants}.
-
 
 
 % disadvantages
