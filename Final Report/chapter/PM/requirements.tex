@@ -6,18 +6,18 @@ The project was successful in fulfilling most of the requirements but, due to de
 \subsection{Functional Requirements}
 
 \begin{description}
+%This section needs to be reworked to explain the success of each one compared to what was required.
+  \item[Multiplayer] The specification required two player games to be supported, at present the game will theoretically support any number of players, but in practice the game dynamics would decay when the number of players exceeded the expected capacity of the selected map. The game met and exceeded the multiplayer requirement outlined in the specification.
 
-  \item[Multiplayer] The game supports a minimum of two players. The number of players is in theory unlimited, but in practice the game dynamics would decay when the number of players exceeded the capacity of the selected map.
+  \item[Fleets] A core concept of the specified game was for players to be able to create and customise a fleet of ships, including an option of equipping weapons of the player's choice. Each player is now given the opportunity to customise their fleet constructing ships they wish to include in deployment and (optionally) naming ships. The requirement for including a fleet of ships was fulfilled, but some of the finer details of the requirement such as shield recharging remain incomplete.
 
-  \item[Fleets] Each player is given the opportunity to customise the fleet they wish to deploy by selecting ships they wish to include in deployment and (optionally) naming each ship. Each player's customised fleet is then deployed at the start of the battle.
+  \item[Ship Customisation] The specification required ships to have customisable weapon slots, currently each of the fleet's ships can be constructed using one of three different hull types. Each type offers a different ship speed, health, and shield capacity. The larger the ship, the higher its health/shield capacity, and the slower its speed, so the requirement was partially met, but the players are at present unable to select weapon slots.
 
-  \item[Ship Customisation] Each ship can be constructed using one of three different hull types available. Each type offers a different ship speed, health, and shield capacity. The larger the ship, the higher its health/shield capacity, and the slower its speed.
+  \item[Resource System] The framework for the resource system was completed. However, the game mechanics for resources remains unfinished. The implementation of the remaining features would be fairly straightforward in the event that this project is continued, but from the player's perspective the requirement is unmet.
 
-  \item[Resource System] The framework for the resource system was completed. However, the game mechanics for resources remains unfinished. The implementation of the remaining features would be fairly straightforward in the event that this project is continued.
+  \item[Planetary Capture] Players can capture a neutral planet if their fleet secures the area for a sufficient amount of time. Once the planet has been held securely by one player for a sufficient amount of time, the planet then falls under that player's control, which would provide them with a steady stream of resources and contribute towards a victory condition. Planets can also be captured from other players in the same way a neutral plant can be captured, except it takes the capturing player longer to secure the planet, giving an advantage to being the first player to capture a planet. This requirement was completed as required by the specification.
 
-  \item[Planetary Capture] Players can capture a neutral planet if their fleet secures the area for a sufficient amount of time. Once the planet has been held securely by one player for sufficient time, the planet then falls under that player's control, which would provide them with a steady stream of resources and contribute towards a victory condition. Planet's can also be captured from other players in the same way a neutral plant can be captured, except it takes the capturing player longer to secure the planet, giving an advantage to being the first player to capture a planet.
-
-  \item[Fog of War] Although it is a relatively simple concept, fog of war was not completed in time since it was low priority.
+  \item[Fog of War] Although it was a relatively simple concept, fog of war was not completed in time since it was low priority and time was scarce. The project failed to meet this requirement entirely.
 
   \item[AI] An advanced artificial intelligence framework was implemented. It took orders from the player and converted them into a lower level plan to execute. Some replanning is possible, but it is not a formal piece of the framework and it could be improved. Intelligent path finding algorithms were created to get ships to take the optimal route to their planned destinations. This AI system mostly met requirements, but is a bit less powerful than originally intended. However, its flexibility should allow it to be extended in useful ways in the future.
 
@@ -29,14 +29,76 @@ The project was successful in fulfilling most of the requirements but, due to de
 
 \subsection{Non-Functional Requirements}
 \begin{description}
-  \item[Fun] The project group find the game fun, as did a small group of pre-alpha testers, but since there was no time for a formal play testing there is little data to support how \emph{fun} the game experience is. The game experience almost certainly would have improved had missing features been implemented in time; the project group even had concepts to improve gameplay beyond the scope of the specification.
+  \item[Fun] The project group find the game fun, as did a small group of pre-alpha testers, but since there was no time for a formal play testing there is little data to support how \emph{fun} the game experience is. The game experience almost certainly would be improved should missing features been implemented in time; the project group even had concepts to improve gameplay beyond the scope of the specification.
     
-  \item[Short game sessions] Game session timings are not enforced by the game, and there is insufficient data available to guage average play time, however, it seems that under normal circumstances a game should be no longer than 35 minutes if players are seriously aiming to win.
+  \item[Short game sessions] Game session timings are not enforced by the game, and there is insufficient data available to gauge average play time, however, it seems that under normal circumstances a game should be no longer than 35 minutes if players are seriously aiming to win. The specification required the game be no longer than 35 minutes, but also didn't specify any action that needed to be taken in the time limit was reached, so the requirement can be deemed partially complete.
 
   \item[Approachable] Only the host's IP address is required to play a networked game, which is typical of most standalone games. A player is also able to host and join games using an elegant GUI making it very easy to get started.
 
-  \item[Reliable] The program was thoroughly tested to ensure it wouldn't easily crash and results show the game, other than a few minor bugs, is sufficiently stable.
+  \item[Reliable] The game is required to be reliable enough to have a gaming session without crashing. The software was thoroughly tested to ensure it wouldn't easily crash and results show the game, other than a few minor bugs, it meets the reliability requirement.
 
   \item[Secure] Since the game runs as with a master server controlling the entire simulation of the game the amount of cheating that is possible for a player is significantly reduced. Incoming messages are verified to be from whichever player they claim to be sent from by checking the originating IP and port. Players are also blocked from sending commands to ships that they do not actually control. However, packet forgery is still possible since there is no authentication or integrity checking at the network layer. This was briefly investigated by using a message authentication code algorithm such as SipHash,\cite{aumasson2012siphash} but it was decided that it would be better to focus efforts on completing the game logic and return to network layer packet verification at a later date.
 
 \end{description}
+
+%% Table in the same order as listed
+
+%\begin{table*}[ht]
+%	\begin{tabular}{p{10em} p{6em} p{12em}}
+%		\toprule
+%		\emph{Requirement} & \emph{Priority} & \emph{Requirement Status}\\
+%		\midrule
+%   Multiplayer & Vital & Fulfilled\\
+%	Fleets & Vital &  Fulfilled \\
+%	Ship Customisation & High & Partly Fulfilled\\
+%	Resource System & Medium & Not Fulfilled \\
+%	Planetary Capture & High & Fulfilled \\
+%	Fog of War & Low & Not Fulfilled \\
+%	AI & High & Fulfilled \\
+%	Campaign &  Optional & Not Fulfilled\\
+%	Operating System & High & Fulfilled\\
+%	Fun & High & Fulfilled\\
+%	Short game sessions & Medium & Fulfilled\\
+%	Approachable & High & Fulfilled\\
+%	Reliable & Vital & Fulfilled\\
+%	Secure & Medium & Fulfilled\\
+%	%todo maybe someone can improve this table
+%	\bottomrule
+%	\end{tabular}
+%	\caption{Requrement fullfillment}
+%	\label{tab:requrementstable}
+%\end{table*}
+
+
+\begin{table*}[ht]
+	\begin{tabular}{p{10em} p{6em} p{12em}}
+		\toprule
+		\emph{Requirement} & \emph{Priority} & \emph{Requirement Status}\\
+		\midrule
+   Multiplayer & Vital & Fulfilled\\
+	Fleets & Vital &  Fulfilled \\
+	Reliable & Vital & Fulfilled\\
+	
+	Ship Customisation & High & Partly Fulfilled\\
+   Planetary Capture & High & Fulfilled \\
+   AI & High & Fulfilled \\
+	
+   Operating System & High & Fulfilled\\
+	Fun & High & Fulfilled\\
+	Approachable & High & Fulfilled\\
+	Resource System & Medium & Not Fulfilled \\
+	Short game sessions & Medium & Fulfilled\\
+   Secure & Medium & Fulfilled\\
+	Fog of War & Low & Not Fulfilled \\
+	Campaign & Optional & Not Fulfilled\\
+
+	%todo maybe someone can improve this table
+	\bottomrule
+	\end{tabular}
+	\caption{Requrement fullfillment}
+	\label{tab:requrementstable}
+\end{table*}
+
+\vspace{5mm}
+
+As can be seen from \ref{tab:requrementstable}, only one high priority requirement remains incomplete, the only other requirements which were not met were lower priority or entirely optional anyway. The project failed to meet all the requirements laid out in the specification, but it certainly succeeded in meeting enough to meet the projects overall aim -- to produce a playable game.
