@@ -121,4 +121,12 @@ Talk about weapon types and systems.
 
 \subsection{Defining Model Instances}
 
-Talk about YAML configuration.
+All of the different ship, weapon, and system types that have been discussed so far are not actually hardcoded into source code of the game. Instead they are defined in external configuration files that are loaded by the game code at run time --- therefore, these types are collectively known as addons in the parlance of the game. This route was chosen because it would allow easy modification of the attributes of these addons without having to recompile the source code. So, players who are not able to program still have the option of changing some of the statistics to customise gameplay. It also possible for players to add their own custom addons to enhance the game with more options for fleet customisation. Allowing the game to be modified in this way is hugely popular in the gaming community. For example, \emph{Counter-Strike} began life as a community built mod of the game \emph{Half-Life} before becoming the most popular game in the world.\cite{lambdageneration2012}
+
+\begin{marginfigure}
+    \includegraphics{res/configuration/corvetteYaml.pdf}
+    \caption{Example of a YAML definition file}
+    \label{fig:corvette-yaml}
+\end{marginfigure}
+
+The addon definitions are stored in YAML files in the resources directory. YAML was chosen as the file format due to its focus on human readability. Other serialisation formats, such as XML and JSON, were considered, but were discarded in favour of the combination of brevity and readability afforded by YAML. When the game is launched, the resources directory is scanned for YAML configuration files and the data is loaded into memory. Adding new instances of models only requires adding a new YAML file to the appropriate directory, and configuring existing ones is as simple as editing a text file. Figure~\ref{fig:corvette-yaml} shows the corvette ship type defined in YAML.
