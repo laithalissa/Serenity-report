@@ -79,7 +79,6 @@ goto space lane between planet A and B and use it to got to B then use space lan
 
 \end{itemize}
 
-
 Traveling across open will always be considerable slow to space lanes so option 1 seems like a suboptimal choice, however did bring to light the question: How fast are space lanes?
 The speed at which ships travel on space lanes needed to be defined in order to know which route is faster.
 
@@ -96,7 +95,31 @@ If we now assume a very large value for space lane multiplier, then it will grea
 Under these conditions option 1 is slower then options 2 and 3.
 Since P1 is closer to the space lane between A and B it would travel across less open space then traveling to B across open space, hence option 3 is faster then option 2.
 
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSectorOption3NavigationGraph.pdf}
+    \caption[sector navigation - option 3 navigation graph]{sector navigation - option 3 navigation graph: each circle is node on navigation graph}
+	\label{fig:pathfinding:simpleSectorOption3NavigationGraph}
+\end{marginfigure}
 
+To be able to generate a navigation graph that will allow option 3 to be a solution, the navigation graph in Figure \ref{fig:pathfinding:simpleSectorOption3NavigationGraph} would need to be generated.
+In the graph their are only nodes. 
+Nodes, N3, N4, and N5 were from the planets in Figure \ref{fig:pathfinding:simpleSectorOption3}.
+Node N1 is the ship's starting point.
+This needs to be added so the navigation graph is a connected graph.
+If the destination wasn't a planet then a node would need to be added for this as well, but since the destination is a planet, no new node needs adding.
+
+Node N2 doesn't correspond to any planet, start point or destination point, it corresponds to where the ship needs to enter the space lane.
+It is a node that has no corresponding point on the original sector, it is a virtual node added to allow an optimal path to the solution.
+
+The optimal solution is now: N1 -> N2 -> N3 -> N4.
+
+For A* to make the same conclusion, costs needed to be associated with each edge on the navigation graph in Figure \ref{fig:pathfinding:simpleSectorOption3NavigationGraph}.
+Since we want to minimise the time to destination, it makes sense to use time to traverse an edge.
+To calculate the time to traverse an edge the following equation is used:
+$$ time = \frac{distance}{speed} $$
+The distance can easily be calculated using Pythagorean theorem, and the speed is simply the ship classes speed.
+This works for open space edges but what about space lanes? obviously this will be much faster.
+To make the formula work for both open space and space lanes the multiplayer needed to be factored in, giving the following formula:
 
 % navigation of sector graph
 
