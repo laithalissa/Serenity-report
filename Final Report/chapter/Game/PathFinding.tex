@@ -82,18 +82,18 @@ goto spacelane between planet A and B and use it to get to B then use it's space
 
 \end{itemize}
 
-Traveling across open space will always be considerable slower than spacelanes so option 1 seems like a suboptimal choice, however it did bring to light the question: How fast are space lanes?
-The speed at which ships travel on space lanes needed to be defined in order to know which route is faster.
+Traveling across open space will always be considerable slower than spacelanes so option 1 seems like a suboptimal choice, however it did bring to light the question: How fast are spacelanes?
+The speed at which ships travel on spacelanes needed to be defined in order to know which route is faster.
 
-Every ship class could have 2 properties, one defining its speed in open space and one defining its speed on space lanes.
-This method would allow the more specialisation amongst ships, allowing the concept of hit and run over space lanes. 
-It seemed logical that a slow ship on open space should be slow on a space lane relative to a fast ship on open space, hence it seemed redundant to have 2 speed properties on a ship class.
-The Method chosen was instead to define a sector property called multiplier which specifies how much faster ships are on space lanes relative to open space.
-For example if the multiplayer was 3, then a ship with a speed of 10 in open space would have a speed of 30 on a space lane (3x10).
-This multiplayer would be applied to all ships hence it would work on the ship's base speed defined on its ship class.
+Every ship class could have 2 properties, one defining its speed in open space and one defining its speed on spacelanes.
+This method would allow the more specialisation amongst ships, allowing the concept of hit and run over spacelanes. 
+It seemed logical that a slow ship on open space should be slow on a spacelane relative to a fast ship on open space, hence it seemed redundant to have 2 speed properties on a ship class.
+The method chosen was to define a sector property called multiplier which specifies how much faster ships are on space lanes relative to open space.
+For example if the multiplayer was 3, then a ship with a speed of 10 in open space would have a speed of 30 on a space lane ($3 \times 10 = 30$).
+This multiplayer would be applied to all ships hence it would work on the ship's base speed defined on it's ship class.
 This method was simple and solved the problem.
 
-back to the example of considering a ship at P1 which wants to go to planet C.
+Back to the example of considering a ship at P1 which wants to go to planet C.
 If we now assume a very large value for space lane multiplier, then it will greatly simplify these examples, then all space lanes will take approximately 0 seconds to use irrelevant to length, hence they are always faster over open space.
 Under these conditions option 1 is slower then options 2 and 3.
 Since P1 is closer to the space lane between A and B it would travel across less open space then traveling to B across open space, hence option 3 is faster then option 2.
