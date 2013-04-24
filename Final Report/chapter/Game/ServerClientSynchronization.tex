@@ -7,9 +7,7 @@
 % topology of network(star diagram, what server does, what client does)
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/NetworkTopology.png}
-	\caption{
-	network topology for multiplayer.
-	}
+	\caption[Network topology for multiplayer]{Network topology for multiplayer.}
 	\label{fig:serverClientSychNetworkTopology}
 \end{marginfigure}
 
@@ -27,11 +25,10 @@ When the player gives an order, i.e. to move a ship to a given destination, that
 On the server side, that command is used to 'update' the server's game model. Now the server's game state is at a later version than the clients. The server generates updates that can be applied to all client's game states to bring them to the same version as the server's version.
 
 An example of an update message is: A ship has been given a move order to a location on opposite side of map.
-Since their is no simulation on the client side, the ship will only move if the server sends an position update to the clients, moving it slightly closer to its destination. This means that for every time step, every ship that is moving will require an update message send across the network to every client. 
-
-The move update will look something like this:
+Since their is no simulation on the client side, the ship will only move if the server sends an position update to the clients, moving it slightly closer to its destination. This means that for every time step, every ship that is moving will require an update message send across the network to every client. The move update will look something shown in Table~\ref{table:posupdate}.
 
 \begin{margintable}
+    \label{table:posupdate}
     \begin{tabular}{l l l l l}
     \toprule
     \emph{shipID} & \emph{x} & \emph{y} & \emph{direction x} & \emph{direction y} \\ 
@@ -40,7 +37,7 @@ The move update will look something like this:
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{example of a position update message}
+	\caption[Example of a position update message]{Example of a position update message.}
 	\label{tab:positionUpdateExample}
 \end{margintable}
 
@@ -80,7 +77,7 @@ Table \ref{tab:updateMessageTypes} contains the update messages devised.
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{each type of update message, description of its usage, and the fields it will contain}
+	\caption[Message update times]{Each type of update message, description of its usage, and the fields it will contain.}
 	\label{tab:updateMessageTypes}
 \end{table}
 
