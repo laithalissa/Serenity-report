@@ -123,6 +123,38 @@ To make the formula work for both open space and space lanes the multiplayer nee
 $$ \frac{distance}{speed \times multiplier} $$
 In open space the $multiplier$ is 1.0, and on space lanes it is whatever the sector defines it as.
 
+To generate a navigation graph from a sector the following needs adding to the navigation graph:
+\begin{itemize}
+\item node for each planet in the sector
+\item edge between all planet nodes where a space lane was
+\item a node for start location unless it is a planet
+\item a node for destination location unless it is a planet
+\end{itemize}
+
+We also need to make it a fully connected graph, ie from any planet you can get to any other planet.
+This is true within the sector no matter where you are on the sector you can get to any other point in a strait line. 
+The only reason other points may be added to the path is for speed.
+
+The node N2 in Figure \ref{fig:pathfinding:simpleSectorOption3NavigationGraph} still has not been added.
+The question "how do we define where to add nodes on space lanes and how many to add" is not so simple to answer.
+Two example sectors were used to answer that question, the examples are shown in Figure \ref{fig:pathfinding:sectorExample2} and \ref{fig:pathfinding:sectorExample3}.
+
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSector2.pdf}
+    \caption{sector example 2: cross-over edges}
+	\label{fig:pathfinding:sectorExample2}
+\end{marginfigure}
+In Figure \ref{fig:pathfinding:sectorExample2} the ship starts at P1 and it's destination is P2.
+To get their it should take the space lane $C \to D$ upto point N1 then switch over to space lane $A \to B$.
+For A* to find this path it would require adding a virtual node at the intersection of space lanes.
+
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSector3.pdf}
+    \caption{sector example 3: right-angle}
+	\label{fig:pathfinding:sectorExample3}
+\end{marginfigure}
+%In Figure \ref{fig:pathfinding:sectorExample3}
+
 % navigation of sector graph
 
 
