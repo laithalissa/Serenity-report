@@ -25,17 +25,19 @@ Another fundamental question about the nature of the spacelane is whether its ef
 \subsection{Applying A* to Sector}
 % what is the problem
 % why this is no trivial problem % Why A*
-Pathfinding for a game has 2 components: navigating a graph which represents the game, and the algorithm that traverses the graph to find the shortest route to a destination.
+Pathfinding for a game has 2 components: navigating a graph which represents the game, and the algorithm that traverses the graph to find the shortest route to the destination.
 A* was chosen because it can guarantee an optimal solution, and it typically very fast if it has a good heuristic. 
-Since the line of sight heuristic is applicative in this game A* will find most paths without expanding many nodes.
-A* is designed to navigate discrete graphs, however In this game the sector is not a discrete graph.
-The planets and space lanes on the sector can be considered a discrete graph however planets are not the only locations ships can exist at, they can move anywhere in the sector, the spaces lanes just provide a speed boost.
+The line of sight heuristic is typically very accurate for navigation graphs since distance between any node and the destination node is the shortest path you could get to that node.
+The heuristic needs to return the time cost of getting from an arbitrary node to the destination, which is defined in Equation \ref{eq:pathfinding:cost}.
+The heuristic will always assume a space lane between the node and goal node, therefore maintaining the admissible property that it will never overestimate the cost of reaching the goal.
+H big problem is that A* is designed to navigate discrete graphs, however sector is not a discrete graph.
+The planets and spacelanes on the sector can be considered a discrete graph however planets are not the only locations a ship can exist at, they can move anywhere in the sector, the spacelanes just provide a speed boost.
 
 % conversion from sector to sector graph
 A solution to this problem was to generate a discrete graph from the sector graph that could then be used by A* algorithm to find a path to destination. 
-In a game such as Moon Survival on page {sec:rd:moonSurvival} the the world is already a discrete graph in the form of a 2-dimensional grid of squares, hence this can be traversed by the A* algorithm in place without having to generate a separate navigation graph.
+In a game such as Moon Survival on page {sec:rd:moonSurvival} the world is already a discrete graph in the form of a 2-dimensional grid of squares, hence this can be traversed by the A* algorithm in place without having to generate a separate navigation graph.
 
-Making a discrete navigation graph before A* could require considerable memory and CPU resources depending on the sector size.
+Making a discrete navigation graph before A* could require considerable memory and CPU resources depending on the number of planets and spacelanes within the sector.
 An alternative to this solution would be to modify A* to traverse continuous graphs however designing a new algorithm to do this could cost considerable man hours to develop and will have no guarantees of finding a solution, let alone finding the optimal solution hence this alternative was dropped.
 
 \begin{marginfigure}
@@ -120,7 +122,10 @@ $$ time = \frac{distance}{speed} $$
 The distance can easily be calculated using Pythagorean theorem, and the speed is simply the ship classes speed.
 This works for open space edges but what about space lanes? obviously this will be much faster.
 To make the formula work for both open space and space lanes the multiplayer needed to be factored in, giving the following formula:
-$$ \frac{distance}{speed \times multiplier} $$
+\begin{equation} \label{eq:pathfinding:cost}
+\frac{distance}{speed \times multiplier} $$
+\end{equation}
+
 In open space the $multiplier$ is 1.0, and on space lanes it is whatever the sector defines it as.
 
 To generate a navigation graph from a sector the following needs adding to the navigation graph:
