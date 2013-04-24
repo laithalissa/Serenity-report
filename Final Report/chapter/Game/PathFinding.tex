@@ -171,14 +171,22 @@ This would add the virtual nodes N1 and N2 in this example.
 	\label{fig:pathfinding:sectorExample4}
 \end{marginfigure}
 
-Example in Figure \ref{fig:pathfinding:sectorExample4} breaks the previous rule 
+Example in Figure \ref{fig:pathfinding:sectorExample4} breaks the previous rule.
+Before it is explained why it breaks the rule, it is assumed that the multiplier is a relatively low value, such that it is quicker to get to the destination P2 by traveling directly to P2 across open space rather than to N1.
+The rule is broken because the start point P1 is in open space and the closest point on the closest space lane, N1 is not the used in the optimal solution.
+Hence a virtual edge between P1 and P2 is also added, this fixes the problem.
+It also allows navigation on sectors without any planets.
 
-
-% navigation of sector graph
-
+There were many corner cases where a new virtual edge would be needed besides the examples provided.
+Instead of having many corner case rules for adding virtual nodes on space lanes, there was a brute force solution where virtual nodes are added at regular intervals on every space lane. 
+This will result in the possibility of a virtual node not existing at the optimal location on an edge but there will be one close to the optimal position.
+Though this solution is is not an optimal solution it is close and guarantees a path will be found, which provided enough benefits over the other options to pick this one.
 
 % problems this method causes (not optimal solution but close)
-% many nodes performance issues
+Their is no requirement that the path be optimal, it is purely a preference hence as long as the path is reasonable, the pathfinding will be considered a success, hence the brute force solution was chosen.
+Performance is a large issue with the brute-force method of generating a graph, because it adds an exponential number of nodes and edges compared to the original sector. 
 
+% navigation of sector graph
+Once the discrete navigation graph was generated from the sector, it could be given to the A* algorithm which would generate the optimal path around the sector.
 
 
