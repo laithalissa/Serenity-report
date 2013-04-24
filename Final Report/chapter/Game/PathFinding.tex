@@ -89,12 +89,12 @@ Every ship class could have 2 properties, one defining its speed in open space a
 This method would allow the more specialisation amongst ships, allowing the concept of hit and run over spacelanes. 
 It seemed logical that a slow ship on open space should be slow on a spacelane relative to a fast ship on open space, hence it seemed redundant to have 2 speed properties on a ship class.
 The method chosen was to define a sector property called multiplier which specifies how much faster ships are on space lanes relative to open space.
-For example if the multiplayer was 3, then a ship with a speed of 10 in open space would have a speed of 30 on a space lane ($3 \times 10 = 30$).
+For example if the multiplayer was 3, then a ship with a speed of 10 in open space would have a speed of 30 on a space lane ($ 3 \times 10 = 30 $).
 This multiplayer would be applied to all ships hence it would work on the ship's base speed defined on it's ship class.
 This method was simple and solved the problem.
 
 Back to the example of considering a ship at P1 which wants to go to planet C.
-If we now assume a very large value for space lane multiplier, then it will greatly simplify these examples, then all space lanes will take approximately 0 seconds to use irrelevant to length, hence they are always faster over open space.
+If we now assume a very large value for the spacelane multiplier, then it will greatly simplify these examples, since all spacelanes will take approximately 0 seconds to use irrelevant to distance.
 Under these conditions option 1 is slower then options 2 and 3.
 Since P1 is closer to the space lane between A and B it would travel across less open space then traveling to B across open space, hence option 3 is faster then option 2.
 
@@ -105,7 +105,7 @@ Since P1 is closer to the space lane between A and B it would travel across less
 \end{marginfigure}
 
 To be able to generate a navigation graph that will allow option 3 to be a solution, the navigation graph in Figure \ref{fig:pathfinding:simpleSectorOption3NavigationGraph} would need to be generated.
-In the graph their are only nodes. 
+In the graph there are only nodes. 
 Nodes, N3, N4, and N5 were from the planets in Figure \ref{fig:pathfinding:simpleSectorOption3}.
 Node N1 is the ship's starting point.
 This needs to be added so the navigation graph is a connected graph.
@@ -124,7 +124,7 @@ The distance can easily be calculated using Pythagorean theorem, and the speed i
 This works for open space edges but what about space lanes? obviously this will be much faster.
 To make the formula work for both open space and space lanes the multiplayer needed to be factored in, giving the following formula:
 \begin{equation} \label{eq:pathfinding:cost}
-\frac{distance}{speed \times multiplier} $$
+\frac{distance}{speed \times multiplier}
 \end{equation}
 
 In open space the $multiplier$ is 1.0, and on space lanes it is whatever the sector defines it as.
