@@ -1,25 +1,37 @@
 \section{Rendering the Game}
 
-\begin{enumerate}
-\item Creating graphics from scratch with screenshots
-\item The layout of the play screen. The viewport onto the world, minimap, selected entities, etc.
-\item Parallax effect
-\item Generating a colour to identify a player
-\end{enumerate}
+% \begin{enumerate}
+% \item Creating graphics from scratch with screenshots
+% \item The layout of the play screen. The viewport onto the world, minimap, selected entities, etc.
+% \item Parallax effect
+% \item Generating a colour to identify a player
+% \end{enumerate}
 
-\begin{comment}
-This section covers 2 aspects: How the world is rendered through a view port, and the parallax effect.
+% \begin{comment}
+% This section covers 2 aspects: How the world is rendered through a view port, and the parallax effect.
+% 
+% % view port
+% % TODO view port
+% The view port is like a mapping from the window on the screen to the game world.
+% It shows a small rectangle of the game world in the window on the screen.
+% The view port into the game world can be moved around the game world showing different parts, or it can be resizes showing more or less detail of the game world.
+% 
+% This is achieved through transformations of the game world image, more specifically translation and scaling.
+% 
+% % more stuff here.
+% 
+% % TODO parallax effect
+% % TODO  assets dynamically assigned color
+% \end{comment}
 
-% view port
-% TODO view port
-The view port is like a mapping from the window on the screen to the game world.
-It shows a small rectangle of the game world in the window on the screen.
-The view port into the game world can be moved around the game world showing different parts, or it can be resizes showing more or less detail of the game world.
+One very important aspect of the client program is rendering the current game state to a display for the user to interact with. Creating a picture of the game to display requires a number of graphical assets to visually represent the various entities and scenery that make up the game world. For Project Serenity all of these graphics were created from scratch using Photoshop and Illustrator. Figure~\ref{fig:assets} shows a selection of some of the assets that were created for different entities.
 
-This is achieved through transformations of the game world image, more specifically translation and scaling.
+% INSERT FIGURE OF PLANETS AND SHIPS
 
-% more stuff here.
+Another interesting piece of the rendering puzzle was to choose a colour as a unique visual representation for each player. This would be used to help players differentiate their ships from the enemy and to identify the planets that they own. A clever algorithm was used that would take a numerical player identifier and return a unique colour:\cite{ankerl2009}
 
-% TODO parallax effect
-% TODO  assets dynamically assigned color
-\end{comment}
+\begin{equation*}
+	colour(i) = HSV(i \times \phi \mod 1, 1.0, 0.8)
+\end{equation*}
+\noindent
+This function uses the HSV colour space using a fixed saturation and value, but modifying the hue to create equally bright and vibrant colours. The player's identifier, $i$, is used to step into the possible values for hue by multiplying it by the golden ratio, $\phi$, modulo one. Due to the equidistribution theorem\sidenote{The equidistribution theorem states that the sequence $a, 2a, 3a, \ldots \mod 1$ is uniformly distributed when $a$ is an irrational number} this creates a sequence of colours that are evenly spread across the colour space. Using this method to generate team colours created visually pleasing colours that are suitably distinct from each other to be used for recognition.
