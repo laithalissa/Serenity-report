@@ -2,18 +2,26 @@
 
 At the outset of the research it was not clear exactly what form the specification of the game would take. For this reason a working title was used to refer to it, and as of now no further title has been substituted. The working title is useful to disambiguate the game itself from the overall project, and is used throughout this document. The title is \emph{Project Serenity}.
 
+\section{Independence of Game Design from Programming Language}
+
+In order for the conclusions of this project to be meaningful, it is important that the game is not designed with the aim of demonstrating FP in mind. If it were, then the apparent performance of the language would be inflated by the nature of the design. It is crucial that the game resembles a standard game project as much as is possible in order for the test to be fair.
+
+In order to enable this as much as is practically possible without having a separate team design the game, several measures were taken. The primary method used was to ban mention of Haskell during design sessions. The priorities of game design were strictly confined to those independent of the implementation, and it was agreed that even if features had to be coded in a more mainstream language in order to include them, they should stay. 
+
+This concern had to be balanced with the requirement to be very aware of the language during actual development in order to document both strengths and weaknesses met in over the course of the project.
+
 \section{On the Choice of Language for the Project}
 
 The following factors were used to judge suitability between languages for use in the project.
 
 \begin{description}
 	\item[Strength of Type System] It was desired to use a strong, advanced type system to enable the full benefits of advanced FP techniques.
-	\item[Purity] Many of the advantages of FP come only when true separation between pure functional code, and impure `effectful' code, is available.\cite{hudak1989conception}
-	\item[Concision] Concise but readable code syntax was preferred to verbose or obscure.\sidenote[][1em]{\bibentry{brooks1995},
+	\item[Purity] Many of the advantages of FP come only when true separation between pure functional code, and impure `effectful' code, is available.\cite[-10em]{hudak1989conception}
+	\item[Concision] Concise but readable code syntax was preferred to verbose or obscure.\sidenote[][-8em]{\bibentry{brooks1995},
 also \bibentry{taliaferro1971modularity}, and
 \bibentry{wolverton1974cost}.}
 	\item[Speed] Due to the domain, a reasonable degree of performance was required of the target code.
-	\item[Testing] Good testing support was desirable both from a software development point of view, and the ability to show test-driven techniques in an FP context.\sidenote[][1em]{See \bibentry{beck1999}.}
+	\item[Testing] Good testing support was desirable both from a software development point of view, and the ability to show test-driven techniques in an FP context.\sidenote[][-6em]{See \bibentry{beck1999}.}
 	\item[Community and Library Support] Good availability of libraries and a thriving community all vastly aid in development.
 	\item[Familiarity] Languages the team already had some experience of would allow for more effort to be spent on the actual project than learning a completely new language, but also any language that was \emph{too} familiar might make some results less applicable.
 \end{description}

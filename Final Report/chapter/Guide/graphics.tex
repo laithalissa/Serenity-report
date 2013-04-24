@@ -73,7 +73,31 @@ As discussed in the previous section, there are various ways that such separatio
 
 \subsection{Using Gloss}
 
-...
+Gloss is a layer that sits on top of OpenGL and GLUT providing a much simpler and cleaner API for drawing vector graphics. The Gloss project website claims that ``Gloss hides the pain of drawing simple vector graphics behind a nice data type and a few display functions'', and that using Gloss allows you to ``get something cool on the screen in under 10 minutes''.\sidenote{See \url{hackage.haskell.org/package/gloss}} The simplicity of using Gloss compared to raw OpenGL code is shown in Listing~\ref{list:glossbasic} which recreates the simple OpenGL example in Gloss (although the colour of the circles has been changed to make the difference in outputs obvious).
+
+\vspace{-0.5em}
+\begin{listing}{list:glossbasic}{Example of simple Gloss usage}{Simple Gloss example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:glossbasicout}).}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(display, black, circles, color, blue, circleSolid, circle, play, playIO)
+\begin{haskell}
+>import Graphics.Gloss
+>
+>main = display (InWindow "Gloss Example" (250, 250) (0, 0)) black circles
+>
+>circles = Pictures $ map (color blue) [circleSolid 125, circle 250]
+
+\end{haskell}
+\begin{marginfigure}
+	\hspace{-2em}\includegraphics{res/gloss/glossbasic.png}
+	\caption[Output of example Gloss code in Listing~\ref{list:glossbasic}]{Output of example Gloss code in Listing~\ref{list:glossbasic}.}
+	\label{fig:glossbasicout}
+\end{marginfigure}
+\vspace{-1em}
+\noindent
+This example simply creates a window named ``Gloss Example'' with a black background and adds the specified "Picture" to it. A "Picture" is the Gloss abstraction of the OpenGL primitives. In the example the picture to display is defined by the "circles" function.
+
+The example in Listing~\ref{list:glossbasic} uses the "display" mode to draw a static picture to the screen. The game mode, started with "play" or "playIO", is obviously more useful when developing a game. It keeps track of a game world, the current state of the game, for which the developer provides callbacks for updating the world every tick and for converting the world to a "Picture". It also allows the programmer to add callbacks for handling input events such as mouse movement and clicks. The Gloss documentation and \texttt{gloss-examples} package are great sources of further information on getting started with game development with Gloss.\sidenote{See \url{hackage.haskell.org/package/gloss} and \url{hackage.haskell.org/package/gloss-examples}}
 
 \subsection{Summary of this section} 
 Given the limited time available for the Serenity project, the prebuilt pure interface onto OpenGL provided by the Gloss library was the best option, and this has been born out by the results. A custom made layer that is more appropriate for the needs of a complex game, and more readily adapted to changing requirements, would be beneficial to develop in the future.
