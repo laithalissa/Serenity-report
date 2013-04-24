@@ -153,7 +153,26 @@ For A* to find this path it would require adding a virtual node at the intersect
     \caption{sector example 3: right-angle}
 	\label{fig:pathfinding:sectorExample3}
 \end{marginfigure}
-%In Figure \ref{fig:pathfinding:sectorExample3}
+In Figure \ref{fig:pathfinding:sectorExample3} both the start point P1 and the destination point P2 are in open space.
+The optimal solution is outlined in dotted lines.
+The lines from A to B and C to B are spaces lanes.
+For A* to find the optimal path outlined it would require virtual nodes N1 and N2.
+Finding where to put these optimal nodes in the navigation graph is the hard part.
+In this example a simple case could be:
+\begin{itemize}
+\item if start point is in open space add virtual node at closest point on closest space lane
+\item if destination point is in open space add virtual node at closest point on closest space lane
+\end{itemize}
+This would add the virtual nodes N1 and N2 in this example.
+
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSector4.pdf}
+    \caption{sector example 4: closest space lane is not your friend}
+	\label{fig:pathfinding:sectorExample4}
+\end{marginfigure}
+
+Example in Figure \ref{fig:pathfinding:sectorExample4} breaks the previous rule 
+
 
 % navigation of sector graph
 
