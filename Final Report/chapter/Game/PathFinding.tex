@@ -53,10 +53,32 @@ If a ship is at P2 and wants to go to planet C, its seems rather obvious: take s
 Now consider a ship is at P1 and wants to go to planet C.
 It has 3 obvious options:
 \begin{itemize}
-\item go directory to C across open space
-\item goto Planet B which is close, then use its space lane to Planet C
-\item goto space lane between planet A and B and use it to got to B then use space lane to get to C.
+\item 
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSectorOption1.pdf}
+    \caption{sector navigation - option 1: path directory to planet C}
+	\label{fig:pathfinding:simpleSectorOption1}
+\end{marginfigure}
+go directory to C across open space (Figure \ref{fig:pathfinding:simpleSectorOption1})
+
+\item 
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSectorOption2.pdf}
+    \caption{sector navigation - option 2: path to B then to C}
+	\label{fig:pathfinding:simpleSectorOption2}
+\end{marginfigure}
+goto Planet B which is close, then use its space lane to Planet C (Figure \ref{fig:pathfinding:simpleSectorOption2})
+
+\item 
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSectorOption3.pdf}
+    \caption{sector navigation - option 3: path to space lane then to B then to C}
+	\label{fig:pathfinding:simpleSectorOption3}
+\end{marginfigure}
+goto space lane between planet A and B and use it to got to B then use space lane to get to C (Figure \ref{fig:pathfinding:simpleSectorOption3}).
+
 \end{itemize}
+
 
 Traveling across open will always be considerable slow to space lanes so option 1 seems like a suboptimal choice, however did bring to light the question: How fast are space lanes?
 The speed at which ships travel on space lanes needed to be defined in order to know which route is faster.
@@ -68,6 +90,12 @@ The Method chosen was instead to define a sector property called multiplier whic
 For example if the multiplayer was 3, then a ship with a speed of 10 in open space would have a speed of 30 on a space lane (3x10).
 This multiplayer would be applied to all ships hence it would work on the ship's base speed defined on its ship class.
 This method was simple and solved the problem.
+
+back to the example of considering a ship at P1 which wants to go to planet C.
+If we now assume a very large value for space lane multiplier, then it will greatly simplify these examples, then all space lanes will take approximately 0 seconds to use irrelevant to length, hence they are always faster over open space.
+Under these conditions option 1 is slower then options 2 and 3.
+Since P1 is closer to the space lane between A and B it would travel across less open space then traveling to B across open space, hence option 3 is faster then option 2.
+
 
 
 % navigation of sector graph
