@@ -35,9 +35,9 @@ The planets and spacelanes on the sector can be considered a discrete graph howe
 
 % conversion from sector to sector graph
 A solution to this problem was to generate a discrete graph from the sector graph that could then be used by A* algorithm to find a path to destination. 
-In a game such as Moon Survival on page {sec:rd:moonSurvival} the world is already a discrete graph in the form of a 2-dimensional grid of squares, hence this can be traversed by the A* algorithm in place without having to generate a separate navigation graph.
+In a game such as Moon Survival on page \pageref{sec:rd:moonSurvival} the world is already a discrete graph in the form of a 2-dimensional grid of squares, hence this can be traversed by the A* algorithm in-place without having to generate a separate navigation graph.
 
-Making a discrete navigation graph before A* could require considerable memory and CPU resources depending on the number of planets and spacelanes within the sector.
+Making a discrete navigation graph that A* can traverse will require considerable memory and CPU resources depending on the number of planets and spacelanes within the sector.
 An alternative to this solution would be to modify A* to traverse continuous graphs however designing a new algorithm to do this could cost considerable man hours to develop and will have no guarantees of finding a solution, let alone finding the optimal solution hence this alternative was dropped.
 
 \begin{marginfigure}
@@ -49,10 +49,11 @@ An alternative to this solution would be to modify A* to traverse continuous gra
 %  - example 1
 To work out how to generate a navigation graph from a sector, we needed to know the ideal path the ship would take under various circumstances before being able to implement it.
 In Figure \ref{fig:pathfinding:simplesector} is an example of a sector with 3 planets.
-If a ship is at P2 and wants to go to planet C, its seems rather obvious: take space lane to B then space lane to C. A space lane is faster to navigate than open space.
+If a ship is at P2 and needs to go to planet C, it seems rather obvious: take space lane to B then space lane to C. 
+A space lane is faster to navigate than open space.
 
 %  - example 2
-Now consider a ship is at P1 and wants to go to planet C.
+Now consider a ship is at P1 and needs to go to planet C.
 It has 3 obvious options:
 \begin{itemize}
 \item 
@@ -61,7 +62,7 @@ It has 3 obvious options:
     \caption{sector navigation - option 1: path directory to planet C}
 	\label{fig:pathfinding:simpleSectorOption1}
 \end{marginfigure}
-go directory to C across open space (Figure \ref{fig:pathfinding:simpleSectorOption1})
+go directly to C across open space (Figure \ref{fig:pathfinding:simpleSectorOption1})
 
 \item 
 \begin{marginfigure}
@@ -69,7 +70,7 @@ go directory to C across open space (Figure \ref{fig:pathfinding:simpleSectorOpt
     \caption{sector navigation - option 2: path to B then to C}
 	\label{fig:pathfinding:simpleSectorOption2}
 \end{marginfigure}
-goto Planet B which is close, then use its space lane to Planet C (Figure \ref{fig:pathfinding:simpleSectorOption2})
+goto planet B which is close, then use it's spacelane to planet C (Figure \ref{fig:pathfinding:simpleSectorOption2})
 
 \item 
 \begin{marginfigure}
@@ -77,11 +78,11 @@ goto Planet B which is close, then use its space lane to Planet C (Figure \ref{f
     \caption{sector navigation - option 3: path to space lane then to B then to C}
 	\label{fig:pathfinding:simpleSectorOption3}
 \end{marginfigure}
-goto space lane between planet A and B and use it to got to B then use space lane to get to C (Figure \ref{fig:pathfinding:simpleSectorOption3}).
+goto spacelane between planet A and B and use it to get to B then use it's spacelane to get to C (Figure \ref{fig:pathfinding:simpleSectorOption3}).
 
 \end{itemize}
 
-Traveling across open will always be considerable slow to space lanes so option 1 seems like a suboptimal choice, however did bring to light the question: How fast are space lanes?
+Traveling across open space will always be considerable slower than spacelanes so option 1 seems like a suboptimal choice, however it did bring to light the question: How fast are space lanes?
 The speed at which ships travel on space lanes needed to be defined in order to know which route is faster.
 
 Every ship class could have 2 properties, one defining its speed in open space and one defining its speed on space lanes.
