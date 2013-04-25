@@ -64,7 +64,7 @@ This pattern is used is several places in the Serenity code, most notably to pro
 >class (Updateable a) => Evolvable a where
 >  evolve :: UpdateWire (a, Game)
 
-\marginnote[-1em]{\anote The type \scalenote{"UpdateWire"} is an object that gives logic for providing updates given the passing of time, and is discussed further in the section on functional reactive programming (Section \ref{sec:frp}).}\vspace{-1.7em}
+\marginnote[-1em]{\anote The type \scalenote{"UpdateWire"} is an object that gives logic for providing updates given the passing of time.}\vspace{-1.7em}
 >  evolve = pure []
 
 \end{haskell}
