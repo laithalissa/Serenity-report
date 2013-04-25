@@ -3,38 +3,10 @@
 \section{Literature Review: Designing a Game for 2013}
 \label{sec:litRevDesigningGame}
 
-Making a game successful largely depends on make the game fun to play, but since fun is an entirely subjective measurement, the success can also be measured on the criteria for existing successful games. By analysing best selling games and determining the components which make them best selling, a list of criteria can be formalised to guide development and later assess the success of the project.
-
-Academic literature researching game development is unsurprisingly scarce, so the literature review in this section investigates a number of game industry experts and relates the criteria to the project.
-
-% Literature review on our game design
-
-\begin{description}
-
-\item[Originality] Francis and Kramer both assert that a successful game should have some original content such as a unique storyline, an unusual physics engine, new weapon concepts, or anything which pulls away from conventional games and adds a new dimension to gaming. If a game is has little originality then it risks becoming dull and uninteresting since it will appear to be a combination of existing game features instead of offering a new concept to the gaming community.\cite{tomfrancis} \cite{wolfgangkramer} 
-
-\item[Replayability] Temba highlights the need to for the gameing experience to be fuelled by lots of active events, where the player can make choices to influence the outcome. Kramer echoes this view by expressing the need for a unique gaming experience developed by the engineering of the game itself. \cite{antontemba} \cite{wolfgangkramer} Many approachable solutions to constructing a unique gaming experience include procedurally generated, randomly offering \emph{superweapons} or providing bonus upgrades to losing players (temporary invulnerability, invisibility etc), all of which add an element of randomness to gameplay to make games more exciting.
-%todo: left off rewrite here
-\item[Surprises] Hidden features, key events and tactical exploits which are not immediately apparent, rewards those who spend more time playing and learning about the game. A typical consequence of a well structured game is to have different possible outcomes for each possible decision. This is a rather typical pattern found in games such as Unreal Tournament, where a players weapon arsenal might allow him to fend off foes competing for an objective.
-% UT, 
-
-\item[Equal opportunity]
-Ensuring that no human player has a distinct advantage over any other player, such imbalances could be caused by advantageous starting positions, unequal starting budgets, unbalanced construction options, different health capacities etc. Clearly, different games have different requirements for fulfilling equal opportunity, but one of the most important requirements of a multiplayer game is to give every player an equal chance to win the game from the starting point.
-
-\item[No early elimination]
-No player should lose hope of winning early in the game. In the event of poor playing in the start of the game, a player should be able to redeem themselves to regain a chance of winning the game, in this context it's acceptable for the game to \emph{help} a player (e.g. spawning health boosts near the player, or having the AI teams primarily target other players.
-
-\item[Low waiting times]
-Players are interested in being involved with a game and don't want to endure period of low activity. This was a common problem in early real-time-strategy games such as Age of Empires, where a player would spend significant time in the ``setting up'' phase.
-% such as Age of Empires?
-%check hyphenation of rts
-
-\end{description}
-
-
+The most popular games over recent years have been of the first person shooter, hack and slash, FIFA and Fitness/Dance games genres. Unsurprisingly these genres are among those most frequently published by \ref{tab:bestSellingGames2011} and \ref{tab:bestSellingGames2012}, implying they're significantly more profitable than other genres, which indicates that such genres are also the most popular. This makes designing a new game challenging, since there's an immediate bias towards a genre which shows promise for sustained development and sequel games, and has the largest player base. 
 
 %Decide whether to enumerate or to list
-\begin{table*}[ht]
+\begin{table*}[!ht]
 	\begin{tabular}{p{15em} p{13em}}
 		\toprule
 		\emph{Title} & \emph{Publisher}\\
@@ -64,9 +36,9 @@ Players are interested in being involved with a game and don't want to endure pe
 	\caption{Best selling games of 2011.}
 	\label{tab:bestSellingGames2011}
 \end{table*}
-%% http://www.guardian.co.uk/technology/gamesblog/2012/jan/11/best-selling-games-of-2011
+%% todo: put reference \cite{bestgames2011}
 
-\begin{table*}[ht]
+\begin{table*}[!ht]
 	\begin{tabular}{p{15em} p{13em}}
 		\toprule
 		\emph{Title} & \emph{Publisher}\\
@@ -91,14 +63,43 @@ Players are interested in being involved with a game and don't want to endure pe
 	\\
 	Borderlands 2 & 2k Games
 	\\
-	
 	\bottomrule
 	\end{tabular}
 	\caption{Best selling games of 2012.}
 	\label{tab:bestSellingGames2012}
 \end{table*}
+%% todo: put reference \cite{bestgames2012}
 
-%% http://www.digitalspy.co.uk/gaming/news/a450921/top-100-best-selling-uk-games-2012-only-black-ops-fifa-sell-1-million.html
-The recent most popular games over the last few years have been first person shooters, hack and slash, FIFA and  Fitness/Dance games. Unsurprisingly these games are of genres which are frequently published by gaming industry giants, implying they're significantly more profitable than other genres, which in turn implies that such genres are also more popular. This makes designing a new game concept challenging, since there's an immediate bias towards a genre which shows promise for sustaining development and producing sequel games, and has the largest player base. 
+The highest priority for designing a game is to make it fun for the target audience, however, the reception of a game is heavily dependant on the ever-changing  gaming culture, so it's extremely difficult to formalise the art of game development. Consequently academic references are extremely rare, so the project's literature review aims identify current trends by investigating a range of publications, from leading game designers such as \emph{Valve corporation} \emph{EA Games}, \emph{Ubisoft}, as well as the leading game critics \emph{GameSpot}, \emph{IGN}, and independent game reviewers \emph{Tom Francis}, \emph{Anton Temba}, \emph{Wolfgang Kramer} and \emph{Peter Collier}. \cite{makeuseof} \cite{ebizmba}
 
-This project intends to challenge the conventional genre space by aiming to produce a real time strategy game. The RTS genre has given rise to some extremely popular productions in the early day of gaming corporations such as Total Annihilation, Supreme Commander and the Command and Conquer franchise. Early games lacked sophisticated hardware and game engines, so there was a large focus on developing the gameplay experience, which is likely why these games are so iconic. Since time frame and budget of the project is limited by time and resources, it seems that a simple RTS game would be prudent genre for the game.
+% Literature review on our game design
+
+\begin{description}
+
+\item[Originality] Francis and Kramer both assert that a successful game should have some original content such as a unique storyline, an unusual physics engine, new weapon concepts, or anything which pulls away from conventional games and adds a new dimension to gaming. If a game has limited originality then it risks becoming dull and uninteresting since it will appear to be a combination of existing game features instead of offering a new concept to the gaming community.\cite{tomfrancis} \cite{wolfgangkramer} 
+
+\item[Adaptive Pacing and Replayability] Temba highlights the need to for the gaming experience to be fuelled by lots of active events, where the player can make choices to influence the outcome. Kramer echoes this view by expressing the need for a unique gaming experience developed by carefully architecting the game. \cite{antontemba} \cite{wolfgangkramer} Valve addresses the issue of replayability through ``algorithmically adjusting the game pacing on the fly to maximise ``drama'' (player excitement/intensity)''.\cite{valveAI} and spends a lot of design time investigating a procedurally populated environment. The purpose of these adjustments is to fit the gameplay to the individual player so the game is always challenging and exciting, which can be particularly difficult for cooperative multiplayer games.
+
+Many approachable solutions for the project to create a unique gaming experience include procedurally generated environment, intelligently offering \emph{supplies} or bonus upgrades (temporary invulnerability, invisibility etc) to losing players, to ensure the game is balanced and enjoyable for players of all abilities.
+
+\item[Surprises] Game journal \emph{Gameranx} highlights the need to surprises in both the plot and hidden features, which ``extend the length and replay value of a game, and more often than not give gamers something to talk about''.\cite{gameranx} A typical feature of a well structured game is to have different possible outcomes for every possible decision the player is allowed to make. This is a rather typical pattern found in games such as Unreal Tournament, where a players weapon arsenal might allow him to fend off foes competing for an objective.
+% UT, 
+
+\item[Equal opportunity]
+Francis and Wolfgang both consider equal opportunity is vital for multiplayer games, and so it's important that no player has a distinct advantage over any other human player; such imbalances could be caused by advantageous starting positions, unequal starting budgets or  anything which gives one player a better chance of winning. Clearly, different games have different requirements for fulfilling equal opportunity, but one of the most important requirements of a multiplayer game is to give every player an equal chance to win the game from the starting point. \cite{tomfrancis} \cite{wolfgangkramer}
+
+\item[No early elimination]
+No player should lose hope of winning early in the game. In the event of poor playing in the start of the game, a player should be able to redeem themselves to regain a chance of winning the game, in this context it's acceptable for the game to \emph{help} a player (e.g. spawning health boosts near the player, or having the AI teams primarily target other players. Valve introduced AI assisted power-ups in \emph{Left 4 Dead 2}, where the game designer specifies available supplies and the game's AI decides when to spawn them based on the player's needs, which reduces the chance of the player being unable to progress due to earlier difficulties. \citepage{valveAI}{slide 75}
+
+\item[Low waiting times]
+Francis and Wolfgang agree that a player's interest lies in being involved with a game and don't want to endure period of low activity. This was a common problem in early real-time-strategy games such as Age of Empires, where a player would spend significant time in the ``setting up'' phases. It's important to balance the focus of the game so there's focus on areas of interest without risking the compromising the story or atmosphere. \cite{tomfrancis} \cite{wolfgangkramer}
+% todo: check hyphenation of rts
+
+\item[Environmental Art and Sound]
+Valve argues that much of the game's atmosphere stems from the players environment, so atmospheric artwork and sound should be considered an important factor in making the players feel engrossed in the game.\citepage{valveSP}{Slide 8}
+
+
+\end{description}
+
+
+This project intends to challenge the conventional genre space by aiming to produce a real time strategy game. The RTS genre has given rise to some extremely popular productions in the early day of gaming corporations such as Total Annihilation, Supreme Commander and the Command and Conquer franchise. Early games lacked sophisticated hardware and game engines, so there was a large focus on developing the gameplay experience, which is likely why these games are so iconic. Since time frame and budget of the project is limited by time and resources, it seems that a simple RTS game would be suitable choice of genre for the game provided it does not interfere with the criteria previously outlined in this section.
