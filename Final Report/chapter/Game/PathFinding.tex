@@ -13,7 +13,7 @@ The specification made it clear --- by the way weapons and navigation between pl
 
 Intimately related to these questions is the precise nature of the spacelane mechanics. Many different models were discussed for this during design meetings. Initial ideas on the physical mechanism of the spacelane was that they conferred an additional optional acceleration: i.e. that if a ship is aproximate to a lane it could opt to undergo greater acceleration than a ship far from a lane. But as mentioned, accurately modelling acceleration in space is somewhat contrary to the gameplay aspirations of the design. 
 
-A simpler mechanics for ships that was considered to be more suitable, is for them to have a top speed that they could reach relatively quickly; but for them to still have large turning circles. This makes their motion more similar to naval ships engaged in warfare. The interpretation of the spacelane in this model cannot be simply a gain in acceleration as this confers little benefit. Instead it is clear that the spacelane must confer an addition to top speed. A possible physical interpretation of these behaviours is that the ships are moving in some kind of ether with friction, and so will reach a terminal velocity. The spacelane is then an area with an  artificially induced lower density of ether.
+A simpler mechanics for ships that was considered to be more suitable, is for them to have a top speed that they could reach relatively quickly; but for them to still have large turning circles. This makes their motion more similar to naval ships engaged in warfare. The interpretation of the spacelane in this model cannot be simply a gain in acceleration as this confers little benefit. Instead it is clear that the spacelane must confer an addition to top speed. A possible physical interpretation of these behaviours is that the ships are moving in some kind of ether with friction, and so will reach a terminal velocity. The spacelane is then an area with an artificially induced lower density of ether.
 
 Another fundamental question about the nature of the spacelane is whether its effects are immediately felt at full strength at a certain distance from it, or whether they fall off related to distance. the former is most definitely simpler, but the latter feels more natural as a mechanism. Figure~\ref{fig:spacelanes} shows the difference in the shortest paths that these approaches may generate, discounting the additional issue of ship turning.
 
@@ -42,7 +42,7 @@ An alternative to this solution would be to modify A* to traverse continuous gra
 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSector.pdf}
-	\caption[Simple example of sector]{Simple example of sector with 3 planets: A, B, and C. Two points of interest are defined: P1 in the middle of the sector and P2 which is at planet A}
+	\caption[Simple example of sector]{Simple example of sector with 3 planets: A, B, and C. Two points of interest are defined: P1 in the middle of the sector and P2 which is at planet A.}
 	\label{fig:pathfinding:simplesector}
 \end{marginfigure}
 
@@ -59,26 +59,26 @@ It has 3 obvious options:
 \item 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSectorOption1.pdf}
-    \caption{sector navigation - option 1: path directory to planet C}
+    \caption[Sector navigation - option 1: path directory to planet C]{Sector navigation - option 1: path directory to planet C.}
 	\label{fig:pathfinding:simpleSectorOption1}
 \end{marginfigure}
-go directly to C across open space (Figure \ref{fig:pathfinding:simpleSectorOption1})
+Go directly to C across open space (Figure \ref{fig:pathfinding:simpleSectorOption1})
 
 \item 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSectorOption2.pdf}
-    \caption{sector navigation - option 2: path to B then to C}
+    \caption[Sector navigation - option 2: path to B then to C]{Sector navigation - option 2: path to B then to C.}
 	\label{fig:pathfinding:simpleSectorOption2}
 \end{marginfigure}
-goto planet B which is close, then use it's spacelane to planet C (Figure \ref{fig:pathfinding:simpleSectorOption2})
+Goto planet B which is close, then use it's spacelane to planet C (Figure \ref{fig:pathfinding:simpleSectorOption2})
 
 \item 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSectorOption3.pdf}
-    \caption{sector navigation - option 3: path to spacelane then to B then to C}
+    \caption[sector navigation - option 3: path to spacelane then to B then to C]{sector navigation - option 3: path to spacelane then to B then to C.}
 	\label{fig:pathfinding:simpleSectorOption3}
 \end{marginfigure}
-goto spacelane between planet A and B and use it to get to B then use it's spacelane to get to C (Figure \ref{fig:pathfinding:simpleSectorOption3}).
+Goto spacelane between planet A and B and use it to get to B then use it's spacelane to get to C (Figure \ref{fig:pathfinding:simpleSectorOption3}).
 
 \end{itemize}
 
@@ -100,7 +100,7 @@ Since P1 is closer to the spacelane between A and B it would travel across less 
 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSectorOption3NavigationGraph.pdf}
-    \caption[sector navigation - option 3 navigation graph]{sector navigation - option 3 navigation graph: each circle is node on navigation graph}
+    \caption[Sector navigation - option 3 navigation graph]{sector navigation - option 3 navigation graph: each circle is node on navigation graph.}
 	\label{fig:pathfinding:simpleSectorOption3NavigationGraph}
 \end{marginfigure}
 
@@ -147,7 +147,7 @@ Two example sectors were used to answer that question, the examples are shown in
 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSector2.pdf}
-    \caption{sector example 2: cross-over edges}
+    \caption[Sector example 2: cross-over edges]{Sector example 2: cross-over edges.}
 	\label{fig:pathfinding:sectorExample2}
 \end{marginfigure}
 In Figure \ref{fig:pathfinding:sectorExample2} the ship starts at P1 and it's destination is P2.
@@ -156,7 +156,7 @@ For A* to find this path it would require adding a virtual node at the intersect
 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSector3.pdf}
-    \caption{sector example 3: right-angle}
+    \caption[Sector example 3: right-angle]{Sector example 3: right-angle.}
 	\label{fig:pathfinding:sectorExample3}
 \end{marginfigure}
 In Figure \ref{fig:pathfinding:sectorExample3} both the start point P1 and the destination point P2 are in open space.
@@ -173,7 +173,7 @@ This would add the virtual nodes N1 and N2 in this example.
 
 \begin{marginfigure}
 	\includegraphics{res/pathfinding/PathFindingSector4.pdf}
-    \caption{sector example 4: closest spacelane is not your friend}
+    \caption[Sector example 4: closest spacelane is not your friend]{Sector example 4: closest spacelane is not your friend.}
 	\label{fig:pathfinding:sectorExample4}
 \end{marginfigure}
 
