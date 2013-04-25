@@ -21,7 +21,11 @@ One very important aspect of the client program is rendering the current game st
 %      - Minimap
 %      - Currently selected entity
 
-The client uses these assets to draw the sector and place each player's ships in the correct locations. This is done by placing the assets using world coordinates in the 2D space defined by the dimensions of the sector.
+The client uses these assets to draw the sector and place each player's ships in the correct locations. This is done by placing the assets using world coordinates in the 2D space defined by the dimensions of the sector. The picture that has been built up so far is then translated and scaled according to the current panning and zoom settings stored in the client. This allows the user to smoothly zoom in and out as well as scroll around the sector. There are optimisations that could have been performed, such as working out which entities would be displayed and only drawing them instead of drawing them and scaling them out of view, but in the end there were not required.
+
+Along with the actual world there is some extra GUI elements to help the player keep track of the current state of the game. Firstly there is a minimap in the bottom left corner. This displays a schematic representation of the sector with the locations of friendly ships. The minimap allows the user to quickly check on the current status of their fleet. It was originally hoped that the minimap could be used to show extra events such as known locations of enemies and current attacks. It could also be enhanced by allowing the user's view to be transported to the location clicked on the minimap. However, core features were prioritised over this extra functionality, and so they are not implemented yet.
+
+The second piece of GUI is the ship and planet selection indicators. When a user left clicks on an entity, or drags a selection box over a group of entities, they are selected and a dashed selection circle surrounds the entity. To make this feature easier to use a group selection does not select all entities within the drag area. Instead some are prioritised over others: ships are ranked above planets, and friendly ships are ranked above enemies. For example, if a selection is made over the entire sector then only the friendly ships will be selected. If a single entity is selected then details about it will be shown in the top left of the screen.
 
 % TODO Talk about parallax because it's interesting? (Innovative?)
 
