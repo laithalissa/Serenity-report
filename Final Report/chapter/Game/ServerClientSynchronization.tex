@@ -7,7 +7,7 @@
 % topology of network(star diagram, what server does, what client does)
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/NetworkTopology.png}
-	\caption[Network topology for multiplayer]{Network topology for multiplayer.}
+	\caption[Network topology for multiplayer]{Network topology for multiplayer games.}
 	\label{fig:serverClientSychNetworkTopology}
 \end{marginfigure}
 
@@ -37,7 +37,7 @@ Since their is no simulation on the client side, the ship will only move if the 
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption[Example of a position update message]{Example of a position update message.}
+	\caption[Example of a position update message]{An example of an position update message.}
 	\label{tab:positionUpdateExample}
 \end{margintable}
 
@@ -77,7 +77,7 @@ Table \ref{tab:updateMessageTypes} contains the update messages devised.
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption[Message update times]{Each type of update message, description of its usage, and the fields it will contain.}
+	\caption[Message update types]{Description of update types.}
 	\label{tab:updateMessageTypes}
 \end{table}
 
@@ -98,16 +98,15 @@ This is done in Table \ref{tab:typeSizes}
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em}}
     \toprule
-    \emph{Field Type} & \emph{Field Size/bytes} \\
+    \emph{Field Type} & \emph{Size (bytes)} \\
     \midrule
-    int & 4 \\ 
-    long & 8 \\ 
-    float & 4 \\
-    double & 8 \\    
+    \scalenote{"Int"} & 4 \\ 
+    \scalenote{"Float"} & 4 \\
+    \scalenote{"Double"} & 8 \\    
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{example of a position update message}
+	\caption[field sizes]{Byte sizes of numeric fields.}
 	\label{tab:typeSizes}
 \end{margintable}
 
@@ -116,7 +115,7 @@ Now we have estimates of size for the different types, we can assign types to ea
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em} p{5em}}
     \toprule
-    \emph{Field Name} & \emph{Size/bytes} \\
+    \emph{Field Name} & \emph{Size (bytes)} \\
     \midrule
     entityID & 4 \\ 
     location & 8 \\
@@ -129,7 +128,8 @@ Now we have estimates of size for the different types, we can assign types to ea
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{example of a position update message}
+    	%todo somebody verify caption please!
+	\caption[Size of record types]{Byte sizes of record types.}
 	\label{tab:fieldSizes}
 \end{margintable}
 
@@ -152,7 +152,7 @@ We now have a formula to calculate network traffic, we need to apply to to vario
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em} p{5em}}
     \toprule
-    \emph{Update Type} & \emph{size/bytes} & \emph{frequency} \\
+    \emph{Update Type} & \emph{Size (bytes)} & \emph{Frequency} \\
     \midrule
     position & 20 & 1 \\ 
     order & 19 & 0.2 \\
@@ -162,7 +162,7 @@ We now have a formula to calculate network traffic, we need to apply to to vario
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption[Update message statistics]{Size of each update message and it's average frequency per game step.}
+	\caption[Update message statistics]{Size of each update message and its average frequency per game step.}
 	\label{tab:updateMessageStats}
 \end{margintable}
 
@@ -186,7 +186,7 @@ When client 1 updates performs some actions, they must update their game state, 
 \begin{margintable}[-8em]
     \begin{tabular}{p{5em} p{5em} p{5em}}
     \toprule
-    \emph{S} & \emph{N} & \emph{kB/sec} \\
+    \emph{Steps Per Second} & \emph{Number of Clients} & \emph{kB/s} \\
     \midrule
     15 & 2 & 1.77 \\
     15 & 4 & 3.54 \\
@@ -207,7 +207,8 @@ When client 1 updates performs some actions, they must update their game state, 
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption[Estimation of network requirements]{Estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
+	\caption[Estimation of network requirements]{
+	Estimate of traffic generated for various game setups.}
 	\label{tab:networkRequirements}
 \end{margintable}
 
@@ -216,14 +217,15 @@ When client 1 updates performs some actions, they must update their game state, 
 This strategy means players can continue to play games on networks with high latency, without any lag. When packets are delayed, the client can continue to play the game, and the game is updated when the packet arrives.
 %   no dedicated server required
 No client is picked to act as server, which causes game to end if that selected client disconnects.
-Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals, such as Civilization series\cite{civilizationInMyPants}.
+Since all clients act as server, any client can disconnect and the game continues, providing more robustness which is highly desirable for games with long game intervals such as Sid Meier's Civilization.
+\sidenote{Sid Meier's Civilization is a turn-based strategy game, for more information see civilization.com.}
 
-
-
+%todo: Captions here have NOT been checked
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.pdf}
 	\caption[\stepOneName : description]{
-	\stepOneName : 4 clients connected. client 1 has just modified its game state, so it send the update to all other clients.
+%	\stepOneName : 4 clients connected. client 1 has just modified its game state, so it send the update to all other clients.
+	Lockstep overview. Four clients connect and client 1 modifies its game state, so it send the update to all other clients.
 	}
 	\label{fig:serverClientSychP2P}
 \end{marginfigure}

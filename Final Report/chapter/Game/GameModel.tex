@@ -10,7 +10,7 @@
 % early on
 % 
 
-The model that makes up the game consists of the internal representation of the various game entities, such as ships and planets, as well as the business logic that is used to manage and control them and the relationships between them. During the alpha phase, this model was rather simple as it only existed to store the locations of the entities. As development progressed, it grew in complexity and feature completeness. Currently there are two sets of models: one for the fleets of ships, and the other for the map of planets and spacelanes.\sidenote{Spacelanes are connections between some planets that allow ships travelling along or nearby them to move more quickly. See Section~\ref{sec:pathfinding} for complete details.} This section will describe and discuss these models and the reasonings behind their design.
+The model that makes up the game consists of the internal representation of the various game entities, such as ships and planets, as well as the business logic that is used to manage and control them and the relationships between them. During the alpha phase, this model was rather simple as it only existed to store the locations of the entities. As development progressed, it grew in complexity and feature completeness. Currently there are two sets of models: one for the fleets of ships, and the other for the map of planets and spacelanes.\sidenote{Spacelanes are connections between some planets that allow ships travelling along or nearby them to move more quickly. See Section~\ref{sec:pathfinding} for details.} This section will describe and discuss these models and the reasonings behind their design.
 
 \subsection{Sectors and Planets}
 
@@ -29,7 +29,7 @@ The model that makes up the game consists of the internal representation of the 
     \bottomrule
     \end{tabular}
     \vspace{1em}
-    \caption{Fields of the Sector model}
+    \caption[Fields of the Sector model]{Fields of the Sector model.}
     \label{tab:sector-fields}
 \end{margintable}
 
@@ -56,11 +56,11 @@ The different game maps are known as sectors. A sector models all of the planets
     \bottomrule
     \end{tabular}
     \vspace{1em}
-    \caption{Fields of the Planet model}
+    \caption[Fields of the Planet model]{Fields of the Planet model.}
     \label{tab:planet-fields}
 \end{margintable}
 
-The list of planets that make up the sector are specified using the planetary model. Planets are modelled in such a way as to have a number of different fields that make the planet unique. Table~\ref{tab:planet-fields} gives a breakdown of the properties that comprise the model of a planet. Just like sectors, planets have a nickname to allow players to easily reference a specific planet instead of having to use location information or numerical identifiers. One of the most interesting pieces of the planetary model is the \emph{ecotype}. The ecotype of a planet specifies the type of ecological system that the planet represents, for example the ocean ecotype is used for planets that are almost entirely covered by water. This ecotype has a big effect on the planet because it determines the quantities of the different resources found in the planet.\sidenote{The use of resources is laid out in detail in Section~\ref{sec:resources}} This is because, for example, some ecotypes will have a greater proportion of metal (e.g.\ the metal ecotype). However, the quantity of resources stored by a planet is actually represented by a separate field instead of being statically determined by the ecotype. This was done to make it possible to add some more variety to the different planets. For example, it could be possible to use a random number generator to set the quantities of resources in a planet within the range specified by its ecotype. Currently all resource quantities are specified statically, but this potential enhancement would add some variables to the battles to keep the game interesting for regular players.
+The list of planets that make up the sector are specified using the planetary model. Planets are modelled in such a way as to have a number of different fields that make the planet unique. Table~\ref{tab:planet-fields} gives a breakdown of the properties that comprise the model of a planet. Just like sectors, planets have a nickname to allow players to easily reference a specific planet instead of having to use location information or numerical identifiers. One of the most interesting pieces of the planetary model is the \emph{ecotype}. The ecotype of a planet specifies the type of ecological system that the planet represents, for example the ocean ecotype is used for planets that are almost entirely covered by water. This ecotype has a big effect on the planet because it determines the quantities of the different resources found in the planet.\sidenote{The use of resources is detailed in Section~\ref{sec:resources}} This is because, for example, some ecotypes will have a greater proportion of metal (e.g.\ the metal ecotype). However, the quantity of resources stored by a planet is actually represented by a separate field instead of being statically determined by the ecotype. This was done to make it possible to add some more variety to the different planets. For example, it could be possible to use a random number generator to set the quantities of resources in a planet within the range specified by its ecotype. Currently all resource quantities are specified statically, but this potential enhancement would add some variables to the battles to keep the game interesting for regular players.
 
 % TODO fix margin diagrams, all appearing below the page (invisible)
 % \begin{marginfigure}
@@ -99,7 +99,7 @@ The list of planets that make up the sector are specified using the planetary mo
     \bottomrule
     \end{tabular}
     \vspace{1em}
-    \caption{Fields of the Ship model}
+    \caption[Fields of the Ship model]{Fields of the Ship model.}
     \label{tab:ship-fields}
 \end{margintable}
 
@@ -133,7 +133,7 @@ All of the different ship, weapon, and system types that have been discussed so 
 
 \begin{marginfigure}
     \includegraphics{res/configuration/corvetteYaml.pdf}
-    \caption{Example of a YAML definition file}
+    \caption[Example of a YAML definition file]{Example of a YAML definition file.}
     \label{fig:corvette-yaml}
 \end{marginfigure}
 
