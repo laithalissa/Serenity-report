@@ -25,9 +25,8 @@ also \bibentry{taliaferro1971modularity}, and
 	\item[Community and Library Support] Good availability of libraries and a thriving community all vastly aid in development.
 	\item[Familiarity] Languages the team already had some experience of would allow for more effort to be spent on the actual project than learning a completely new language, but also any language that was \emph{too} familiar might make some results less applicable.
 \end{description}
-
-%TODO
-\emph{to be completed}
+\noindent
+Several different functional programming languages were reviewed and discussed in regards to these factors.
 
 \subsection{Lisp / Scheme / Clojure}
 
@@ -41,6 +40,12 @@ also \bibentry{taliaferro1971modularity}, and
 % CON:
 % Dynamic typing? (Not the same as strength, but...)
 
+Lisp and its many dialects include some of the earliest examples of functional programming languages. These strong roots in the history of the development of functional programming could make one of the members from this family of languages a good choice for demonstrating the utility of FP.
+
+Clojure, a modern take on the concept of Lisp, has some properties that make it particularly appealing. Firstly, it runs on the JVM which means that programs developed in Clojure are highly portable since Java platform runs on most popular operating systems. However, with this comes the ability to make use of the Java standard library. This may be a great benefit in most software development projects, but it could be construed as cheating when attempting to develop a game using only FP (within reason). A second benefit to Clojure is its focus on concurrency through software transactional memory.\sidenote{See \url{clojure.org/concurrent_programming}} This could come in useful for a game development project since it may be desirable to run worker tasks, such as networking, in separate threads from the graphics display to prevent lagging.
+
+Lisp syntax is unlike that of many modern C-style programming languages. However, the project team has some familiarity with using Lisp from a university module on artificial intelligence and having some members (and a supervisor) who are avid Emacs users.
+
 \subsection{Scala}
 
 % PRO:
@@ -48,11 +53,20 @@ also \bibentry{taliaferro1971modularity}, and
 
 % CON:
 % Although full functional support (including libraries for side-effect-less) it is multi-paradigm. Could be prone to 'cheating'?
+% Missing sugary notation
 % Unfamiliar
+
+Scala is relatively recent introduction to the world of programming languages, design was only started in 2001. However, it has quickly grown in popularity and is currently used by the likes of Twitter, Foursquare, The Guardian, and UBS. Just like Clojure, Scala is compiled into Java bytecode that is executed using the JVM. This has the benefits of portability, but the drawback (for this project at least) of the temptation of non-functional Java libraries.
+
+Scala also is not a true functional programming language and is considered to be multi-paradigm since it inherits a lot of object oriented features from Java. Although Scala supports a fully functional approach, its multi-paradigm nature is the main reason that Scala was not chosen for this project. The aim is to demonstrate the usage of the functional approach rather than a mostly functional approach.
+
+% Make a comparison to Python in the last paragraph?
 
 \subsection{Other ML variants (SML, OCaml, F\#, etc)}
 
 % CON:
+% Strict semantics
+% Not as concise
 % Multi-paradigm, more impure. Considered 'cheating'?
 
 
@@ -62,8 +76,12 @@ also \bibentry{taliaferro1971modularity}, and
 % Designed to be concurrent. Benefits a game were running workers (like networking) in separate threads.
 
 % CON:
-% Dynamic typing
+% Dynamic typing, but is it weaker too?
 % Unfamiliar
+
+Erlang was a strong contender in the language selection process. It is a mature language, having been initially developed in the 1980s, that has active support. Its huge focus on concurrent programming is what makes it so special and attractive. As mentioned in the earlier section on Clojure, this could be a great boon for the development of a game. Erlang was also intended to be used for rapid development via prototyping.\citepage{cesarini2009erlang}{page 14} The time constraints on the project made it likely that we would be using an agile development methodology based on the iterative development of prototypes (this turned out to be true, see Section~\ref{sec:devmodel}) and so the support that Erlang provides for this approach could have been useful.
+
+Howevever, Erlang has a dynamic typing system that is weaker than those provided by other functional languages, such as Haskell. It was also one of the one of the most unfamiliar languages under consideration.
 
 \subsection{Haskell}
 
