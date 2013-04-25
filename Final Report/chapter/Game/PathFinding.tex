@@ -24,21 +24,21 @@ Another fundamental question about the nature of the spacelane is whether its ef
 
 Physical simulation of a large mass moving and turning in space was the initially preferred implementation method, but it became increasingly clear that this was going to be difficult both from an implementation and a user perspective. And while modelling the spacelane as having a continuous, field like nature, it was not at all clear how this would be achieved. It was decided to instead merely approximate the desired behaviour using bezier curves.
 
-Over the Christmas break the code for a ship moving between two arbitrary points and headings was developed. Coding bezier paths themselves was not difficult, but moving an object continuously along one at a constant speed was much more complicated than expected. The accurate solution of this problem is called reparameterisation by arc length, and requires a solving a differential equation, but the method eventually used in Serenity was a numerical interpolation. Results are shown in Figure~\ref{fig:bezier}.
-
 \begin{marginfigure}
 	\includegraphics[width=20em]{res/pathfinding/bezier}
 	\caption[Bezier path at regular intervals]{Bezier path at regular intervals (small circles) and the same path after having been reparameterisated by arc length (large circles).}
 	\label{fig:bezier}
 \end{marginfigure}
 
-Even with the ability to move a ship smoothly along a given path, the selection of the path still required some considerable thought. An example of the control points generated for a move is shown in Figure~\ref{fig:bezierpath}.
+Over the Christmas break the code for a ship moving between two arbitrary points and headings was developed. Coding bezier paths themselves was not difficult, but moving an object continuously along one at a constant speed was much more complicated than expected. The accurate solution of this problem is called reparameterisation by arc length, and requires a solving a differential equation, but the method eventually used in Serenity was a numerical interpolation. Results are shown in Figure~\ref{fig:bezier}.
 
 \begin{marginfigure}
 	\includegraphics[width=20em]{res/pathfinding/bezierpath}
 	\caption[Bezier path at regular intervals]{Bezier path at regular intervals (small circles) and the same path after having been reparameterisated by arc length (large circles).}
 	\label{fig:bezierpath}
 \end{marginfigure}
+
+Even with the ability to move a ship smoothly along a given path, the selection of the path still required some considerable thought. An example of the control points generated for a move is shown in Figure~\ref{fig:bezierpath}.
 
 \subsection{Applying A* to a Sector}
 % what is the problem
