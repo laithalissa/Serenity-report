@@ -19,9 +19,9 @@ The client uses these assets to draw the sector and place each player's ships in
 
 Along with the actual world there is some extra GUI elements to help the player keep track of the current state of the game. Firstly there is a minimap in the bottom left corner. This displays a schematic representation of the sector with the locations of friendly ships. The minimap allows the user to quickly check on the current status of their fleet. It was originally hoped that the minimap could be used to show extra events such as known locations of enemies and current attacks. It could also be enhanced by allowing the user's view to be transported to the location clicked on the minimap. However, core features were prioritised over this extra functionality, and so they are not implemented yet.
 
-Figure~\ref{fig:gameplay} shows how similar the resulting game was to the initial mockup made during the specification stage (see Figure~\ref{fig:mockup1}).
-
 The second piece of GUI is the ship and planet selection indicators. When a user left clicks on an entity, or drags a selection box over a group of entities, they are selected and a dashed selection circle surrounds the entity. To make this feature easier to use a group selection does not select all entities within the drag area. Instead some are prioritised over others: ships are ranked above planets, and friendly ships are ranked above enemies. For example, if a selection is made over the entire sector then only the friendly ships will be selected. If a single entity is selected then details about it will be shown in the top left of the screen.
+
+Figure~\ref{fig:gameplay} shows how similar the resulting game was to the initial mockup made during the specification stage (see Figure~\ref{fig:mockup1}).
 
 % TODO Talk about parallax because it's interesting? (Innovative?)
 
