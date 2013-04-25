@@ -22,9 +22,71 @@ Another fundamental question about the nature of the spacelane is whether its ef
 % bezier (not trivial)
 % flow fields
 
-\subsection{Applying A* to Sector}
+\subsection{Applying A* to a Sector}
 % what is the problem
 % why this is no trivial problem % Why A*
+
+Applying a pathfinding algorithm to a sector has two stages: generating a graph which represents the sector, and running the algorithm that traverses the graph to find the shortest route to the destination. The algorithm chosen for the second stage is A* because it will always find the optimal solution (assuming the heuristic is admissible) and, if an efficient heuristic is used, then it is very fast too. However, the difficulty of using A* is that it requires a discrete graph to navigate, but the sector is not discrete as ships can move anywhere within it. The planets and spacelanes provide some points of reference, but they do not restrict the movement of the ships. Therefore, it is necessary to build a discrete graph from the sector model during stage one.
+
+Just using the planets as nodes connected by edges of spacelanes does not work since the ships can go into other areas of space not covered by such a graph. Advanced techniques such as constructing a navigation mesh or a waypoint graph do not really apply in this situation since there are no obstacles for graphs to be built from. So, the solution was to take the simplistic graph generated only from the planets and spacelanes, and then add extra nodes and edges where appropriate. Extending the graph with these extra nodes was the difficult problem that had to be solved.
+
+\begin{figure*}[h!]
+	\includegraphics{res/pathfinding/PathFindingExample.pdf}
+	\caption{Potential routes a ship could take to reach its destination}
+	\label{fig:pathfindingexample}
+\end{figure*}
+
+First a typical ingame situation was taken to be analysed for the possible routes that a ship could take. Figure~\ref{fig:pathfindingexample} shows such a scenario. Figure~\ref{fig:pathfindingexample} (a) shows the location of two ships, $P_1$ and $P_2$, and three planets, $A$, $B$, and $C$, connected by spacelanes. If both ships want to reach planet $C$ then it is obvious which route $P_2$ will take, it can travel along spacelanes from $A$ to $B$ to $C$. However, there are three different possibilities for ship $P_1$:
+
+\begin{enumerate}
+	\item Go directly to planet $C$, shown in (b).
+	\item Go to the closet planet, $B$, and then follow the spacelane to $C$, shown in (c).
+	\item Travel to the nearest spacelane, between $A$ and $B$, and then follow the spacelanes to $C$, shown in (d).
+\end{enumerate}
+
+Travelling across open space is always going to be considerably slower than using spacelanes, so option one can be immediately be discarded as suboptimal. However, how fast are spacelanes? Is it best to greedily use spacelanes as much as possible or is it sometimes faster to travel a little longer through open space to reach a spacelane closer to the destination. Spacelanes have a multiplier effect on the speed of a ship so that a ship travelling along a spacelane speeds up $x$ times compared to its usual speed, where $x$ is a parameter defined by the sector model.
+
+Suppose that $x$ is very large or infinite then travel along spacelanes with be almost instantaneous. Under these circumstances option three will be the optimal route since the least time is spent travelling off of spacelanes. However, for a lower value of $x$, option two will be optimal since the reduced distance to reach planet $B$ outweighs the benefits of the spacelane. Therefore, it is obvious that the heuristic cost function used by A* must take the multiplier effect of the spacelanes into account:
+
+\begin{equation*}
+	cost = \frac{distance}{speed \times multiplier}
+\end{equation*}
+
+Where the $distance$ between two nodes is simply the Euclidean distance. Using this cost function it becomes easier to find a good route by adding `virtual nodes' to the graph on nearby spacelanes and then using the A* algorithm to compare the costs of this extended graph. For example, in the scenario shown in Figure~\ref{fig:pathfindingexample} a virtual node is added to the spacelane between $A$ and $B$. This suggests a simple set of rules for adding new nodes:
+
+\begin{enumerate}
+	\item If the start point is in open space then add a node at the closest point on the closest spacelane
+	\item If the destination is in open space then add a node at the closest point on the closest spacelane
+\end{enumerate}
+
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/PathFindingSector3.pdf}
+	\caption[Adding nodes to the nearest spacelanes]{Adding nodes to the nearest spacelanes.}
+	\label{fig:addingnodes}
+\end{marginfigure}
+
+For example, Figure~\ref{fig:addingnodes} shows how two nodes are added at $N_1$ and $N_2$ if a ship wants to go from $P_1$ to $P_2$. The graph is then completed to make all of the sensible routes connected. Using the same example from Figure~\ref{fig:addingnodes} it means that edges will be added between the $P_1$ and $N_1$, $P_2$ and $N_2$, $P_1$ to $B$, $B$ to $P_2$, and so on. The A* algorithm, using the simple cost function, can then be applied to this fully connected graph to find the best possible route to the destination.
+
+\begin{marginfigure}
+	\includegraphics{res/pathfinding/NearestSpaceLaneUseless.pdf}
+	\caption[The closest point on the closest spacelane is not always your friend]{The closest point on the closest spacelane is not always your friend.}
+	\label{fig:uselessspacelane}
+\end{marginfigure}
+
+However, these two rules are too simplistic and will not provide the best route in all cases. Figure~\ref{fig:uselessspacelane} shows an example in which a ship wants to travel from $P_1$ to $P_2$. The current ruleset will add nodes $N_1$ and $N_2$ since they are the closest points on the nearest spacelanes. However, it is actually quicker to travel via $N_3$ than it would be to go straight from $N_1$ to $P_2$. There are just too many possibilities for quicker routes as the edge cases keep on building up. Therefore, it was decided to use a brute force solution that involves adding nodes at regular intervals along the nearest spacelanes. The best added node may not match the optimal solution exactly, but it will be better than the majority of other options. Using brute force is also not a highly desirable technique, but it works fast enough for this use case for now as further designing would have been required to reach a better solution.
+
+Now that a discrete graph has been generated to represent the sector it can be fed to the A* algorithm which will find an optimal solution for the graph it has been presented.
+
+
+
+% ----------------------------------
+% ----------------------------------
+% ----------------------------------
+% ----------------------------------
+% ----------------------------------
+
+\begin{comment}
+
 Pathfinding for a game has 2 components: navigating a graph which represents the game, and the algorithm that traverses the graph to find the shortest route to the destination.
 A* was chosen because it can guarantee an optimal solution, and it typically very fast if it has a good heuristic. 
 The line of sight heuristic is typically very accurate for navigation graphs since distance between any node and the destination node is the shortest path you could get to that node.
@@ -195,4 +257,4 @@ Performance is a large issue with the brute-force method of generating a graph, 
 % navigation of sector graph
 Once the discrete navigation graph was generated from the sector, it could be given to the A* algorithm which would generate the optimal path around the sector.
 
-
+\end{comment}
