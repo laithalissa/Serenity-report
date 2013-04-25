@@ -135,6 +135,19 @@ Now we have estimates of size for the different types, we can assign types to ea
 
 For the plan field, it was assumed that each action within the plan was approximately 20 bytes, and that the average plan has 5 steps.
 
+Table \ref{tab:updateMessageStats} estimates the size of a message to sent across network.
+
+Now the size and frequency of each update message has been estimated, we calculated how many bytes are sent to a single client every game step.
+$$ bytes = 20*1 + 19*0.2 + 14*0.3 + 104*0.3 + 12*0.1 $$
+$$ bytes = 60.4 $$
+
+We have $S$ representing the number of game steps per second, and $N$ representing the number of clients connected to server.
+The number of bytes the server sends per second is
+$$ bytes = S * N * 60.4 $$
+
+We now have a formula to calculate network traffic, we need to apply to to various values of $N$ and $S$, as shown in Table \ref{tab:networkRequirements}.
+
+% s=15, 30, 45, 60, n =2, 4, 8, 16
 
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em} p{5em}}
@@ -153,21 +166,24 @@ For the plan field, it was assumed that each action within the plan was approxim
 	\label{tab:updateMessageStats}
 \end{margintable}
 
-Table \ref{tab:updateMessageStats} estimates the size of a message to sent across network.
+According to these network estimations, when game steps is 60, and there are 16 clients, the network usage per second is 56.62kB/second. This is highly acceptable for running multiplayer over internet as well as LAN networks.
 
-Now the size and frequency of each update message has been estimated, we calculated how many bytes are sent to a single client every game step.
-$$ bytes = 20*1 + 19*0.2 + 14*0.3 + 104*0.3 + 12*0.1 $$
-$$ bytes = 60.4 $$
+% overview of other strategies
+When deciding on how the server and client would synchronise their game states, we had 3 choices:
+\begin{itemize}\itemsep-3pt
+\item \stepOneName
+\item \stepTwoName
+\item \stepThreeName
+\end{itemize}
 
-We have $S$ representing the number of game steps per second, and $N$ representing the number of clients connected to server.
-The number of bytes the server sends per second is
-$$ bytes = S * N * 60.4 $$
+\stepTwoName was the method chosen, however it wasn't a clear choice which would be the best since there is no total ordering between them, each one has its own benefits under different circumstances.
 
-We now have a formula to calculate network traffic, we need to apply to to various values of $N$ and $S$, as shown in Table \ref{tab:networkRequirements}.
+% advantages/disadvantages of lockstep
+\emph{\stepOneName} is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
+Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
+When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
-% s=15, 30, 45, 60, n =2, 4, 8, 16
-
-\begin{margintable}[2em]
+\begin{margintable}[-8em]
     \begin{tabular}{p{5em} p{5em} p{5em}}
     \toprule
     \emph{S} & \emph{N} & \emph{kB/sec} \\
@@ -194,25 +210,6 @@ We now have a formula to calculate network traffic, we need to apply to to vario
 	\caption[Estimation of network requirements]{Estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
 	\label{tab:networkRequirements}
 \end{margintable}
-
-According to these network estimations, when game steps is 60, and there are 16 clients, the network usage per second is 56.62kB/second. This is highly acceptable for running multiplayer over internet as well as LAN networks.
-
-
-
-% overview of other strategies
-When deciding on how the server and client would synchronise their game states, we had 3 choices:
-\begin{itemize}
-\item \stepOneName
-\item \stepTwoName
-\item \stepThreeName
-\end{itemize}
-
-\stepTwoName was the method chosen, however it wasn't a clear choice which would be the best since there is no total ordering between them, each one has its own benefits under different circumstances.
-
-% advantages/disadvantages of lockstep
-\emph{\stepOneName} is a peer to peer strategy, in which each computer has a full model of the game. Figure \ref{fig:serverClientSychP2P} shows an example of this strategy. 
-Their are 4 computers within game. Each client (client 1, client 2, client 3, and client4) have a full copy of the game.
-When client 1 updates performs some actions, they must update their game state, and send this update to all other clients.
 
 % advantages
 %   playable with slow networks
