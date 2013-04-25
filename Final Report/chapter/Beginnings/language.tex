@@ -44,7 +44,7 @@ Lisp and its many dialects include some of the earliest examples of functional p
 
 Clojure, a modern take on the concept of Lisp, has some properties that make it particularly appealing. Firstly, it runs on the JVM which means that programs developed in Clojure are highly portable since Java platform runs on most popular operating systems. However, with this comes the ability to make use of the Java standard library. This may be a great benefit in most software development projects, but it could be construed as cheating when attempting to develop a game using only FP (within reason). A second benefit to Clojure is its focus on concurrency through software transactional memory.\sidenote{See \url{clojure.org/concurrent_programming}} This could come in useful for a game development project since it may be desirable to run worker tasks, such as networking, in separate threads from the graphics display to prevent lagging.
 
-Lisp syntax is unlike that of many modern C-style programming languages. However, the project team has some familiarity with using Lisp from a university module on artificial intelligence and having some members (and a supervisor) who are avid Emacs users.
+Lisp syntax is unlike that of many modern C-style programming languages, and can be hard to read for a number of reasons, most notably the excessive number of parentheses that can sometimes be required. That said, the project team has some familiarity with using Lisp from a university module on artificial intelligence and having some members (and a supervisor) who are avid Emacs users.
 
 \subsection{Scala}
 
@@ -58,7 +58,9 @@ Lisp syntax is unlike that of many modern C-style programming languages. However
 
 Scala is relatively recent introduction to the world of programming languages, design was only started in 2001. However, it has quickly grown in popularity and is currently used by the likes of Twitter, Foursquare, The Guardian, and UBS. Just like Clojure, Scala is compiled into Java bytecode that is executed using the JVM. This has the benefits of portability, but the drawback (for this project at least) of the temptation of non-functional Java libraries.
 
-Scala also is not a true functional programming language and is considered to be multi-paradigm since it inherits a lot of object oriented features from Java. Although Scala supports a fully functional approach, its multi-paradigm nature is the main reason that Scala was not chosen for this project. The aim is to demonstrate the usage of the functional approach rather than a mostly functional approach.
+However, Scala is really a multi-paradigm language and it is possible to write Scala code that is essentially identical to its Java counterpart. Although Scala supports a fully functional approach, its multi-paradigm nature is the main reason that Scala was not chosen for this project --- it would be hard to objectively test the functional paradigm itself when using a multi-paradigm language. The aim is to demonstrate the usage of the functional approach rather than a mostly functional approach. 
+
+It must be noted that this is not intended as a criticism of Scala, just a reason for it being less suitable for this particular project.
 
 % Make a comparison to Python in the last paragraph?
 
@@ -69,6 +71,7 @@ Scala also is not a true functional programming language and is considered to be
 % Not as concise
 % Multi-paradigm, more impure. Considered 'cheating'?
 
+There are several other languages that are broadly similar to Scala which can be considered as the ML family of languages; these include Microsoft's functional language based on the Common Language Runtime (CLR) called F\#, and of course ML itself and object oriented extensions of it such as OCAML. To a greater or lesser degree most of the observations about Scala in the context of this project apply to all of these languages.
 
 \subsection{Erlang}
 
@@ -81,7 +84,7 @@ Scala also is not a true functional programming language and is considered to be
 
 Erlang was a strong contender in the language selection process. It is a mature language, having been initially developed in the 1980s, that has active support. Its huge focus on concurrent programming is what makes it so special and attractive. As mentioned in the earlier section on Clojure, this could be a great boon for the development of a game. Erlang was also intended to be used for rapid development via prototyping.\citepage{cesarini2009erlang}{page 14} The time constraints on the project made it likely that we would be using an agile development methodology based on the iterative development of prototypes (this turned out to be true, see Section~\ref{sec:devmodel}) and so the support that Erlang provides for this approach could have been useful.
 
-Howevever, Erlang has a dynamic typing system that is weaker than those provided by other functional languages, such as Haskell. It was also one of the one of the most unfamiliar languages under consideration.
+However, Erlang has a dynamic typing system that is weaker than those provided by other functional languages, such as Haskell. Of the languages considered, it was also one of the least familiar to the project tea.m
 
 \subsection{Haskell}
 
@@ -89,7 +92,7 @@ Howevever, Erlang has a dynamic typing system that is weaker than those provided
 % Fits all of the factors mentioned above
 % Especially familiarity from CS256
 
-Haskell really fitted all of the factors mentioned above. It is notable for its strong, static type system and its innovative approach to ad-hoc polymorphism through type classes.\cite{wadler1989typeclasses} Haskell is also a purely functional language, but does have support for side-effects using a special construct. Therefore it is easier to make the distinction between pure and impure code.
+Haskell really fitted all of the requirements considered. It is notable for its strong, static type system and its innovative approach to ad-hoc polymorphism through type classes.\cite{wadler1989typeclasses} Haskell is also a purely functional language, but does have support for side-effects using a special construct. Therefore there is a full syntactic and semantic distinction between pure and impure code.
 
 The community of developers and researchers that surrounds Haskell is very large. A dedicated website, called Hackage, is used to host over 5,000 libraries to aid development.\sidenote{See \url{hackage.haskell.org/cgi-bin/hackage-scripts/stats}} This includes approximately 79 packages that are focused on testing.
 
