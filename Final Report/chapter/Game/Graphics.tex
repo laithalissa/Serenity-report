@@ -1,31 +1,12 @@
 \section{Rendering the Game}
 
-% old assets
-% ----------
-% ships made to look very big
-% many prototypes
-% merging assets with code, dynamic color
-
-% master copy of assets in dropbox under 4y project/laith/design
-
-One very important aspect of the client program is rendering the current game state to a display for the user to interact with. Creating a picture of the game to display requires a number of graphical assets to visually represent the various entities and scenery that make up the game world. For Project Serenity all of these graphics were created from scratch using Photoshop and Illustrator. Figure~\ref{fig:assets} shows a selection of some of the assets that were created for different entities.
+One very important aspect of the client program is rendering the current game state to a display for the user to interact with. Creating a picture of the game to display requires a number of graphical assets to visually represent the various entities and scenery that make up the game world. For Project Serenity all of these graphics were created from scratch using Photoshop and Illustrator. Figure~\ref{fig:textures} shows a selection of some of the assets that were created for different entities.
 
 \begin{figure*}[h!]
 	\includegraphics{res/serenityscreens/textures.png}
 	\caption[][1em]{Screenshot during gameplay showing a planet, spacelanes, selected ships, and minimap.}
 	\label{fig:textures}
 \end{figure*}
-
-% TODO INSERT FIGURE OF PLANETS AND SHIPS
-% full page on planets, full ships
-
-% TODO Chat about the actual rendering process. Thoughts:
-%
-% * World coordinates: all entities are located in world coordinates and a view of the world is drawn in this way first
-% * Viewport: the display is scaled and translated by the current settings stored by the client
-% * Along with the actual world there is some extra GUI that helps the player understand the current state of the game:
-%      - Minimap
-%      - Currently selected entity
 
 The client uses these assets to draw the sector and place each player's ships in the correct locations. This is done by placing the assets using world coordinates in the 2D space defined by the dimensions of the sector. The picture that has been built up so far is then translated and scaled according to the current panning and zoom settings stored in the client. This allows the user to smoothly zoom in and out as well as scroll around the sector. There are optimisations that could have been performed, such as working out which entities would be displayed and only drawing them instead of drawing them and scaling them out of view, but in the end there were not required.
 
