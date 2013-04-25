@@ -11,7 +11,7 @@ The specification made it clear --- by the way weapons and navigation between pl
 	\label{fig:spacelanes}
 \end{marginfigure}
 
-Intimately related to these questions is the precise nature of the \emph{spacelane} mechanics. Spacelanes between planets were introduced into the game in order for the otherwise empty space between planets to have some strategic topology, the idea being that the spacelanes can be traversed much more quickly than empty space. and so control of the lanes are vital to a successful strategy. Many different models were discussed for this mechanic during design meetings, both from the point of view of the in universe explanation, and the precise way in which the game would implement it. Initial ideas on the physical mechanism of the spacelane was that they conferred an additional optional acceleration: i.e. that if a ship is aproximate to a lane it could opt to undergo greater acceleration than a ship far from a lane. But as mentioned, accurately modelling acceleration in space is somewhat contrary to the gameplay aspirations of the design. 
+Intimately related to these questions is the precise nature of the \emph{spacelane} mechanics. Spacelanes between planets were introduced into the game in order for the otherwise empty space between planets to have some strategic topology, the idea being that the spacelanes can be traversed much more quickly than empty space. and so control of the lanes are vital to a successful strategy. Many different models were discussed for this mechanic during design meetings, both from the point of view of the in universe explanation, and the precise way in which the game would implement it. Initial ideas on the physical mechanism of the spacelane was that they conferred an additional optional acceleration: i.e. that if a ship is approximate to a lane it could opt to undergo greater acceleration than a ship far from a lane. But as mentioned, accurately modelling acceleration in space is somewhat contrary to the gameplay aspirations of the design. 
 
 A simpler mechanic for ships that was considered to be more suitable, is for them to have a top speed that they could reach relatively quickly; but for them to still have large turning circles. This makes their motion more similar to naval ships engaged in warfare. The interpretation of the spacelane in this model cannot be simply a gain in acceleration as this confers little benefit. Instead it is clear that the spacelane must confer an addition to top speed. A possible physical interpretation of these behaviours is that the ships are moving in some kind of ether with friction, and so will reach a terminal velocity. The spacelane is then an area with an artificially induced lower density of ether.
 
@@ -51,7 +51,7 @@ Just using the planets as nodes connected by edges of spacelanes does not work s
 
 \begin{figure*}[h!]
 	\includegraphics{res/pathfinding/PathFindingExample.pdf}
-	\caption{Potential routes a ship could take to reach its destination}
+	\caption[Potential ship routes]{Potential routes a ship could take to reach its destination.}
 	\label{fig:pathfindingexample}
 \end{figure*}
 

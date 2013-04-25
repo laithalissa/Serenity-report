@@ -13,7 +13,7 @@ The client uses these assets to draw the sector and place each player's ships in
 \begin{figure*}[p]
 	\includegraphics[width=15.5cm]{res/serenityscreens/09-ingame1}
 	\includegraphics[width=15.5cm]{res/serenityscreens/10-ingame2}
-	\caption{Screenshot during gameplay showing a planet, spacelanes, selected ships, and minimap.}
+	\caption[Screenshot of game]{Screenshot during gameplay showing a planet, spacelanes, selected ships, and minimap.}
 	\label{fig:gameplay}
 \end{figure*}
 
@@ -31,4 +31,4 @@ Another interesting piece of the rendering puzzle was to choose a colour as a un
 	colour(i) = HSV(i \times \phi^{-1} \mod 1, 1.0, 0.8)
 \end{equation*}
 \noindent
-This function uses the HSV colour space using a fixed saturation and value, but modifying the hue to create equally bright and vibrant colours. The player's identifier, $i$, is used to step into the possible values for hue by multiplying it by the reciprocal of the golden ratio, $\phi$, modulo one. Due to the equidistribution theorem\sidenote{The equidistribution theorem states that the sequence $a, 2a, 3a, \ldots \mod 1$ is uniformly distributed when $a$ is an irrational number} this creates a sequence of colours that are evenly spread across the colour space. Using this method to generate team colours created visually pleasing colours that are suitably distinct from each other to be used for recognition.
+This function uses the HSV colour space using a fixed saturation and value, but modifying the hue to create equally bright and vibrant colours. The player's identifier, $i$, is used to step into the possible values for hue by multiplying it by the reciprocal of the golden ratio, $\phi$, modulo one. Due to the equidistribution theorem\sidenote{The equidistribution theorem states that the sequence $a, 2a, 3a, \ldots \mod 1$ is uniformly distributed when $a$ is an irrational number.} this creates a sequence of colours that are evenly spread across the colour space. Using this method to generate team colours created visually pleasing colours that are suitably distinct from each other to be used for recognition.
