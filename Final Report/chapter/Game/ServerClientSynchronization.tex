@@ -149,7 +149,7 @@ For the plan field, it was assumed that each action within the plan was approxim
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{size of each update message and it's average frequency per game step}
+	\caption[Update message statistics]{Size of each update message and it's average frequency per game step.}
 	\label{tab:updateMessageStats}
 \end{margintable}
 
@@ -191,7 +191,7 @@ We now have a formula to calculate network traffic, we need to apply to to vario
     \bottomrule
     \end{tabular}
     	\vspace{1em}
-	\caption{estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
+	\caption[Estimation of network requirements]{Estimates kB/sec sent across network for varying number of game steps per second($S$), and number of clients($N$).}
 	\label{tab:networkRequirements}
 \end{margintable}
 
@@ -225,7 +225,7 @@ Since all clients act as server, any client can disconnect and the game continue
 
 \begin{marginfigure}
 	\includegraphics{res/computer_communication_architecture/ServerClientSynchronizationP2P.pdf}
-	\caption{
+	\caption[\stepOneName : description]{
 	\stepOneName : 4 clients connected. client 1 has just modified its game state, so it send the update to all other clients.
 	}
 	\label{fig:serverClientSychP2P}
@@ -236,8 +236,8 @@ Since all clients act as server, any client can disconnect and the game continue
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation2.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation3.pdf}		
-	\caption{
-	\stepOneName : example of desynchronization when using the \stepOneName strategy. Client 1 on left, client 2 on right. 
+	\caption[\stepOneName : desynchronisation example]{
+	\stepOneName : example of desynchronisation when using the \stepOneName strategy. Client 1 on left, client 2 on right. 
 	Each diagram represents state of game for that clients at a given time period.	3 diagrams vertically aligned, First one is top, second one is middle, third one is bottom.
 	}
 	\label{fig:serverClientDesync}
