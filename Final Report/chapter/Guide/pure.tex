@@ -177,7 +177,7 @@ In the discussion thus far the state of the game or program has not been conside
 
 An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad},\citefix[-5em]{wadler1992essence} and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix{peyton2001tackling}
 
-Monads are covered in some detail in Appendix \ref{app:monads}, and so some familiarity will be assumed here. Listing \ref{list:effectmonad} shows the "Monad" typeclass:
+Some existing familiarity with monads will be assumed here. Listing \ref{list:effectmonad} shows the "Monad" typeclass:
 
 \vspace{-0.5em}
 \begin{listing}{list:effectmonad}{The \emph{Monad} typeclass.}{The \scalenote{"Monad"} typeclass.}{}
@@ -247,7 +247,7 @@ To further illustrate this point, consider the following. Currently this impleme
 *** Exception: Pattern match failure in do expression
 \end{verbatim}
 
-\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. (For more details on monad transformers, see Appendix~\ref{app:monads}.) All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "popM", as shown in Listing~\ref{list:statestackerror} below.
+\noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "popM", as shown in Listing~\ref{list:statestackerror} below.
 
 \vspace{-0.5em}
 \begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer.}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
