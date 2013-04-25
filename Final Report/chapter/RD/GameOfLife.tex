@@ -10,7 +10,7 @@ Invented by British mathematician John Horton Conway in 1970, Conway's Game of L
 
 Life is a basic example of a cellular automata. A rectangular grid of cells that can be either dead or alive is the game field, and each time step which cells are alive and which are dead are updated. The standard rules are a cell dies if it has fewer than 2 neighbours or more than 3, a dead cell comes to life if it has exactly three neighbours, otherwise the cells stay in their previous state.\sidenote{For more details on the Game of Life, see Gardner 1970, and \url{pentadecathlon.com/lifeNews/index.php}.}
 
-The implementation starts with a paused grid of dead cells. The user can toggle the state of a cell by clicking it, and stop and start the simulation by pressing the space bar. Array data types from "Data.Array" are used to store the state of the game, and the topology is made to ``wrap around'' so events on the leftmost edge effect the right etc.
+The implementation starts with a paused grid of dead cells. The user can toggle the state of a cell by clicking it, and stop and start the simulation by pressing the space bar. Array data types from "Data.Array" are used to store the state of the game, and the topology is made to ``wrap around'' so events on the leftmost edge affect the right, for example.
 
 The logic and rules of the game of life were coded using pure code, and then the library \emph{Gloss} was used to draw the game board, update the board by calling the pure logical functions, and process mouse and keyboard events. The complete program is only 90 lines of Haskell.
 
