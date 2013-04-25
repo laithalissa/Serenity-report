@@ -1,6 +1,20 @@
 \section{Conclusions}
+\label{sec:guideconc}
 
-\begin{itemize}
-\item Assessment of our key decisions
-\item Conclusions on Haskell
-\end{itemize}
+%\begin{itemize}
+%\item Assessment of our key decisions
+%\item Conclusions on Haskell
+%\end{itemize}
+
+Just as the SpaceTime prototype taught many lessons that proved useful when starting the full game (see Section`\ref{ssec:spacetime}), coding Project Serenity itself has pointed out many things that could be improved in the future. Like any language, there are many small tricks and subtleties that separate satisfactory Haskell code from exemplary Haskell code. Also new methods are being discovered at a fairly rapid pace in the Haskell world: lenses are a relatively new discovery, as are free monads. 
+
+Among the key decisions made in the coding of Project Serenity, probably the one which had the most effect on what was able to be eventually produced was the decision to use Gloss for the graphics. Gloss allowed for very rapid development of the main game graphics, but some effort was still required in the area of UI elements. However, it is safe to say that the effect of this decision on a project of this timeframe was overall very positive. In the future it would definitely be very beneficial to develop a replacement or extension of Gloss that would allow for more flexibility and more provision for adding features (such as clipping). 
+
+Another key decision was to build a networking framework on UDP. The separation of concerns between the networking and the rest of the code was well handled, but it is possible that TCP would have worked just as well for the implementation, and that the development time could have been spent elsewhere. 
+
+Methods based on free monads, such as that provided by the \emph{pipes} library (see \ref{ssec:freemonad} above) could have been used to enable a greater modularity to the implementation, making adding of new concerns, such as journalling, easier in the future. 
+
+Throughout the various design patterns identified in this chapter, a common theme can be discerned: that of higher and higher levels of abstraction. One of the greatest strengths of functional languages is the ability to use abstractions to closely model domain specific processes. Monads are an excellent example of this --- the bind function can be thought of as a kind of ``programmable semicolon'', with the do notation acting to allow easy creation of domain specific languages.\sidenote{Monadic parsers are a great example of this; see \bibentry{hutton1998monadic}.} The lens combinators are also examples of this, and can be used to model many of the stateful styles of coding using operators like "+=" all within pure computations. 
+
+Abstraction and separation of concerns are two of the most important concepts in programming and software development, followed closely by maintainability and testability. Much of the power of Haskell lies in its unique provisions to these ends.
+

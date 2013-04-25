@@ -284,6 +284,7 @@ Nothing
 It should be apparent that modelling effects using monads provides a good number of advantages, from separation of concerns to elegance of code. Writing new monads can be tricky, but the desired effects can usually be easily achieved by combining existing monad transformers. It is these advantages that make the monad such a widely used design pattern in Haskell code.
 
 \subsection{Separating Syntax and Semantics Part II: Free Monads}
+\label{ssec:freemonads}
 
 \functions(liftF, retract, hoistFree)
 A further technique for improving the separation between interface and implementation is the usage of \emph{free monads}, a relatively recent research area in the Haskell community.\sidenote{In the examples below, the free monad implementations come from Edward Kemmet's package \emph{free} (\url{hackage.haskell.org/package/free}), which also provides the functions \scalenote{"liftF"}, \scalenote{"retract"}, and \scalenote{"hoistFree"}. Various other free monad implementations are also available on Hackage.} 
