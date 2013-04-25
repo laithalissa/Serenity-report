@@ -6,7 +6,7 @@
 % Layout of project
 % IO and pure separation
 
-When coming from an OO background, one of the first problems encountered when embarking on a large FP project is how to organise and architect the code. There is a certain paucity of literature pertaining to this issue; and while there are many projects on Hackage that provide good examples, the principles behind them are not always clear.\sidenote{CF Section \ref{sec:fp_review} on page \pageref{cf:code_organisation}. }
+When coming from an OO background, one of the first problems encountered when embarking on a large FP project is how to organise and architect the code. There is a certain paucity of literature pertaining to this issue; and while there are many projects on Hackage that provide good examples, the principles behind them are not always clear.\sidenote{cf. Section \ref{sec:fp_review} on page \pageref{cf:code_organisation}. }
 
 There are two related issues here. First is simply what files should have what code in them; and second, how to separate concerns effectively. These can be seen as quite separate issues, but it is helpful to consider them simultaneously here, as should become apparent.
 
@@ -17,6 +17,7 @@ At first sight it would appear that almost all of what happens in a game is IO o
 
 This is all very well, but does not make it immediately clear how to break down a project's code. The approach taken during the design of Serenity's module structure, and the approach recommended by this guide, is to let the structure of the main loop of each runnable component guide the nature and interface of each module.
 
+%%todo: Should the sidenote have a cf. in it?
 To demonstrate how this works, consider the architecture of the Serenity project. As discussed elsewhere,\sidenote{Section \ref{sec:specv2} page \pageref{sec:specv2}.} the game uses a server-client model, but with none or very limited simulation clientside. There are therefore two runnable components, which will share some logic. Each main loop will therefore have two main impure parts: the receiving of IO over the network from the server or client, and local IO (be it output to the screen, logging, or input from the user).
 
 It is clear that some data structure must exist that models the state of the game. Because no simulation takes place on the client, all the updates to this structure will be due to messages from the server. User interactions also need to generate messages \emph{to} the server. So the client loop will consist of reading input from the network and updating the game state, rendering the screen, then reading input from the user and sending output to the network.

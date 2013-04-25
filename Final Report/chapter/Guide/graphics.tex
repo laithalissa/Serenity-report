@@ -22,7 +22,7 @@ Some details of the OpenGL and Gloss approaches are given below to illustrate th
 
 \subsection{Using OpenGL Directly}
 
-\marginnote{{\bf NB} --- The OpenGL code in this section is based on the tutorial at \url{www.haskell.org/haskellwiki/OpenGLTutorial1} (retrieved April 2013).}
+\marginnote{{\bf NB} --- The OpenGL code in this section is based on the tutorial at \url{haskell.org/haskellwiki/OpenGLTutorial1} (retrieved April 2013).}
 Writing OpenGL code in Haskell is in many ways similar to writing it in C++ or any similar language. OpenGL calls are simply functions in the IO monad, (i.e. functions of type "IO a"), and there are some special primitive types such as "GLFloat". 
 
 Listing~\ref{list:openglbasic} shows a very simple example of drawing an empty circle and a filled circle, and the output is shown in Figure~\ref{fig:openglbasicout}. Normal Haskell style is used to create a circle: using the "map" function and some trigonometry. These are then converted into OpenGL actions and rendered in the display callback. 
