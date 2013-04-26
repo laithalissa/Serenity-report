@@ -33,7 +33,7 @@ There are two ways of creating lenses. First is to use the "lens" function to bu
 
 >sndLens = lens snd (\(a,_) b -> (a,b))
 
-This leads to a lot of boilerplate however. The alternative is to use the template Haskell routines provided in the library, "makeLenses" or "makeClassy". These do require Template Haskell (and hence GHC) but are very useful indeed. In the expression
+This leads to a lot of boilerplate however. The alternative is to use the Template Haskell routines provided in the library, "makeLenses" or "makeClassy". These do require Template Haskell (and hence GHC) but are very useful indeed. In the expression
 
 >data Foo a = Foo
 >  {  _bar :: a
@@ -55,7 +55,7 @@ This demonstrates how easy it is create lenses with Template Haskell, but why is
 
 \subsection{A Recursive View Hierarchy}
 
-In the prototype projects written with Gloss, widgets were modelled quite simply as having an area of the screen that would trigger actions when an event fell within the bounds. This was unsatisfactory  for a number of reasons. First, and especially as Gloss has no support for clipping,\sidenote{Clipping is masking out parts of an image so that only one area of the screen can be drawn to.} was care that had to be taken that the picture of the widget ended up in the same place as its target area. And also there is the problem that as the layouts become more complicated, connascence between all the different widgets builds up. If one wanted to move an entire sidebar, for example, everything within it would require its position updating. Hardly ideal.
+In the prototype projects written with Gloss, widgets were modelled quite simply as having an area of the screen that would trigger actions when an event fell within the bounds. This was unsatisfactory  for a number of reasons. First, and especially as Gloss has no support for clipping,\sidenote{Clipping is masking out parts of an image so that only one area of the screen can be drawn to.} was that care had to be taken to ensure that the picture of the widget ended up in the same place as its target area. And also there is the problem that as the layouts become more complicated, connascence between all the different widgets builds up. If one wanted to move an entire sidebar, for example, everything within it would require its position updating. Hardly ideal.
 
 Sheen was first created to solve this sole issue, by supporting the concept of a recursive structure. The definition of "View" in the latest sheen code is
 
@@ -97,7 +97,7 @@ Also in order to support concepts like focus of text boxes and other stateful be
 \noindent 
 Note that because the "ViewGlobals" are provided by a lens, they can be both easily viewed or modified. 
 
-Sheen provides all the logic that handles clicks and key presses and calls the handler at the correct view based on where the click was and what view is currently in focus. In order to illustrate how useful the lens library functions for state monads are, a snippet from this code is shown in Listing~\ref{list:sheenhandleevents}
+Sheen provides all the logic that handles clicks and key presses and calls the handler at the correct view based on where the click was and what view is currently in focus. In order to illustrate how useful the lens library functions for state monads are, a snippet from this code is shown in Listing~\ref{list:sheenhandleevents}.
 
 \vspace{-0.5em}
 \begin{listing}{list:sheenhandleevents}{Snippet from Sheen core logic}{Snippet from Sheen core logic.}{}
@@ -128,7 +128,7 @@ It is interesting just how much like imperative code this is, and yet this is a 
 
 \subsection{Widgets}
 
-Sheen also includes many widgets which are built using the basic view system. These can then be recursively used in larger view hierarchies. Widgets included in Sheen at time of writing are a text label, a picture view, a button, a text box, and a table. All of these are built up from the views and sometimes using other widgets. To illustrate this Figure~\ref{list:sheentable} shows the code for the table widget.
+Sheen also includes many widgets which are built using the basic view system. These can then be recursively used in larger view hierarchies. Widgets included in Sheen at the time of writing are a text label, a picture view, a button, a text box, and a table. All of these are built up from the views and sometimes using other widgets. To illustrate this Figure~\ref{list:sheentable} shows the code for the table widget.
 
 \vspace{-0.5em}
 \begin{listing}{list:sheentable}{Table widget implementation}{Table widget implementation.}{}
@@ -164,10 +164,10 @@ Note how all of the Sheen views and widgets assume nothing about the type that t
 
 \subsection{Use in the Main Project}
 
-Sheen is used to build all of the UI in Project Serenity, from the menus to the in-game sidebar. Each screen is a separate Haskell module, and provides a class specifying the lenses needed to draw the views for that screen. There is then a main module that imports all of the different screens, builds all the required instances and calls the view function based on what mode the application is currently in.
+Sheen is used to build all of the UI in Project Serenity, from the menus to the in-game sidebar. Each screen is a separate Haskell module, and provides a class specifying the lenses needed to draw the views for that screen. There is a main module that imports all of the different screens, builds all the required instances and calls the view function based on what mode the application is currently in.
 
 An interesting observation of coding with Sheen is the difference between the functional and imperative styles of the interface. Most of the widgets require a space to store some internal state (for example the "Table" type for the table widget in Listing~\ref{list:sheentable}). A screen can therefore be animated in an ``imperative style'' by updating this state in reaction to events. But animation can also be achieved in the building of the view hierarchy itself. Views can be drawn based on the interface to the underlaying state, and so the animation logic is in a ``functional style''. The meeting point between pure and impure, side effect and logic, is very close together when doing UI programming, and Sheen represents an approach that allows a much more functional and pure approach than most GUI systems available for Haskell.
 
 \subsection{Summary of this Section}
 
-The Sheen framework designed during the implementation of Project Serenity is a significant step towards a advanced featured event driven GUI system. Although it currently depends on Gloss this could be replaced with a different back end in the future. Sheen makes significant use of classes, lenses, state monads, and represents a full example of how powerful some of the methods in this chapter can be.
+The Sheen framework designed during the implementation of Project Serenity is a significant step towards an advanced event driven GUI system. Although it currently depends on Gloss this could be replaced with a different back end in the future. Sheen makes significant use of classes, lenses, state monads, and represents a full example of how powerful some of the methods in this chapter can be.
