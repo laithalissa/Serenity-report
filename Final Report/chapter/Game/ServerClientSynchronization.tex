@@ -10,8 +10,7 @@ However, maintaining synchronisation when using a peer-to-peer protocol like thi
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation1.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation2.pdf}
 	\includegraphics{res/computer_communication_architecture/ServerClientDesynchronisation3.pdf}		
-	\caption[Desynchronisation when using lockstep]{Example of desynchronisation when using a lockstep strategy.} Client 1 on left, client 2 on right. 
-	Each diagram represents state of game for that clients at a given time period.	3 diagrams vertically aligned, First one is top, second one is middle, third one is bottom.
+	\caption[Desynchronisation when using lockstep]{Example of desynchronisation when using a lockstep strategy.}
 	\label{fig:serverClientDesync}
 \end{marginfigure}
 
@@ -27,6 +26,7 @@ One concern that was raised during these discussion was that of bandwidth. Would
 
 The original design of the messaging system only included three update messages:
 
+\functions(addEntity, deleteEntity, updateEntity)
 \begin{description}
 	\item["addEntity"] Used to add a new entity to the game. It contains the entire details of the new entity.
 	\item["deleteEntity"] Used to remove an existing entity from the game. It only needs to contain the entity ID.
