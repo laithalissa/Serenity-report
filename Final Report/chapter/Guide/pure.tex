@@ -16,7 +16,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 >  fmap :: (a -> b) -> f a -> f b
 
 \end{haskell}
-\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (i.e.\ the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing~\ref{list:listfmap}.
+\noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (i.e.\ the list type) then it is easy to see that "fmap" is the same type as the normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing~\ref{list:listfmap}.
 
 \vspace{-0.5em}
 \begin{listing}{list:listfmap}{A \emph{Functor} instance for lists}{A \scalenote{"Functor"} instance for lists.}{}
@@ -41,7 +41,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 \end{haskell}
 \noindent This function can now be used whenever "Functor" instances are available on both types in a pair. This is a contrived example, but hopefully illustrative of the advantages of this approach --- designing a module so that it works on any instance of a given class, be it an inbuilt one like "Functor", or a new class provided by the module, is an excellent way to avoid coupling and allow for code reuse.
 
-This pattern is used is several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
+This pattern is used in several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
 
 \vspace{-0.5em}
 \begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
@@ -173,7 +173,7 @@ In the discussion thus far the state of the game or program has not been conside
 >run = flip $ foldl $ flip eval
 
 \end{haskell}
-\noindent But this approach has a number of weaknesses. Firstly there is having to deal manually with passing state, both in the type signatures and in the implementations, and there is the difficulty of extending the implementation to deal with errors or other concerns.
+\noindent But this approach has a number of weaknesses. Firstly, passing state has to be dealt with manually, both in the type signatures and in the implementations, and there is the difficulty of extending the implementation to deal with errors or other concerns.
 
 An effective pattern for modelling objects that have this kind of imperative structure is to use a \emph{monad},\citefix[-5em]{wadler1992essence} and indeed monads have become quite ubiquitous in Haskell programming despite having a somewhat ill-founded reputation for being hard to understand.\citefix{peyton2001tackling}
 
