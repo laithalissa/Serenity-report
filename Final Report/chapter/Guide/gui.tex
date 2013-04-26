@@ -53,7 +53,7 @@ Or the same thing expressed in the "Lens" type synonym:
 
 This demonstrates how easy it is create lenses with Template Haskell, but why is it worth doing? Lenses are invaluable for providing good interfaces between modules and hence separation of concerns. For example, say one module contains the overall state of an application, and another module is responsible for logic based on only a part of that state. By making the functions in this latter module depend, rather than the specific data type that contains the application state, but rather any type "a" and lenses from "a" onto the parts of the data that module is responsible for, the modules remain nicely separated. This technique is leveraged extensively when using Sheen.
 
-\subsection{Recursive Views}
+\subsection{A Recursive View Hierarchy}
 
 In the prototype projects written with Gloss, widgets were modelled quite simply as having an area of the screen that would trigger actions when an event fell within the bounds. This was unsatisfactory  for a number of reasons. First, and especially as Gloss has no support for clipping,\sidenote{Clipping is masking out parts of an image so that only one area of the screen can be drawn to.} was care that had to be taken that the picture of the widget ended up in the same place as its target area. And also there is the problem that as the layouts become more complicated, connascence between all the different widgets builds up. If one wanted to move an entire sidebar, for example, everything within it would require its position updating. Hardly ideal.
 
@@ -63,7 +63,7 @@ Sheen was first created to solve this sole issue, by supporting the concept of a
 \begin{listing}{list:sheenview}{Definition of a \emph{View} in Sheen.}{Definition of a \scalenote{"View"} in Sheen. Some fields non-essential to the discussion are not shown.}{}
 \end{listing}\vspace{-1.5em}
 
-\functions(_viewSubviews, _viewFrame, _viewZIndex, _viewBackground, _viewDepict, _viewDepictMode, _viewSubviewMode, _viewEventHandler)
+\functions(_viewSubviews, _viewFrame, _viewZIndex, _viewBackground, _viewDepict, _viewDepictMode, _viewSubviewMode, _viewEventHandler, getView)
 \begin{haskell}
 
 >data View a = View
@@ -77,7 +77,8 @@ Sheen was first created to solve this sole issue, by supporting the concept of a
 
 \end{haskell}
 \noindent 
-Note that the subviews field makes this a recursive structure. In order to support concepts like focus of text boxes and other stateful behaviour, the view system needs somewhere to store state. For this reason the top level of view hierarchy is required to be a member of the "ViewController" class, as shown below.
+Note that the subviews field makes this a recursive structure. The (optional) event handler field is a function from an event to a new overall state. The "ViewController" class which is the required top level of the hierarchy, provides the function that actually lays out the view: "getView :: View a". This is why the event handler only returns an "a" and not an "a -> a".
+Also in order to support concepts like focus of text boxes and other stateful behaviour, the view system needs somewhere to store state. The "ViewController" class is shown in Listing~\ref{list:sheenview}.
 
 \vspace{-0.5em}
 \begin{listing}{list:sheenview}{\emph{ViewController} class.}{\scalenote{"ViewController"} class.}{}
@@ -96,4 +97,77 @@ Note that the subviews field makes this a recursive structure. In order to suppo
 \noindent 
 Note that because the "ViewGlobals" are provided by a lens, they can be both easily viewed or modified. 
 
+Sheen provides all the logic that handles clicks and key presses and calls the handler at the correct view based on where the click was and what view is currently in focus. In order to illustrate how useful the lens library functions for state monads are, a snippet from this code is shown in Listing~\ref{list:sheenhandleevents}
 
+\vspace{-0.5em}
+\begin{listing}{list:sheenhandleevents}{Snippet from Sheen core logic}{Snippet from Sheen core logic.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(handleViewEvents, indexPathAtPoint, when, forM, use, uieventsUpdateFocus, uieventsUpdateMouseOver, uieventsEventUnderMouse, uieventsEventToFocus, uieventsEventLastMouseDown, uieventsUpdateMouseDown, globalMouseDown, globalFocus, updateFocus, updateMouseOver, sendEvent)
+\begin{haskell}
+
+>handleViewEvents 
+>  :: ViewController a => ((Float, Float), UIEvents) -> a -> a
+>handleViewEvents (point, events) = execState $ do
+>  a <- get
+>  indexPathUnderMouse    <- return $ indexPathAtPoint point (getView a)
+>  indexPathLastMouseDown <- use (globals.globalMouseDown)
+>  indexPathFocus         <- use (globals.globalFocus)
+>  when (events^.uieventsUpdateFocus)     $ updateFocus indexPathUnderMouse
+>  when (events^.uieventsUpdateMouseOver) $ updateMouseOver indexPathUnderMouse
+>  forM (events^.uieventsEventUnderMouse) $ sendEvent indexPathUnderMouse
+>  forM (events^.uieventsEventToFocus)    $ sendEvent indexPathFocus
+>  when (indexPathUnderMouse /= indexPathLastMouseDown) $ do
+>    forM (events^.uieventsEventLastMouseDown) $ sendEvent indexPathLastMouseDown; return ()
+>  when (events^.uieventsUpdateMouseDown) $ globals.globalMouseDown .= indexPathUnderMouse
+
+%$
+\end{haskell}
+\noindent 
+It is interesting just how much like imperative code this is, and yet this is a pure Haskell function. "execState" is used to run the computation in a state monad, which provides the "when" combinator that acts like \emph{if} from C like languages. "forM" is simply "mapM" with the arguments reversed, and runs an effect for each member of a list, and so is like a \emph{for-each} loop. "(.^)" is an infix synonym of "view" and used to get values from lenses; this can also be done as a state monad action with the "use" function. Finally, ".=" is a state action that performs assignment using a lens.
+
+\subsection{Widgets}
+
+Sheen also includes many widgets which are built using the basic view system. These can then be recursively used in larger view hierarchies. Widgets included in Sheen at time of writing are a text label, a picture view, a button, a text box, and a table. All of these are built up from the views and sometimes using other widgets. To illustrate this Figure~\ref{list:sheentable} shows the code for the table widget.
+
+\vspace{-0.5em}
+\begin{listing}{list:sheentable}{Table widget implementation}{Table widget implementation.}{}
+\end{listing}\vspace{-1.5em}
+
+\functions(_tableCellSep, _tableBackground, initTable, _tableCellSep, _tableBackground, table, initView, viewBackground, tableBackground)
+\begin{haskell}
+
+>data Table a = Table
+>  {  _tableCellSep    :: Int
+>  ,  _tableBackground :: Maybe Color
+>  }
+>makeLenses ''Table
+
+>initTable :: Int -> Maybe Color -> Table a
+>initTable sep backg = Table
+>  {  _tableCellSep = sep
+>  ,  _tableBackground = backg
+>  }
+
+>table :: a -> Simple Lens a (Table a) -> Getter a [b] -> (b -> View a) -> ((Int, Int), (Int, Int)) -> View a
+>table a table bsLens b2View bounds = 
+>  (initView bounds) & (viewBackground .~ (a^.table.tableBackground)) 
+>  <++ map (\(b, i) -> (viewOrigin._2 .~ top - sep*i) $ b2View b) ((a^.bsLens) `zip` [1..])
+>  where 
+>    sep = a^.table.tableCellSep
+>    top = (bounds^._1._2) + (bounds^._2._2)
+
+%$
+\end{haskell}
+\noindent 
+Note how all of the Sheen views and widgets assume nothing about the type that they are drawing, all that is needed is a "ViewController" instance at the top of the hierarchy, and lenses to pass to the various functions. 
+
+\subsection{Use in the Main Project}
+
+Sheen is used to build all of the UI in Project Serenity, from the menus to the in-game sidebar. Each screen is a separate Haskell module, and provides a class specifying the lenses needed to draw the views for that screen. There is then a main module that imports all of the different screens, builds all the required instances and calls the view function based on what mode the application is currently in.
+
+An interesting observation of coding with Sheen is the difference between the functional and imperative styles of the interface. Most of the widgets require a space to store some internal state (for example the "Table" type for the table widget in Listing~\ref{list:sheentable}). A screen can therefore be animated in an ``imperative style'' by updating this state in reaction to events. But animation can also be achieved in the building of the view hierarchy itself. Views can be drawn based on the interface to the underlaying state, and so the animation logic is in a ``functional style''. The meeting point between pure and impure, side effect and logic, is very close together when doing UI programming, and Sheen represents an approach that allows a much more functional and pure approach than most GUI systems available for Haskell.
+
+\subsection{Summary of this Section}
+
+The Sheen framework designed during the implementation of Project Serenity is a significant step towards a advanced featured event driven GUI system. Although it currently depends on Gloss this could be replaced with a different back end in the future. Sheen makes significant use of classes, lenses, state monads, and represents a full example of how powerful some of the methods in this chapter can be.
