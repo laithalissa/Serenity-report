@@ -35,11 +35,7 @@ The original design of the messaging system only included three update messages:
 
 Having only three types of update was a very simple design and was easy to reason about. However, two of the three updates, "addEntity" and "updateEntity", contain entire entity objects which leads to large messages containing redundant information. Sending an entire entity definition across the network like this would be very slow and should only be done when absolutely necessary.
 
-The "addEntity" message does need to contain an entire entity since it is adding something new to the game. Since this message will primarily be used at the start of the game this is not too big of an issue.
-
-However, the "updateEntity" message is used extremely frequently since it would be sent every time an entity changes location, direction, is damaged, receives new orders, and so on. Evey time a single piece of data about the entity changes an entire entity is sent across the network. This would take up a large amount of bandwidth sending a great deal of information that has not actually changed. The solution to this problem was to split the "updateEntity" message into multiple different update types, one for each common usage of update. Table~\ref{tab:updateMessageTypes} shows the set of different update types that were devised.
-
-\begin{table}
+\begin{table}[t]
     \begin{tabular}{p{5em} p{15em} p{6em}}
     \toprule
     \emph{Update Type} & \emph{Description} & \emph{Fields} \\
@@ -56,9 +52,11 @@ However, the "updateEntity" message is used extremely frequently since it would 
 	\label{tab:updateMessageTypes}
 \end{table}
 
-With this change to the design, when an ship's field changes only that field is sent across the network. For example, if a ship's position is changed then only the position data is transmitted. This is significantly cheaper with regards to network usage compared to the monolithic "updateEntity".
+The "addEntity" message does need to contain an entire entity since it is adding something new to the game. Since this message will primarily be used at the start of the game this is not too big of an issue.
 
-An analysis on the amount of traffic that would be sent using the new design was then undertaken to ensure that enough savings had been made. Some assumptions had to be made about the number of ships involved in a game, the number of game steps per second, and so on, but in these cases a worst case scenario was assumed to make sure nothing was underestimated. To perform the analysis the size of each update message and their frequency needed to be estimated.
+However, the "updateEntity" message is used extremely frequently since it would be sent every time an entity changes location, direction, is damaged, receives new orders, and so on. Evey time a single piece of data about the entity changes an entire entity is sent across the network. This would take up a large amount of bandwidth sending a great deal of information that has not actually changed. The solution to this problem was to split the "updateEntity" message into multiple different update types, one for each common usage of update. Table~\ref{tab:updateMessageTypes} shows the set of different update types that were devised.
+
+With this change to the design, when an ship's field changes only that field is sent across the network. For example, if a ship's position is changed then only the position data is transmitted. This is significantly cheaper with regards to network usage compared to the monolithic "updateEntity".
 
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em}}
@@ -75,9 +73,7 @@ An analysis on the amount of traffic that would be sent using the new design was
 	\label{tab:typeSizes}
 \end{margintable}
 
-First, the sizes of various common data types, such as "Int" and "Float", were collated. These figures are shown in Table~\ref{tab:typeSizes}. With these figures available it was possible to determine the sizes of different fields in the update messages by working out the type of each field. This data is shown in Table~\ref{tab:fieldSizes}. For example, a location is known to be a pair of "Float"s and so it can be calculated to consume eight bytes.
-
-% TODO Incorrect data?
+An analysis on the amount of traffic that would be sent using the new design was then undertaken to ensure that enough savings had been made. Some assumptions had to be made about the number of ships involved in a game, the number of game steps per second, and so on, but in these cases a worst case scenario was assumed to make sure nothing was underestimated. To perform the analysis the size of each update message and their frequency needed to be estimated.
 
 \begin{margintable}
     \begin{tabular}{p{5em} p{5em} p{5em}}
@@ -99,6 +95,10 @@ First, the sizes of various common data types, such as "Int" and "Float", were c
 	\caption[Byte sizes of update fields]{Byte sizes of update fields.}
 	\label{tab:fieldSizes}
 \end{margintable}
+
+First, the sizes of various common data types, such as "Int" and "Float", were collated. These figures are shown in Table~\ref{tab:typeSizes}. With these figures available it was possible to determine the sizes of different fields in the update messages by working out the type of each field. This data is shown in Table~\ref{tab:fieldSizes}. For example, a location is known to be a pair of "Float"s and so it can be calculated to consume eight bytes.
+
+% TODO Incorrect data?
 
 Secondly, the size of individual fields was used to calculate the size of whole messages which include multiple fields. Then the frequency at which different messages would be sent by the server was estimated. This data is shown in Table~\ref{tab:updateMessageStats}.
 
