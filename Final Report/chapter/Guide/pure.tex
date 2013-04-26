@@ -8,7 +8,7 @@ There has already been some discussion about separating pure code and code that 
 Of primary importance in Haskell coding is the concept of \emph{classes}, distinct from classes in an OO context. In Haskell, a type is an instance of a class if a given set of functions are provided. For example, Listing \ref{list:functor} shows the class declaration for a \emph{functor}.
 
 \vspace{-0.5em}
-\begin{listing}{list:functor}{The \emph{Functor} typeclass.}{The \scalenote{"Functor"} typeclass.}{}
+\begin{listing}{list:functor}{The \emph{Functor} typeclass}{The \scalenote{"Functor"} typeclass.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -19,7 +19,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 \noindent Here, "f", "a", and "b" are type variables; "f" representing the type belonging to the class, and "a" and "b" able to be any types. For example, if the type "f" was "[]" (i.e.\ the list type) then it is easy to see that "fmap" is the same type as normal "map", and a therefore possible "Functor" instance (which is actually already the default instance) for a list is as shown in Listing~\ref{list:listfmap}.
 
 \vspace{-0.5em}
-\begin{listing}{list:listfmap}{A \emph{Functor} instance for lists.}{A \scalenote{"Functor"} instance for lists.}{}
+\begin{listing}{list:listfmap}{A \emph{Functor} instance for lists}{A \scalenote{"Functor"} instance for lists.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -30,7 +30,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 \noindent The advantage that this gives is that it is now possible to write functions that know nothing about the type of their inputs other than that they are an instance of some class. For example, we could define a version of "fmap" that works on a pair of different functors, like so:
 
 \vspace{-0.5em}
-\begin{listing}{list:pairfmap}{Example of writing a function using only the knowledge that the argument is a Functor.}{Example of writing a function using only the knowledge that the argument is a \scalenote{"Functor"}.}{}
+\begin{listing}{list:pairfmap}{Example of writing a function using only the knowledge that the argument is a Functor}{Example of writing a function using only the knowledge that the argument is a \scalenote{"Functor"}.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -44,7 +44,7 @@ Of primary importance in Haskell coding is the concept of \emph{classes}, distin
 This pattern is used is several places in the Serenity code, most notably to provide a clean interface between the implementation of the model and the code that updates state during the game. Listing \ref{list:timeclasses} shows an extract from "Serenity.Model.Time" showing the classes used to provide this interface. There are three classes, "Updatable", "Commandable", and "Evolvable", to represent to concepts of reacting to updates from the server, commands received from the client, and to the passing of time. Class inheritance (similar to inheritance in OO) is used so that an instance of "Commandable" or "Evolvable" must already be an instance of "Updateable".
 
 \vspace{-0.5em}
-\begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time.}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
+\begin{listing}{list:timeclasses}{Classes from \emph{Serenity.Model.Time}}{Classes from \scalenote{"Serenity.Model.Time"}.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(update, updates, command, commands, evolve, pure)
@@ -81,7 +81,7 @@ A motivating example will help to demonstrate the efficacy and need for this des
 First some basic types are defined, without specific implementation details for brevity, for an entity, a command, and an amount of damage.
 
 \vspace{-0.5em}
-\begin{listing}{list:entitytype}{Some basic types for the entity update example.}{Some basic types for the entity update example.}{}
+\begin{listing}{list:entitytype}{Some basic types for the entity update example}{Some basic types for the entity update example.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions()
@@ -95,7 +95,7 @@ First some basic types are defined, without specific implementation details for 
 \noindent Now the three types of update are to be implemented. Although these updates must eventually be applied ``in the real world'' by an IO routine, their behaviour can still be defined by pure functions. So an initial implementation might look like this:
 
 \vspace{-0.5em}
-\begin{listing}{list:basicentity}{A naive approach to entity semantics.}{A naive approach to entity semantics.}{}
+\begin{listing}{list:basicentity}{A naive approach to entity semantics}{A naive approach to entity semantics.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(updateTime, updateOrder, updateDamage)
@@ -116,7 +116,7 @@ First some basic types are defined, without specific implementation details for 
 The solution is to use an interim type to separate the two concerns. This type will stand for the concept of \emph{some kind of update that could be applied to an Entity}.
 
 \vspace{-0.5em}
-\begin{listing}{list:entitymessage}{Entity update interim type.}{Entity update interim type.}{}
+\begin{listing}{list:entitymessage}{Entity update interim type}{Entity update interim type.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -132,7 +132,7 @@ The solution is to use an interim type to separate the two concerns. This type w
 A semantics can of course be provided alongside this type as a simple function without removing the benefits gained by the separation. Listing \ref{list:entitydefaultsemantics} illustrates such a function. An implementation can now introspect and store updates, call this function, and add any additional behaviour required.
 
 \vspace{-0.5em}
-\begin{listing}{list:entitydefaultsemantics}{Providing a default semantics.}{Providing a default semantics.}{}
+\begin{listing}{list:entitydefaultsemantics}{Providing a default semantics}{Providing a default semantics.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -151,7 +151,7 @@ The "Picture" type from the Gloss graphics library is an excellent example of th
 In the discussion thus far the state of the game or program has not been considered in detail. At first sight one might assume that impure code must be responsible, at least at some level, for the update of this state, but this is not actually the case. It is possible to pass state entirely functionally, as the following small example of a stack machine demonstrates:
 
 \vspace{-0.5em}
-\begin{listing}{list:basicstack}{Modelling a simple stack machine using pure code only.}{Modelling a simple stack machine using pure code only.}{}
+\begin{listing}{list:basicstack}{Modelling a simple stack machine using pure code only}{Modelling a simple stack machine using pure code only.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(eval, run)
@@ -182,7 +182,7 @@ Existing familiarity with monads will not be assumed here, but the details are c
 A monad "m" can be thought of as a computational environment, where objects or routines can be combined using ">>=" (pronounced `bind') and "return" provides a way `into' the context. Notably here, the implementation of ">>=" can thread a state through a sequence of computations, and cause this state to be updated in any number of ways at each stage, reacting to errors etc. For this reason a monadic value "m a" is sometimes referred to as a monadic \emph{action}.
 
 \vspace{-0.5em}
-\begin{listing}{list:effectmonad}{The \emph{Monad} typeclass.}{The \scalenote{"Monad"} typeclass.}{}
+\begin{listing}{list:effectmonad}{The \emph{Monad} typeclass}{The \scalenote{"Monad"} typeclass.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(get, put, modify, runState, execState, evalState)
@@ -197,7 +197,7 @@ A monad "m" can be thought of as a computational environment, where objects or r
 The standard Haskell distribution comes with a number of monads built in, including the "State" monad, which provides an environment that keeps track of a generic state. Inbuilt functions "get", "put", and "modify" are provided to put values into the state, get them out, and call a function over the contents of the state respectively. Listing \ref{list:statestack} shows the state machine example re-written to use the "State" monad.
 
 \vspace{-0.5em}
-\begin{listing}{list:statestack}{Modelling a simple stack machine using pure code only, this time using the \emph{State} monad.}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
+\begin{listing}{list:statestack}{Modelling a simple stack machine using pure code with the \emph{State} monad}{Modelling a simple stack machine using pure code only, this time using the \scalenote{"State"} monad.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(popM, pushM)
@@ -251,7 +251,7 @@ To further illustrate this point, consider the following. Currently this impleme
 \noindent To improve this, an error mechanism can be added to the monad by using a \emph{monad transformer}. A monad transformer is a monad formed by `wrapping' an existing monad, so that "return" and "(>>=)" perform both the original monad's implementation and some additional functionality provided by the transformer. Monadic actions can be performed on the inner monad by using a lifting function. All that needs to be changed is the type synonym "StackMachine" to wrap a "Maybe" value\sidenote[][-8em]{\scalenote{"Maybe"} is used here, which models the computation either succeeding with a value or failing, but does no error reporting. However, if error reporting is required, the \scalenote{"Either"} monad or the \scalenote{"Error"} monad can be used.} in a state monad transformer (using the "StateT" constructor), and the implementation of "popM", as shown in Listing~\ref{list:statestackerror} below.
 
 \vspace{-0.5em}
-\begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer.}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
+\begin{listing}{list:statestackerror}{Adding error handling using \emph{Maybe} and the state monad transformer}{Adding error handling using \scalenote{"Maybe"} and the state monad transformer.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(lift)
@@ -300,7 +300,7 @@ Consider the stack machine example. After "run" (or "run'") has been called, the
 To improve upon this situation, a free monad can be formed from the "Operation" type. A wrapper is used to form a functor, with an additional type variable that represents ``the rest of the computation'' or continuation (the functor instance can be automatically derived). From this functor the free monad is formed. The code for this is shown below in Listing~\ref{list:freeoperation}.
 
 \vspace{-0.5em}
-\begin{listing}{list:freeoperation}{Forming a free monad from the \emph{Operation} type.}{Forming a free monad from the \scalenote{"Operation"} type.}{}
+\begin{listing}{list:freeoperation}{Forming a free monad from the \emph{Operation} type}{Forming a free monad from the \scalenote{"Operation"} type.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(liftFF, push, pop, sum, diff, mult, dup, example, interpret, using)
@@ -336,7 +336,7 @@ The "interpret" function can now be used to coerce a value of type "AbstractMach
 Three example semantics are shown in Listing~\ref{list:freesemantics}, firstly the normal operation of "StackMachine" with failure as implemented before, secondly some basic logging as a writer monad transformer, and lastly both of these simultaneously. 
 
 \vspace{-0.5em}
-\begin{listing}{list:freesemantics}{Three example semantics for the \emph{AbstractMachine} free monad, the stack machine operation, basic logging, and both simultaneously.}{Three example semantics for the \scalenote{"AbstractMachine"} free monad, the stack machine operation, basic logging, and both simultaneously.}{}
+\begin{listing}{list:freesemantics}{Three example semantics for the \emph{AbstractMachine} free monad}{Three example semantics for the \scalenote{"AbstractMachine"} free monad, the stack machine operation, basic logging, and both simultaneously.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(asStackMachine, asLog, asStackMachineWithLog, tell)

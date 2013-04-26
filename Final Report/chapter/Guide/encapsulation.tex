@@ -8,7 +8,7 @@ Compared with Java and other similar OO languages, more effort has to be made in
 Most of the issues with encapsulation in Haskell are due to user defined types using the "data" keyword. Exporting constructors directly is bad encapsulation, because changes to the structure of the type can lead to dependant implementations failing. For example consider the simple datatype in a module shown in Listing \ref{list:encapsulation_bad}.
 
 \vspace{-0.5em}
-\begin{listing}{list:encapsulation_bad}{An example of a badly encapsulated module interface.}{An example of a badly encapsulated module interface.}{}
+\begin{listing}{list:encapsulation_bad}{An example of a badly encapsulated module interface}{An example of a badly encapsulated module interface.}{}
 \end{listing}\vspace{-1.5em}
 
 \begin{haskell}
@@ -23,7 +23,7 @@ This leads to strong connascence between this module and any other importing it,
 The way to manage this is to use the Haskell record syntax, and to only export the field functions, and an abstract constructor (or constructors). This approach is shown in Listing \ref{list:encapsulation_good} below.
 
 \vspace{-0.5em}
-\begin{listing}{list:encapsulation_good}{A well encapsulated module interface.}{A well encapsulated module interface.}{}
+\begin{listing}{list:encapsulation_good}{A well encapsulated module interface}{A well encapsulated module interface.}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(example, exampleOne, exampleTwo)
