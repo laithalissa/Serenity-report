@@ -28,7 +28,7 @@ Writing OpenGL code in Haskell is in many ways similar to writing it in C++ or a
 Listing~\ref{list:openglbasic} shows a very simple example of drawing an empty circle and a filled circle, and the output is shown in Figure~\ref{fig:openglbasicout}. Normal Haskell style is used to create a circle: using the "map" function and some trigonometry. These are then converted into OpenGL actions and rendered in the display callback. 
 
 \vspace{-0.5em}
-\begin{listing}{list:openglbasic}{Simple OpenGL example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:openglbasicout}).}{Simple OpenGL example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:openglbasicout}).}{}
+\begin{listing}{list:openglbasic}{Simple OpenGL example}{Simple OpenGL example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:openglbasicout}).}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(myPoints, pointToVertex, renderMyPoints, display, main, flush, displayPrimitive, displayCallback, getArgsAndInitialize, mapM_, createWindow, mainLoop, clear, renderPrimitive)
@@ -82,7 +82,7 @@ As discussed in the previous section, there are various ways that such separatio
 Gloss is a layer that sits on top of OpenGL and GLUT providing a much simpler and cleaner API for drawing vector graphics. The Gloss project website claims that ``Gloss hides the pain of drawing simple vector graphics behind a nice data type and a few display functions'', and that using Gloss allows you to ``get something cool on the screen in under 10 minutes''.\sidenote[][1em]{See \url{hackage.haskell.org/package/gloss}} The simplicity of using Gloss compared to raw OpenGL code is shown in Listing~\ref{list:glossbasic} which recreates the simple OpenGL example in Gloss (although the colour of the circles has been changed to make the difference in outputs obvious).
 
 \vspace{-0.5em}
-\begin{listing}{list:glossbasic}{Example of simple Gloss usage}{Simple Gloss example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:glossbasicout}).}{}
+\begin{listing}{list:glossbasic}{Simple Gloss usage}{Simple Gloss example, drawing an empty circle and a filled circle (output shown in Figure~\ref{fig:glossbasicout}).}{}
 \end{listing}\vspace{-1.5em}
 
 \functions(display, black, circles, color, blue, circleSolid, circle, play, playIO)

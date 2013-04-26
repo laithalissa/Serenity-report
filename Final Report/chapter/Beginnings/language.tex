@@ -2,14 +2,6 @@
 
 At the outset of the research it was not clear exactly what form the specification of the game would take. For this reason a working title was used to refer to it, and as of now no further title has been substituted. The working title is useful to disambiguate the game itself from the overall project, and is used throughout this document. The title is \emph{Project Serenity}.
 
-\section{Independence of Game Design from Programming Language}
-
-In order for the conclusions of this project to be meaningful, it is important that the game is not designed with the aim of demonstrating FP in mind. If it were, then the apparent performance of the language would be inflated by the nature of the design. It is crucial that the game resembles a standard game project as much as is possible in order for the test to be fair.
-
-In order to enable this as much as is practically possible without having a separate team design the game, several measures were taken. The primary method used was to ban mention of Haskell during design sessions. The priorities of game design were strictly confined to those independent of the implementation, and it was agreed that even if features had to be coded in a more mainstream language in order to include them, they should stay. 
-
-This concern had to be balanced with the requirement to be very aware of the language during actual development in order to document both strengths and weaknesses met in over the course of the project.
-
 \section{On the Choice of Language for the Project}
 
 The following factors were used to judge suitability between languages for use in the project.
@@ -42,7 +34,7 @@ Several different functional programming languages were reviewed and discussed i
 
 Lisp and its many dialects include some of the earliest examples of functional programming languages. These strong roots in the history of the development of functional programming could make one of the members from this family of languages a good choice for demonstrating the utility of FP.
 
-Clojure, a modern take on the concept of Lisp, has some properties that make it particularly appealing. Firstly, it runs on the JVM which means that programs developed in Clojure are highly portable since Java platform runs on most popular operating systems. However, with this comes the ability to make use of the Java standard library. This may be a great benefit in most software development projects, but it could be construed as cheating when attempting to develop a game using only FP (within reason). A second benefit to Clojure is its focus on concurrency through software transactional memory.\sidenote{See \url{clojure.org/concurrent_programming}} This could come in useful for a game development project since it may be desirable to run worker tasks, such as networking, in separate threads from the graphics display to prevent lagging.
+Clojure, a modern take on the concept of Lisp, has some properties that make it particularly appealing. Firstly, it runs on the JVM which means that programs developed in Clojure are highly portable since Java platform runs on most popular operating systems. However, with this comes the ability to make use of the Java standard library. This may be a great benefit in most software development projects, but it could be construed as cheating when attempting to develop a game using only FP (within reason). A second benefit to Clojure is its focus on concurrency through software transactional memory.\sidenote{See \url{clojure.org/concurrent_programming}} This could come in useful for a game development project since it may be desirable to run worker tasks, such as networking, in separate threads from the graphics display to prevent lag.
 
 Lisp syntax is unlike that of many modern C-style programming languages, and can be hard to read for a number of reasons, most notably the excessive number of parentheses that can sometimes be required. That said, the project team has some familiarity with using Lisp from a university module on artificial intelligence and having some members (and a supervisor) who are avid Emacs users.
 
@@ -84,7 +76,7 @@ There are several other languages that are broadly similar to Scala which can be
 
 Erlang was a strong contender in the language selection process. It is a mature language, having been initially developed in the 1980s, that has active support. Its huge focus on concurrent programming is what makes it so special and attractive. As mentioned in the earlier section on Clojure, this could be a great boon for the development of a game. Erlang was also intended to be used for rapid development via prototyping.\citepage{cesarini2009erlang}{page 14} The time constraints on the project made it likely that we would be using an agile development methodology based on the iterative development of prototypes (this turned out to be true, see Section~\ref{sec:devmodel}) and so the support that Erlang provides for this approach could have been useful.
 
-However, Erlang has a dynamic typing system that is weaker than those provided by other functional languages, such as Haskell. Of the languages considered, it was also one of the least familiar to the project tea.m
+However, Erlang has a dynamic typing system that is weaker than those provided by other functional languages, such as Haskell. Of the languages considered, it was also one of the least familiar to the project team.
 
 \subsection{Haskell}
 
@@ -98,4 +90,13 @@ The community of developers and researchers that surrounds Haskell is very large
 
 Another benefit to Haskell is that the project team were more familiar with it compared to other functional programming languages, having studied it as part of a second year module on FP. This would reduce the amount of ramp up time required to get started on the project. However, none of the team had developed a large scale project with Haskell before, so it could not be classified as too familiar.
 
-Haskell could be described as the archetype of purely functional languages and it covers all of the factors that were desired in the language for this project. For these reasons Haskell was chosen for the development of Project Serenity. However, it is important to note that this does not imply that Haskell is necessarily `better' than any of the other languages considered, only that it is probably the best language for meeting the goals of this project.
+Haskell could be described as the archetype of purely functional languages and it covers all of the factors that were desired in the language for this project. For these reasons Haskell was chosen for the development of Project Serenity. However, it is important to note that this does not imply that Haskell is necessarily `better' than any of the other languages considered, only that it is probably the most appropriate language for meeting the goals of this project.
+
+\section{Independence of Game Design from Programming Language}
+
+In order for the conclusions of this project to be meaningful, it is important that the game is not designed with the aim of demonstrating FP in mind. If it were, then the apparent performance of the language would be inflated by the nature of the design. It is crucial that the game resembles a standard game project as much as is possible in order for the test to be fair.
+
+In order to enable this as much as is practically possible without having a separate team design the game, several measures were taken. The primary method used was to ban mention of Haskell during design sessions. The priorities of game design were strictly confined to those independent of the implementation, and it was agreed that even if features had to be coded in a more mainstream language in order to include them, they should stay. 
+
+This concern had to be balanced with the requirement to be very aware of the language during actual development in order to document both strengths and weaknesses met in over the course of the project.
+
