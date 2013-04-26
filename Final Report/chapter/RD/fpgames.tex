@@ -8,8 +8,8 @@
 % Less about games, more about Haskell as a real world language ==> more literature
 % Discuss paper, critique, explain relevance
 
-This section will discuss the suitability of the functional approach, the use
-of Haskell in particular, in the real world. It will look at past projects and
+This section will discuss the suitability of the functional approach in the real
+world, and the use of Haskell in particular. It will look at past projects and
 research into the use of functional programming languages in industry in an
 attempt to discover how functional programming helped or hindered development.
 % More intro
@@ -22,7 +22,7 @@ Firstly, small modules are much easier to code quickly because the requirements 
 a small component are much easier to reason about, design, and implement. Second,
 the more generic modules that are constructed can be reused. This leads to faster
 development during subsequent projects. Thirdly, the independence of modules allows
-them to developed and tested separately, helping to parallelise the work that needs
+them to be developed and tested separately, helping to parallelise the work that needs
 to be done and reducing the amount of time required for debugging. These advantages
 of modular design combine to bring great improvements to productivity. These benefits
 of modularisation are also espoused by Parnas who agrees that modular programming
@@ -49,7 +49,7 @@ infeasible to store the entirety of the output of the first function in memory t
 pass on to the second. Lazy evaluation is a solution to this problem. The output
 function is only started when the input to the second function is required, and
 only runs for long enough to provide the required amount of input. If the consuming
-function terminates early then the producer can also quit. This even allows the
+function terminates early then the producing function can also quit. This even allows the
 producer to create an infinite amount of output. This allows modularisation by
 constructing a generator that outputs a large set of potential answers and a
 separate selector that chooses the correct one.
@@ -66,7 +66,7 @@ functions from simpler ones. Hughes also shows that due to the modularisation
 of the example it is much easier to understand and make modifications to the
 program.
 
-This paper is a great example of the power of that is available from the functional
+This paper is a great example of the power that is available from the functional
 approach. Giving real examples Hughes is able to make a strong case for the
 effectiveness of modularisation through laziness and higher order functions.
 The demonstration of a highly modular version of the alpha-beta pruning algorithm,
@@ -153,7 +153,7 @@ has been noted to produce much more concise programs. For example, Hughes
 states that ``functional programs are an order of magnitude shorter'' than
 their conventional counterparts.\cite[1em]{hughes1989whyfp} Moseley and Marks
 also argue that by reducing the complexity caused by state and control it
-is much less likely that complexity with grow with code volume in a nonlinear
+is much less likely that complexity will grow with code volume in a nonlinear
 fashion, citing Dijkstra:\cite[1em]{dijkstra1972humble}
 
 \begin{quote}
@@ -208,7 +208,7 @@ the number of Haskell libraries for common problems will have increased. So,
 resorting to non-functional libraries is less likely to be required for common
 problems.
 
-Roundy also talks of the difficulty of optimisation in Haskell. He states that
+Roundy also talks about the difficulty of optimisation in Haskell. He states that
 increasing laziness at a high level often helps to improve memory usage, whilst
 increasing strictness at lower levels usually makes functions faster. However,
 the difficulty is in determining which approach to take to optimise a given
@@ -233,7 +233,7 @@ Haskell.
 Roundy concludes that darcs has been a highly successful project written in
 Haskell. His comments support the ideas of modularity proposed by Hughes stating
 that ``Haskell itself allows the creation of clean internal interfaces in the
-code''. These clearly separate modules allow contributors to focus on certain
+code''. These clearly separate modules allowing contributors to focus on certain
 areas instead of having to learn the entire code base and all of its iteractions.
 And, although there have been efficiency problems in the past, they have mostly
 been fixed.
